@@ -1,0 +1,4 @@
+# Geocoding for Patent Analytics {#geocoding}
+\index{geocoding}
+
+This is a placeholder, please come back later

@@ -1,0 +1,1194 @@
+<!DOCTYPE html>
+<html >
+
+<head>
+
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <title>The WIPO Patent Analytics Handbook</title>
+  <meta name="description" content="This is a working draft of the WIPO Patent Analytics Handbook.">
+  <meta name="generator" content="bookdown 0.7 and GitBook 2.6.7">
+
+  <meta property="og:title" content="The WIPO Patent Analytics Handbook" />
+  <meta property="og:type" content="book" />
+  
+  
+  <meta property="og:description" content="This is a working draft of the WIPO Patent Analytics Handbook." />
+  
+
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:title" content="The WIPO Patent Analytics Handbook" />
+  
+  <meta name="twitter:description" content="This is a working draft of the WIPO Patent Analytics Handbook." />
+  
+
+<meta name="author" content="Paul Oldham">
+
+
+<meta name="date" content="2018-08-17">
+
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black">
+  
+  
+<link rel="prev" href="introduction.html">
+<link rel="next" href="patents.html">
+<script src="libs/jquery-2.2.3/jquery.min.js"></script>
+<link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-bookdown.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-highlight.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-search.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-fontsettings.css" rel="stylesheet" />
+
+
+
+
+
+
+
+<script src="libs/htmlwidgets-1.2/htmlwidgets.js"></script>
+<script src="libs/d3-4.5.0/d3.min.js"></script>
+<script src="libs/sankey-1/sankey.js"></script>
+<script src="libs/sankeyNetwork-binding-0.4/sankeyNetwork.js"></script>
+<script src="libs/kePrint-0.0.1/kePrint.js"></script>
+\usepackage{booktabs}
+
+
+<style type="text/css">
+a.sourceLine { display: inline-block; line-height: 1.25; }
+a.sourceLine { pointer-events: none; color: inherit; text-decoration: inherit; }
+a.sourceLine:empty { height: 1.2em; position: absolute; }
+.sourceCode { overflow: visible; }
+code.sourceCode { white-space: pre; position: relative; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+code.sourceCode { white-space: pre-wrap; }
+a.sourceLine { text-indent: -1em; padding-left: 1em; }
+}
+pre.numberSource a.sourceLine
+  { position: relative; }
+pre.numberSource a.sourceLine:empty
+  { position: absolute; }
+pre.numberSource a.sourceLine::before
+  { content: attr(data-line-number);
+    position: absolute; left: -5em; text-align: right; vertical-align: baseline;
+    border: none; pointer-events: all;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {  }
+@media screen {
+a.sourceLine::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #7d9029; } /* Attribute */
+code span.bn { color: #40a070; } /* BaseN */
+code span.bu { } /* BuiltIn */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4070a0; } /* Char */
+code span.cn { color: #880000; } /* Constant */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code span.dt { color: #902000; } /* DataType */
+code span.dv { color: #40a070; } /* DecVal */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #40a070; } /* Float */
+code span.fu { color: #06287e; } /* Function */
+code span.im { } /* Import */
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.op { color: #666666; } /* Operator */
+code span.ot { color: #007020; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #4070a0; } /* String */
+code span.va { color: #19177c; } /* Variable */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+</style>
+
+<link rel="stylesheet" href="style.css" type="text/css" />
+</head>
+
+<body>
+
+
+
+  <div class="book without-animation with-summary font-size-2 font-family-1" data-basepath=".">
+
+    <div class="book-summary">
+      <nav role="navigation">
+
+<ul class="summary">
+<li><a href="./">The WIPO Patent Analytics Handbook</a></li>
+
+<li class="divider"></li>
+<li class="chapter" data-level="" data-path="index.html"><a href="index.html"><i class="fa fa-check"></i>Note to Readers</a></li>
+<li class="chapter" data-level="" data-path="about-the-author.html"><a href="about-the-author.html"><i class="fa fa-check"></i>About the Author</a></li>
+<li class="chapter" data-level="" data-path="acknowlegements.html"><a href="acknowlegements.html"><i class="fa fa-check"></i>Acknowlegements</a></li>
+<li class="chapter" data-level="" data-path="preface.html"><a href="preface.html"><i class="fa fa-check"></i>Preface</a></li>
+<li class="chapter" data-level="" data-path="how-to-use-the-handbook.html"><a href="how-to-use-the-handbook.html"><i class="fa fa-check"></i>How to use the Handbook</a><ul>
+<li class="chapter" data-level="0.0.1" data-path="how-to-use-the-handbook.html"><a href="how-to-use-the-handbook.html#datasets"><i class="fa fa-check"></i><b>0.0.1</b> Datasets</a></li>
+</ul></li>
+<li class="chapter" data-level="1" data-path="introduction.html"><a href="introduction.html"><i class="fa fa-check"></i><b>1</b> Introduction</a></li>
+<li class="chapter" data-level="2" data-path="literature.html"><a href="literature.html"><i class="fa fa-check"></i><b>2</b> Scientific Literature</a><ul>
+<li class="chapter" data-level="2.1" data-path="literature.html"><a href="literature.html#accessing-the-scientific-literature"><i class="fa fa-check"></i><b>2.1</b> Accessing the Scientific Literature</a></li>
+<li class="chapter" data-level="2.2" data-path="literature.html"><a href="literature.html#searching-literature-databases"><i class="fa fa-check"></i><b>2.2</b> Searching Literature Databases</a><ul>
+<li class="chapter" data-level="2.2.1" data-path="literature.html"><a href="literature.html#stemming"><i class="fa fa-check"></i><b>2.2.1</b> Stemming</a></li>
+<li class="chapter" data-level="2.2.2" data-path="literature.html"><a href="literature.html#using-search-operators"><i class="fa fa-check"></i><b>2.2.2</b> Using Search Operators</a></li>
+<li class="chapter" data-level="2.2.3" data-path="literature.html"><a href="literature.html#proximity-operators"><i class="fa fa-check"></i><b>2.2.3</b> Proximity Operators</a></li>
+<li class="chapter" data-level="2.2.4" data-path="literature.html"><a href="literature.html#regular-expressions"><i class="fa fa-check"></i><b>2.2.4</b> Regular Expressions</a></li>
+</ul></li>
+<li class="chapter" data-level="2.3" data-path="literature.html"><a href="literature.html#precision-vs.recall"><i class="fa fa-check"></i><b>2.3</b> Precision vs. Recall</a></li>
+<li class="chapter" data-level="2.4" data-path="literature.html"><a href="literature.html#processing-scientific-literature"><i class="fa fa-check"></i><b>2.4</b> Processing Scientific Literature</a></li>
+<li class="chapter" data-level="2.5" data-path="literature.html"><a href="literature.html#visualizing-the-scientific-literature"><i class="fa fa-check"></i><b>2.5</b> Visualizing the Scientific Literature</a><ul>
+<li class="chapter" data-level="2.5.1" data-path="literature.html"><a href="literature.html#dashboards"><i class="fa fa-check"></i><b>2.5.1</b> Dashboards</a></li>
+<li class="chapter" data-level="2.5.2" data-path="literature.html"><a href="literature.html#network-visualisation"><i class="fa fa-check"></i><b>2.5.2</b> Network Visualisation</a></li>
+<li class="chapter" data-level="2.5.3" data-path="literature.html"><a href="literature.html#other-forms-of-visualisation"><i class="fa fa-check"></i><b>2.5.3</b> Other forms of visualisation</a></li>
+</ul></li>
+<li class="chapter" data-level="2.6" data-path="literature.html"><a href="literature.html#linking-the-scientific-literature-with-patent-analysis"><i class="fa fa-check"></i><b>2.6</b> Linking the Scientific Literature with Patent Analysis</a><ul>
+<li class="chapter" data-level="2.6.1" data-path="literature.html"><a href="literature.html#mapping-authors-to-inventors"><i class="fa fa-check"></i><b>2.6.1</b> Mapping Authors to Inventors</a></li>
+</ul></li>
+<li class="chapter" data-level="2.7" data-path="literature.html"><a href="literature.html#linking-citations-with-patent-literature"><i class="fa fa-check"></i><b>2.7</b> Linking Citations with Patent Literature</a></li>
+<li class="chapter" data-level="2.8" data-path="literature.html"><a href="literature.html#conclusion"><i class="fa fa-check"></i><b>2.8</b> Conclusion</a></li>
+</ul></li>
+<li class="chapter" data-level="3" data-path="patents.html"><a href="patents.html"><i class="fa fa-check"></i><b>3</b> Counting Patent Data</a><ul>
+<li class="chapter" data-level="3.1" data-path="patents.html"><a href="patents.html#the-structure-of-patent-numbers"><i class="fa fa-check"></i><b>3.1</b> The structure of patent numbers</a><ul>
+<li class="chapter" data-level="3.1.1" data-path="patents.html"><a href="patents.html#the-country-code"><i class="fa fa-check"></i><b>3.1.1</b> The country code</a></li>
+<li class="chapter" data-level="3.1.2" data-path="patents.html"><a href="patents.html#the-numeric-identifier"><i class="fa fa-check"></i><b>3.1.2</b> The numeric identifier</a></li>
+<li class="chapter" data-level="3.1.3" data-path="patents.html"><a href="patents.html#kind-codes"><i class="fa fa-check"></i><b>3.1.3</b> Kind Codes</a></li>
+</ul></li>
+<li class="chapter" data-level="3.2" data-path="patents.html"><a href="patents.html#preparing-to-count-patent-data"><i class="fa fa-check"></i><b>3.2</b> Preparing to Count Patent Data</a></li>
+<li class="chapter" data-level="3.3" data-path="patents.html"><a href="patents.html#counting-priority-or-first-filings"><i class="fa fa-check"></i><b>3.3</b> Counting Priority or First Filings</a></li>
+<li class="chapter" data-level="3.4" data-path="patents.html"><a href="patents.html#counting-priority-applications"><i class="fa fa-check"></i><b>3.4</b> Counting Priority Applications</a></li>
+<li class="chapter" data-level="3.5" data-path="patents.html"><a href="patents.html#counting-applications"><i class="fa fa-check"></i><b>3.5</b> Counting Applications</a><ul>
+<li class="chapter" data-level="3.5.1" data-path="patents.html"><a href="patents.html#mapping-publications"><i class="fa fa-check"></i><b>3.5.1</b> Mapping Publications</a></li>
+</ul></li>
+<li class="chapter" data-level="3.6" data-path="patents.html"><a href="patents.html#trends-by-country-using-publication-data"><i class="fa fa-check"></i><b>3.6</b> Trends by Country using Publication Data</a></li>
+<li class="chapter" data-level="3.7" data-path="patents.html"><a href="patents.html#patent-families"><i class="fa fa-check"></i><b>3.7</b> Patent Families</a></li>
+<li class="chapter" data-level="3.8" data-path="patents.html"><a href="patents.html#forecasting-patent-activity"><i class="fa fa-check"></i><b>3.8</b> Forecasting Patent Activity</a></li>
+</ul></li>
+<li class="chapter" data-level="4" data-path="patstat.html"><a href="patstat.html"><i class="fa fa-check"></i><b>4</b> PATSTAT</a></li>
+<li class="chapter" data-level="5" data-path="indicators.html"><a href="indicators.html"><i class="fa fa-check"></i><b>5</b> Indicators</a></li>
+<li class="chapter" data-level="6" data-path="textmining.html"><a href="textmining.html"><i class="fa fa-check"></i><b>6</b> Text Mining</a></li>
+<li class="chapter" data-level="7" data-path="geocoding.html"><a href="geocoding.html"><i class="fa fa-check"></i><b>7</b> Geocoding for Patent Analytics</a></li>
+<li class="chapter" data-level="8" data-path="machinelearning.html"><a href="machinelearning.html"><i class="fa fa-check"></i><b>8</b> Machine Learning</a></li>
+<li class="chapter" data-level="9" data-path="classification.html"><a href="classification.html"><i class="fa fa-check"></i><b>9</b> Using Patent Classfication Schemes in Patent Analytics</a></li>
+<li class="chapter" data-level="10" data-path="citations.html"><a href="citations.html"><i class="fa fa-check"></i><b>10</b> Patent Citations</a></li>
+<li class="chapter" data-level="11" data-path="social.html"><a href="social.html"><i class="fa fa-check"></i><b>11</b> Social Media and Patent Analytics</a></li>
+<li class="divider"></li>
+<li><a href="https://github.com/wipo-analytics/handbook" target="blank">Published with bookdown</a></li>
+
+</ul>
+
+      </nav>
+    </div>
+
+    <div class="book-body">
+      <div class="body-inner">
+        <div class="book-header" role="navigation">
+          <h1>
+            <i class="fa fa-circle-o-notch fa-spin"></i><a href="./">The WIPO Patent Analytics Handbook</a>
+          </h1>
+        </div>
+
+        <div class="page-wrapper" tabindex="-1" role="main">
+          <div class="page-inner">
+
+            <section class="normal" id="section-">
+<div id="literature" class="section level1">
+<h1><span class="header-section-number">Chapter 2</span> Scientific Literature</h1>
+<p></p>
+<p>This chapter examines the role of research involving the scientific literature and patent analytics. Analysis of scientific literature is a specialised field in its own right in the form of bibliometrics or scientometrics with its own specialist journals such as Scientometrics and other publications <span class="citation">(Ball <a href="#ref-An_2018">2018</a>)</span>. These fields cover a wide range of topics involving statistical analysis of scientific literature such as indicators for science and technology, exploration of the impacts of scientific research, research networks, and the mobility of researchers. These field are characterised by a combination of qualitative and quantitative methods and are frequently oriented towards the understanding of trends in science and technology to inform research and innovation policies. The relationship between science and technological innovation is an important focus of research and links analysis of the scientific literature with patent literature. This chapter focuses on the how analysis of the scientific literature can inform patent analytics in there main ways:</p>
+<ol style="list-style-type: lower-alpha">
+<li>By informing search strategies</li>
+<li>By identifying actors who are active inside or outside the scientific literature as part of landscape analysis.</li>
+<li>Identifying potential opportunities for economic development to address the needs of developing countries.</li>
+</ol>
+<p>We will begin with a brief overview of ways to access the scientific literature before turning to a discussion of scientific data fields using data from Clarivate Analytics Web of Science as an example. We will then explore how the scientific literature can be used to inform search strategies through the identification of terms from the scientific literature for use in patent searches. We will then look at methods for matching actors from the scientific literature into the patent literature using data from ASEAN countries as an example. Finally, we will look at how comparisons between the scientific literature and the patent literature can assist developing countries with identifying opportunities for economic development to address their needs.</p>
+<div id="accessing-the-scientific-literature" class="section level2">
+<h2><span class="header-section-number">2.1</span> Accessing the Scientific Literature</h2>
+<p>The main means for accessing the scientific literature is through databases of scientific literature and increasingly through open access databases using web services of application programming interfaces (APIs).</p>
+<p>Researchers based in Universities will generally be familiar with two of the largest of the commercial databases of the scientific literature, Web of Science/Web of Knowledge from Clarivate Analytics or Elsevier’s Scopus. Open access databases such as PubMed and Crossref (containing metadata on over 96 million publications) are increasingly popular and link to initiatives such as core.ac.uk that, at the time of writing, make the full texts of over 113 million publications publicly available. Databases such as Google Scholar are a popular open access source of information on the scientific literature and access to copies of texts while social network sites for researchers such as Research Gate provides a means for scholars to share their research and create shared projects. An important feature of recent developments in scientific publication is a shift in emphasis towards open access publications on the part of researchers and funding agencies. This is reflected in services such as core.ac.uk noted above and in services such as Unpaywall which provides a browser plugin to identify open access versions of articles. At present Unpaywall contains links to over 19 million scientific publications. An important aspect of this shift in emphasis towards open access is cross service integration. Thus Unpaywall is based on and resolves article identifiers to the content of Crossref while the commercial Web of Science database provides links to Unpaywall in its results to allow free retrieval of articles. Other important emerging services include tools such as Open Academic Graph which provides access to meta data on over 330 million publications.</p>
+<p>As this makes clear the landscape for accessing scientific literature is changing as a result of the rise of web service enabled database and cross-service integration tools. In practical terms this means that access to the scientific literature is no longer entirely dependent on fee based databases.</p>
+<p>It is important to emphasise that publication databases normally have strengths and weaknesses in terms of:</p>
+<ol style="list-style-type: lower-alpha">
+<li>Coverage of journals, books and other publications</li>
+<li>The languages covered and availability of translations</li>
+<li>The range of fields available for analysis (authors, affiliations, titles, abstracts etc.)</li>
+<li>The basis of any statistical counts (e.g. counts of citing articles)</li>
+<li>The number of records that can be downloaded</li>
+<li>The format in which records can be downloaded</li>
+</ol>
+<p>These issues impose constraints on what can be searched and downloaded from scientific databases. For example, in our experience Web of Science permits for the downloaded of a wider range of data fields than Scopus, while open access databases enjoy the advantage of being free but are more limited in terms of the data fields that are available and the consistency of coverage, such as abstracts.</p>
+<p>When seeking to carry out literature research as part of a wider patent analytics project it is therefore important to consider the strengths and weaknesses of particular databases and to use multiple sources where necessary.</p>
+</div>
+<div id="searching-literature-databases" class="section level2">
+<h2><span class="header-section-number">2.2</span> Searching Literature Databases</h2>
+<div id="stemming" class="section level3">
+<h3><span class="header-section-number">2.2.1</span> Stemming</h3>
+<p>When searching a literature database it is important as a first step to understand the available search fields and search operators (such as OR and AND). Many databases now offer what is called word “stemming” that will look for similar words or phrases based on the root of the terms used during input… for example if we input the word “drone”, a stemmed version based on the root “drone” would include words like “drones”, “droned” and “droning”. In technical terms words like “drones”. “droned” and “droning” are lemmas.</p>
+<p>Word stemming is a powerful tool for expanding the range of searches and can be extended to using synonyms. Specialist tools such as WordNet, a lexical database of English words and synonyms, can be used to identify synonyms on a search term <span class="citation">(Fellbaum <a href="#ref-Fellbaum_2015">2015</a>)</span>. WordNet can be used in a range of programming languages or using the <a href="http://wordnetweb.princeton.edu/perl/webwn?s=drone&amp;sub=Search+WordNet&amp;o2=&amp;o0=1&amp;o8=1&amp;o1=1&amp;o7=&amp;o5=&amp;o9=&amp;o6=&amp;o3=&amp;o4=&amp;h=">free online tool</a>. The results of a search of WordNet for the word Drone are presented below:</p>
+<blockquote>
+<p>Noun</p>
+</blockquote>
+<blockquote>
+<ul>
+<li>S: (n) drone (stingless male bee in a colony of social bees (especially honeybees) whose sole function is to mate with the queen)</li>
+<li>S: (n) monotone, drone, droning (an unchanging intonation)</li>
+<li>S: (n) dawdler, drone, laggard, lagger, trailer, poke (someone who takes more time than necessary; someone who lags behind)</li>
+<li>S: (n) drone, pilotless aircraft, radio-controlled aircraft (an aircraft without a pilot that is operated by remote control)</li>
+<li>S: (n) drone, drone pipe, bourdon (a pipe of the bagpipe that is tuned to produce a single continuous tone)</li>
+</ul>
+</blockquote>
+<blockquote>
+<p>Verb</p>
+</blockquote>
+<blockquote>
+<ul>
+<li>S: (v) drone (make a monotonous low dull sound) “The harmonium was droning on”</li>
+<li>S: (v) drone, drone on (talk in a monotonous voice)</li>
+</ul>
+</blockquote>
+<p>The use of a stemming tool helps to reveal the range of possible uses of a search term. In the case of the word drone we can see references to bees, to sound, to a part of a musical instrument and for pilotless aircraft.</p>
+<p>The range of the uses of these terms suggests a need for caution. Thus the use of the term drone in a scientific database is likely to return results on all of these potential uses of the work drone. Stemming algorithms can both aid and hinder information retrieval. For example, if stemming is automatically turned on then the word “droning” would automatically be included and thus populate the results with data on the irrelevant subject of sound for those interested in drone technology. In contrast, where the stemming tool displays synonyms we might wish to include pilotless aircraft in the original search.</p>
+<p>In practice, when initiating a search of a database of the scientific literature on an unfamiliar subject it is generally best to turn off stemming and to focus on downloading a test set of results for review. The aim here is to use a limited set of terms to identify other potentially relevant terms and terms that can be excluded from a sample.</p>
+<p>This approach can be used with a wide range of software tools, including simple tools such as Excel or free online tools. The objective is to take available fields such as the title, abstract, and author keywords and to break them down into their constituent words and phrases. This is a process known as tokenizing text fields into words, phrases (ngrams), sentences and paragraphs of various lengths and is a fundamental feature of computational linguistics, text mining and machine learning <strong>[refs]</strong>. We will look in greater detail at text mining in Chapter <a href="textmining.html#textmining">6</a>.</p>
+<p>One powerful tool in working with both scientific and patent data is VantagePoint from Search Technology Inc. VantagePoint is available in a student edition and 32 and 64 bit versions for Windows. VantagePoint is able to import a wide range of different data sources and automatically tokenize text fields into words and phrases.</p>
+<p>Table <a href="literature.html#tab:table1">2.1</a> below presents the combined top 50 terms in the titles, abstracts, and author keywords from a search of Web of Science for the words drone or drones between 2010 and 2017.</p>
+<table>
+<caption><span id="tab:table1">Table 2.1: </span>Top Words and Phrases for Drones in Web of Science</caption>
+<thead>
+<tr class="header">
+<th align="right">records</th>
+<th align="left">terms</th>
+<th align="right">multi_word</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="right">479</td>
+<td align="left">drones</td>
+<td align="right">0</td>
+</tr>
+<tr class="even">
+<td align="right">241</td>
+<td align="left">drone</td>
+<td align="right">0</td>
+</tr>
+<tr class="odd">
+<td align="right">240</td>
+<td align="left">results</td>
+<td align="right">0</td>
+</tr>
+<tr class="even">
+<td align="right">181</td>
+<td align="left">study</td>
+<td align="right">0</td>
+</tr>
+<tr class="odd">
+<td align="right">170</td>
+<td align="left">use</td>
+<td align="right">0</td>
+</tr>
+<tr class="even">
+<td align="right">141</td>
+<td align="left">article</td>
+<td align="right">0</td>
+</tr>
+<tr class="odd">
+<td align="right">126</td>
+<td align="left">rights reserved</td>
+<td align="right">1</td>
+</tr>
+<tr class="even">
+<td align="right">91</td>
+<td align="left">number</td>
+<td align="right">0</td>
+</tr>
+<tr class="odd">
+<td align="right">89</td>
+<td align="left">queens</td>
+<td align="right">0</td>
+</tr>
+<tr class="even">
+<td align="right">88</td>
+<td align="left">development</td>
+<td align="right">0</td>
+</tr>
+<tr class="odd">
+<td align="right">87</td>
+<td align="left">workers</td>
+<td align="right">0</td>
+</tr>
+<tr class="even">
+<td align="right">86</td>
+<td align="left">Apis mellifera</td>
+<td align="right">1</td>
+</tr>
+<tr class="odd">
+<td align="right">85</td>
+<td align="left">data</td>
+<td align="right">0</td>
+</tr>
+<tr class="even">
+<td align="right">85</td>
+<td align="left">UAV</td>
+<td align="right">0</td>
+</tr>
+<tr class="odd">
+<td align="right">84</td>
+<td align="left">one</td>
+<td align="right">0</td>
+</tr>
+<tr class="even">
+<td align="right">81</td>
+<td align="left">colonies</td>
+<td align="right">0</td>
+</tr>
+<tr class="odd">
+<td align="right">69</td>
+<td align="left">analysis</td>
+<td align="right">0</td>
+</tr>
+<tr class="even">
+<td align="right">62</td>
+<td align="left">time</td>
+<td align="right">0</td>
+</tr>
+<tr class="odd">
+<td align="right">60</td>
+<td align="left">first</td>
+<td align="right">0</td>
+</tr>
+<tr class="even">
+<td align="right">56</td>
+<td align="left">effects</td>
+<td align="right">0</td>
+</tr>
+</tbody>
+</table>
+<p>When we inspect the results in Table @ref(tab:wos_tab) we see a full list of words and phrases. Many of these will not be relevant to drones as such, for example the words article or study and common noisy terms such as “and, or, of, for” are commonly excluded as stop words. In other cases references to the word “queens” or its root “queen” along with “Apis mellifera” and “colonies” suggests that we have a lot of data on bees in the data. In our next iteration of the search we would probably want to explicitly exclude these terms from the search. However we can also detect other works that we might want to include in our search such as “UAV” for Unmanned Aerial Vehicle.</p>
+<p>In practice multi word phrases (ngrams) commonly express concepts (ref Mogatov?) and bring us closer to the terms that we will want to use in a search. Table <a href="literature.html#tab:table2">2.2</a> ranks the data based on multi-word phrases.</p>
+<table>
+<caption><span id="tab:table2">Table 2.2: </span>Top Phrases in Web of Science Data on Drones</caption>
+<thead>
+<tr class="header">
+<th align="right">records</th>
+<th align="left">terms</th>
+<th align="right">multi_word</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="right">126</td>
+<td align="left">rights reserved</td>
+<td align="right">1</td>
+</tr>
+<tr class="even">
+<td align="right">86</td>
+<td align="left">Apis mellifera</td>
+<td align="right">1</td>
+</tr>
+<tr class="odd">
+<td align="right">50</td>
+<td align="left">honey bee</td>
+<td align="right">1</td>
+</tr>
+<tr class="even">
+<td align="right">49</td>
+<td align="left">unmanned aerial vehicles</td>
+<td align="right">1</td>
+</tr>
+<tr class="odd">
+<td align="right">44</td>
+<td align="left">honey bees</td>
+<td align="right">1</td>
+</tr>
+<tr class="even">
+<td align="right">42</td>
+<td align="left">Unmanned Aerial Vehicles (UAVs)</td>
+<td align="right">1</td>
+</tr>
+<tr class="odd">
+<td align="right">40</td>
+<td align="left">United States</td>
+<td align="right">1</td>
+</tr>
+<tr class="even">
+<td align="right">32</td>
+<td align="left">remote sensing</td>
+<td align="right">1</td>
+</tr>
+<tr class="odd">
+<td align="right">29</td>
+<td align="left">unmanned aerial vehicle (UAV)</td>
+<td align="right">1</td>
+</tr>
+<tr class="even">
+<td align="right">28</td>
+<td align="left">unmanned aerial vehicle</td>
+<td align="right">1</td>
+</tr>
+<tr class="odd">
+<td align="right">28</td>
+<td align="left">Varroa destructor</td>
+<td align="right">1</td>
+</tr>
+<tr class="even">
+<td align="right">25</td>
+<td align="left">drone strikes</td>
+<td align="right">1</td>
+</tr>
+<tr class="odd">
+<td align="right">24</td>
+<td align="left">recent years</td>
+<td align="right">1</td>
+</tr>
+<tr class="even">
+<td align="right">23</td>
+<td align="left">Elsevier Ltd</td>
+<td align="right">1</td>
+</tr>
+<tr class="odd">
+<td align="right">22</td>
+<td align="left">experimental results</td>
+<td align="right">1</td>
+</tr>
+<tr class="even">
+<td align="right">20</td>
+<td align="left">drone warfare</td>
+<td align="right">1</td>
+</tr>
+<tr class="odd">
+<td align="right">20</td>
+<td align="left">present study</td>
+<td align="right">1</td>
+</tr>
+<tr class="even">
+<td align="right">479</td>
+<td align="left">drones</td>
+<td align="right">0</td>
+</tr>
+<tr class="odd">
+<td align="right">241</td>
+<td align="left">drone</td>
+<td align="right">0</td>
+</tr>
+<tr class="even">
+<td align="right">240</td>
+<td align="left">results</td>
+<td align="right">0</td>
+</tr>
+</tbody>
+</table>
+<p>Table <a href="literature.html#tab:table2">2.2</a> reveals irrelevant phrases such as “honey bee” and its plural “honey bees” along with <em>Varroa destructor</em>, a mite that parasatises bees. We also observe the prevalence of unmanned aerial vehicles and their plurals linked to the term UAV and applications of drone technology such as “drone warfare” and “drone strikes”.</p>
+<p>A review of the terms captured in initial exploratory research can thus go a long way to refining a search strategy to improve and focus recall and precision (refs).</p>
+<p>
+We have focused here on the top terms in the data. However, in other cases it may be appropriate to review the full list to identify low frequency but highly relevant terms. This type of task can be approached computationally for example by creating a matrix of terms linked to a specific term [example Unmanned Aerial Vehicle] to capture closely related terms. As an alternative the use of the Term Frequency Inverse Document Frequency algorithm (TFIDF). This is an extremely popular calculation that weights terms based on how important they are to the set of documents in the corpus. The key idea behind Inverse Document Frequency comes from Karen Spark Jones in 1972 who proposed that: “…terms should be weighted according to collection frequency, so that matches on less frequent, more specific, terms are of greater value than matches on frequent terms.”<span class="citation">(Jones <a href="#ref-SPARCK_JONES_1972">1972</a>, <span class="citation">@Robertson_2004</span>)</span>. In other words using TFIDF high frequency words such as “the” or “and” receive lower weightings than document specific terms such as “unmanned aerial vehicle” that distinguish documents from the wider set.</p>
+<p>The TFIDF algorithm is extremely widely used in information retrieval and is built in to tools such as VantagePoint.</p>
+<!--- insert ILLUSTRATION FROM VANTAGE POINT--->
+<p>In practice, the use of matrices to identify nearby words and phrases or TFIDF may not be necessary and will depend on how specific your topic search may be. Other more recent methods such as Word2Vec will be considered in greater detail in Chapter <a href="textmining.html#textmining">6</a></p>
+</div>
+<div id="using-search-operators" class="section level3">
+<h3><span class="header-section-number">2.2.2</span> Using Search Operators</h3>
+<p>Many databases include options for operator based searching. The common operators are: OR, AND and NOT.</p>
+<p>this OR that
+this AND that
+this NOT that</p>
+<p>The OR operator is an open operator for example we could search for</p>
+<blockquote>
+<p>drone OR drones OR droning</p>
+</blockquote>
+<p>This will locate texts that contain <em>any</em> of these terms. If we wanted to restrict the search to those that contain all of the terms we would use AND.</p>
+<blockquote>
+<p>drone AND drones AND droning</p>
+</blockquote>
+<p>Note that this is a more restrictive form of search because the documents must contain all three words.</p>
+<p>In contrast, if we were interested in drone technology and not in other uses of the word drone such as in musical instruments we would use NOT.</p>
+<blockquote>
+<p>drone OR drones NOT droning</p>
+</blockquote>
+<p>This would only return documents where the search terms drone or droning appeared without the word droning. Another perhaps more precise strategy would be to also exclude music.</p>
+<blockquote>
+<p>drone OR drones NOT (bee OR bees OR “Apis mellifera” OR “honey” OR droning OR music)</p>
+</blockquote>
+<p>The parentheses in the above search query are important because they specify that documents containing either be or bees etc. should be excluded from the results. The use of NOT based searching is a powerful way of excluding irrelevant documents.</p>
+<p>Boolean operators are extremely important when constructing search terms and may be expressed in other ways if using databases programaticaly. For example in R both | and || mean OR and &amp; or &amp;&amp; means AND. In contrast Python uses logical OR, logical AND, logical NOT. A growing number of databases are powered by the Java based Apache Lucene or Solr. In Lucene and Solr in addition to the standard operators there is also “+” which specifies that a document must contain a term and may contain another term.</p>
+<blockquote>
+<p>+drone “unmanned aerial vehicle”</p>
+</blockquote>
+<p>To force both to appear we would use or the regular AND.</p>
+<blockquote>
+<p>+drone +“unmanned aerial vehicle”</p>
+</blockquote>
+<p>Note that the parentheses in the above version are important because it articulates that one or the other term should be excluded from the results.</p>
+</div>
+<div id="proximity-operators" class="section level3">
+<h3><span class="header-section-number">2.2.3</span> Proximity Operators</h3>
+<p>Proximity operators focus on the distance between words in a search term for example the operator NEAR with Web of Science allows the user to specify the distance between words such as <code>(drone OR drone) NEAR/10 droning</code> would find texts containing the word drone or drone within 10 words of the word droning. Another option, again from Web of Science is SAME. This is used in searches of the author affiliation field to treat two words as the same during search such as in the address <code>field AD=(McGill Univ SAME Quebec SAME Canada)</code>. This search will treat the word Quebec and Canada as the same.</p>
+<p>Proximity operators can provide powerful tools for targeting a search of the scientific literature. However, when preparing to develop your search it is important to check the default settings used by the database and whether that meets your needs. In addition, it is important to note the operators that are available and the form that is expected. These will typically vary across the different databases. For example, many databases turn on stemming by default, use AND (rather than OR) as the default Boolean and may use ADJ (adjacent) as the default operator. Checking these settings at the beginning is important for avoiding confusing results when working across multiple data</p>
+</div>
+<div id="regular-expressions" class="section level3">
+<h3><span class="header-section-number">2.2.4</span> Regular Expressions</h3>
+<p>The use of regular expressions will be covered in greater detail in the discussion of text mining. However, it is worth noting that common regular expressions that you may be able to use in a literature databases include</p>
+<p><code>^</code> starts with
+<code>*</code> any character wildcard. For example <code>dron*</code> would capture drone, drones, droned, droning etc. This can be used at the beginning, middle or the end of a term but is commonly used at the end. The wildcard should be used with caution. For example, a search for genomics related literature using the root <code>genom</code> and the wild card <code>genom*</code> will capture a potentially large number of results for the common German word <code>genommen</code> (took).
+<code>$</code> ends with. For example <code>drone$</code> would exclude drones and other close terms, however it would capture terms containing drone such as the italian word androne (meaning entrance or entrance hall). As such, beware of unexpected results.</p>
+<p>Regular expressions can be combined in a whole variety of ways. One of the most useful is exact matching.</p>
+<p><code>^drone$</code> This will exactly match the word drone and no other term.</p>
+<p>Very basic engagement with regular expressions is a powerful tool and it is well worth learning the basics. A good place to start is the long standing <a href="https://www.regular-expressions.info/tutorial.html">Regular Expressions Tutorial</a>. However, be warned that regular expressions can become complex and difficult to understand quite rapidly. A well known quote about regular expressions is attributed to former Netscape Engineer Jamie Zawinski in a Usenet discussion group from 1997.</p>
+<blockquote>
+<p>Some people, when confronted with a problem, think “I know, I’ll use regular expressions.” Now they have two problems.<a href="#fn1" class="footnote-ref" id="fnref1"><sup>1</sup></a></p>
+</blockquote>
+<p>The point that is being made here is that regular expressions should not be the tool of first resort for every problem. Regular expressions can rapidly become very complex and difficult for a reader, including its author, to understand. Having said this a basic understanding of regular expressions is a very important part of the patent analysts toolbox as it allows you to precisely control what you are searching for and to parse the results. Tokenization of texts discussed above is an example of this that is typically based on word boundary matches (such as <code>\\b</code>) while named entity recognition in texts is often based on the identification of capitalized terms such as <code>^[[:upper]]</code> or the equivalent <code>^[A-Z]</code> to identify proper nouns (which are marked by the use of capital letters at the start of the word) such as people, place and other entity names. The precise form of a regular expression often depends on the language being used with Open Refine’s GREL or Google Regular Expression Language providing a nice practical introduction to using regular expressions as discussed in Chapter 8 of the <a href="https://wipo-analytics.github.io/open-refine.html">WIPO Manual on Open Source Patent Analytics</a>. Programming languages such as R include speciality packages such as <code>stringr</code> that make it easier to work with regular expressions and cheatsheets have been developed to assist in remembering regular expressions.<a href="#fn2" class="footnote-ref" id="fnref2"><sup>2</sup></a>. Websites such as the Regular Expressions Tutorial and <a href="https://regex101.com/" class="uri">https://regex101.com/</a> allow you to test out regular expressions in a range of different programmming languages.</p>
+</div>
+</div>
+<div id="precision-vs.recall" class="section level2">
+<h2><span class="header-section-number">2.3</span> Precision vs. Recall</h2>
+<p>At the end of the testing phase with scientific literature a set of new candidate terms and exclusion terms is the desirable outcome. For example, a more refined approach to the development of a search query for drone technology might look something like this.</p>
+<blockquote>
+<p>“drone” OR “drones” OR “UAV” OR “UAVs” OR “Unmanned Aerial Vehicle” OR “Unmanned Aerial Vehicles” OR “Pilotless Aircraft” NOT (“bee” OR “bees” OR “Apis mellifera” OR “honey” OR “droning” OR “music”)</p>
+</blockquote>
+<p>The use of the quotation marks in this case is intended to prevent the database from stemming the individual terms and the effect is to increase the level of precision in the inclusion and exclusion of terms. While it would be possible to modify this in a variety of ways using the wildcard or boundary markers, the importance of this type of approach is that it is simple, transparent, easy to reproduce and easy to modify in a way that can be tested.</p>
+<p>The discussion above is linked to a much larger body of literature on the distinction between Precision and Recall in information theory <em>[refs]</em>. For a literature database an example of this would be entering in a set of terms where the database returns 30 pages on drones that carry pizza boxes of which only 20 are relevant but fails to return the other 40 relevant documents. That is a precision rate of 20/30 = 2/3 as only 2 thirds of the returned documents are on topic. In contrast the recall rate is 20/60 or 1/3 because the database only returnd a third of the actual relevant documents.<a href="#fn3" class="footnote-ref" id="fnref3"><sup>3</sup></a> The first measure is about the accuracy of the results and the second is about the completeness of the results.</p>
+<p>In practice precision vs recall is aboout striking a good balance between accurracy (precision) and recall (completeness). One strategy for dealing with this is to start by favouring completeness by attempting to capture the universe of things relating to a topic and then filtering the data to arrive at more precise results to address the topic in question.</p>
+<p>In the next section we will use examples from the Scientific and Patent Landscape for Marine Genetic Resources that used exactly this strategy. The starting point for the research was to capture all scientific publications that contained an author from one of the ten South East Asian Countries or that contained a reference to the country in the title, abstract or author keywords of a publication. This approach captured the universe of things that needed to be captured. That universe proved to be 391,380 publications after filtering some of the larger country datasets on subject categories to reduce irrelevant subject areas. The aim here was to capture the universe of things that could potentially contain a marine species or genetic resouces. The second stage of this exercise involved text mining the titles, abstracts and author keywords for marine species names. This radically reduced the dataset to 6,659 scientific publications. As this makes clear, the use of this method can be costly in terms of the requirements of initial data retrieval but has the advantage of capturing the universe of relevant documents. On that basis the marine species in the data could be accurately targeted.</p>
+<p>One very significant constraint when working with the scientific literature as opposed to patent data is that it is very rare that the full text of a scientific article is available for search. This has a major but not readily quantifiable impact on recall because the major body of the text is o</p>
+<p>Debates around precision and recall and related concepts such as relevance are important across a wide range of computer and information retrieval fields including, for example, text and image classification in machine learning approaches discussed above. As regular users of search engines, patent analysts like other regular users will encounter the outcomes of decisions about how to handle the balance between precision and recall with varying degress of success in presenting useful results to the searcher. We will return to this topic in the discussion of machine learning.</p>
+</div>
+<div id="processing-scientific-literature" class="section level2">
+<h2><span class="header-section-number">2.4</span> Processing Scientific Literature</h2>
+<p>Databases of the scientific literature commonly return a range of different fields when data is downloaded. These can vary widely but will commonly include most of the following:</p>
+<ul>
+<li>Author Name</li>
+<li>Author affiliation</li>
+<li>Title</li>
+<li>Abstract</li>
+<li>Author Keywords</li>
+<li>Document Identifier (e.g. doi, issn, isbn)</li>
+<li>Funding Acknowledgements (limited coverage)</li>
+<li>Cited references</li>
+<li>Citation counts</li>
+<li>Subject category (derived)</li>
+<li>Researcher identifier (ORCID, Researcher ID, PubMed Id, other ID)</li>
+</ul>
+<p>This data is mainly extracted from the front page of publication or, in the case of references, the end of the document. However the subject category is commonly added by the publication database itself and is commonly based on the classification of the subject area(s) of journals rather than individual articles. At the time of writing Web of Science used 252 Subject Categories and Scopus groups journals into 4 broad subject areas and 334 fields.<a href="#fn4" class="footnote-ref" id="fnref4"><sup>4</sup></a>. A journal may be classified in more than one subject area with some such as Science, Nature and PLOS classified as interdisciplinary. The use of subject categories combined with citation analysis has been central to initiatives in the scientometrics community to develop maps of science <span class="citation">(Leydesdorff and Rafols <a href="#ref-Leydesdorff_2009">2009</a>, <span class="citation">@Klavans_2009</span>, <span class="citation">@Rafols_2010</span> and for an alternative web click based approach see, <span class="citation">@Bollen_2009</span>)</span> including online interactive maps such as the <a href="https://www.scimagojr.com/shapeofscience/" class="uri">https://www.scimagojr.com/shapeofscience/</a> using Scopus data with a gallery of maps on the structure of science from a range of sources made available through the <a href="http://scimaps.org/" class="uri">http://scimaps.org/</a>.</p>
+<p>The processing of scientific literature follows a pattern that is very similar to patent data as discussed in Chapter <a href="patents.html#patents">3</a>. These steps can be described as follows:</p>
+<ol style="list-style-type: decimal">
+<li>Deduplicate the records using document identifiers (such as Web of Science ISI Unique Identifier or equivalent) to ensure that no records is over counted.</li>
+<li>Review the dataset for noise and exclude noise as required.</li>
+<li>Clean author names</li>
+<li>Clean affiliation/organisation names</li>
+<li>Clean funding information to focus on funding organisations</li>
+<li>Visualise the data</li>
+</ol>
+<p>The deduplication of the data is important to avoid overcounting and can readily be achieved using document identifiers. Note that the best source for this is often the internal identifiers used by the databases as they are guaranteed to have 100% coverage unlike the doi field (normally confined to journal articles).</p>
+<p>The exclusion of noise from the dataset will commonly involve reviewing the data by subject category. Table <a href="literature.html#tab:table3">2.3</a> below displays the top subject categories in a sample of 1400 publications for the term drone or drones from Web of Science.</p>
+<table>
+<caption><span id="tab:table3">Table 2.3: </span>Top Web of Science Subject Categories for Drones Sample Data</caption>
+<thead>
+<tr class="header">
+<th align="right">Records</th>
+<th align="left">Subject Category</th>
+<th align="right">keep</th>
+<th align="right">review</th>
+<th align="right">exclude</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="right">150</td>
+<td align="left">Entomology</td>
+<td align="right">0</td>
+<td align="right">0</td>
+<td align="right">1</td>
+</tr>
+<tr class="even">
+<td align="right">136</td>
+<td align="left">Multidisciplinary Sciences</td>
+<td align="right">0</td>
+<td align="right">1</td>
+<td align="right">0</td>
+</tr>
+<tr class="odd">
+<td align="right">112</td>
+<td align="left">International Relations</td>
+<td align="right">1</td>
+<td align="right">0</td>
+<td align="right">0</td>
+</tr>
+<tr class="even">
+<td align="right">100</td>
+<td align="left">Engineering, Electrical &amp; Electronic</td>
+<td align="right">1</td>
+<td align="right">0</td>
+<td align="right">0</td>
+</tr>
+<tr class="odd">
+<td align="right">82</td>
+<td align="left">Political Science</td>
+<td align="right">1</td>
+<td align="right">0</td>
+<td align="right">0</td>
+</tr>
+<tr class="even">
+<td align="right">70</td>
+<td align="left">Law</td>
+<td align="right">1</td>
+<td align="right">0</td>
+<td align="right">0</td>
+</tr>
+<tr class="odd">
+<td align="right">64</td>
+<td align="left">Telecommunications</td>
+<td align="right">1</td>
+<td align="right">0</td>
+<td align="right">0</td>
+</tr>
+<tr class="even">
+<td align="right">58</td>
+<td align="left">Ecology</td>
+<td align="right">0</td>
+<td align="right">1</td>
+<td align="right">0</td>
+</tr>
+<tr class="odd">
+<td align="right">52</td>
+<td align="left">Environmental Sciences</td>
+<td align="right">0</td>
+<td align="right">1</td>
+<td align="right">0</td>
+</tr>
+<tr class="even">
+<td align="right">46</td>
+<td align="left">Zoology</td>
+<td align="right">0</td>
+<td align="right">0</td>
+<td align="right">1</td>
+</tr>
+<tr class="odd">
+<td align="right">43</td>
+<td align="left">Remote Sensing</td>
+<td align="right">1</td>
+<td align="right">0</td>
+<td align="right">0</td>
+</tr>
+<tr class="even">
+<td align="right">40</td>
+<td align="left">Engineering, Aerospace</td>
+<td align="right">1</td>
+<td align="right">0</td>
+<td align="right">0</td>
+</tr>
+<tr class="odd">
+<td align="right">38</td>
+<td align="left">Robotics</td>
+<td align="right">1</td>
+<td align="right">0</td>
+<td align="right">0</td>
+</tr>
+<tr class="even">
+<td align="right">37</td>
+<td align="left">Biology</td>
+<td align="right">0</td>
+<td align="right">1</td>
+<td align="right">0</td>
+</tr>
+<tr class="odd">
+<td align="right">36</td>
+<td align="left">Computer Science, Information Systems</td>
+<td align="right">1</td>
+<td align="right">0</td>
+<td align="right">0</td>
+</tr>
+</tbody>
+</table>
+<p>Here we can see that we have a significant number of publcations in Entomology, and Zoology that are highly likely to be about bees rather than drone technology. When using VantagePoint  it is easy to create groups such as keep, review and exclude that record decisions on data to include or exclude as a basis for refining a dataset. The review category is important because journal subject categories are somewhat crude. For example, Multidisciplinary sciences will include publications on drone technology and on bees. Agriculture related subjects are also a likely review category because bees and drone technology may appear in this category, for example for monitoring fields. The purpose of the review group is to allow time to view the records in particular categories with the aim of allocating all records to either keep or exclude at the end of this process.</p>
+<p>The use of subject categories is often a first place to look with either very high frequency or low frequency subject categories as good candidates for noise. However, a complementary second step is to look at the sources of the publications. A sample of this data for drone technology from Web of Science is presented in Table <a href="literature.html#tab:table4">2.4</a>.</p>
+<table>
+<caption><span id="tab:table4">Table 2.4: </span>Top Web of Science Sources for Drones Sample Data</caption>
+<thead>
+<tr class="header">
+<th align="right">Records</th>
+<th align="left">Source Title</th>
+<th align="right">keep</th>
+<th align="right">review</th>
+<th align="right">exclude</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="right">49</td>
+<td align="left">NEW SCIENTIST</td>
+<td align="right">0</td>
+<td align="right">1</td>
+<td align="right">0</td>
+</tr>
+<tr class="even">
+<td align="right">40</td>
+<td align="left">APIDOLOGIE</td>
+<td align="right">0</td>
+<td align="right">0</td>
+<td align="right">1</td>
+</tr>
+<tr class="odd">
+<td align="right">26</td>
+<td align="left">PLOS ONE</td>
+<td align="right">0</td>
+<td align="right">1</td>
+<td align="right">0</td>
+</tr>
+<tr class="even">
+<td align="right">23</td>
+<td align="left">JOURNAL OF APICULTURAL RESEARCH</td>
+<td align="right">0</td>
+<td align="right">0</td>
+<td align="right">1</td>
+</tr>
+<tr class="odd">
+<td align="right">20</td>
+<td align="left">SENSORS</td>
+<td align="right">1</td>
+<td align="right">0</td>
+<td align="right">0</td>
+</tr>
+<tr class="even">
+<td align="right">18</td>
+<td align="left">AEROSPACE AMERICA</td>
+<td align="right">1</td>
+<td align="right">0</td>
+<td align="right">0</td>
+</tr>
+<tr class="odd">
+<td align="right">17</td>
+<td align="left">FOREIGN AFFAIRS</td>
+<td align="right">1</td>
+<td align="right">0</td>
+<td align="right">0</td>
+</tr>
+<tr class="even">
+<td align="right">17</td>
+<td align="left">REMOTE SENSING</td>
+<td align="right">1</td>
+<td align="right">0</td>
+<td align="right">0</td>
+</tr>
+<tr class="odd">
+<td align="right">15</td>
+<td align="left">INTERNATIONAL AFFAIRS</td>
+<td align="right">1</td>
+<td align="right">0</td>
+<td align="right">0</td>
+</tr>
+<tr class="even">
+<td align="right">14</td>
+<td align="left">IEEE SPECTRUM</td>
+<td align="right">1</td>
+<td align="right">0</td>
+<td align="right">0</td>
+</tr>
+<tr class="odd">
+<td align="right">13</td>
+<td align="left">JOURNAL OF APICULTURAL SCIENCE</td>
+<td align="right">0</td>
+<td align="right">0</td>
+<td align="right">1</td>
+</tr>
+<tr class="even">
+<td align="right">12</td>
+<td align="left">ETHICS &amp; INTERNATIONAL AFFAIRS</td>
+<td align="right">1</td>
+<td align="right">0</td>
+<td align="right">0</td>
+</tr>
+<tr class="odd">
+<td align="right">12</td>
+<td align="left">JOURNAL OF INTELLIGENT &amp; ROBOTIC SYSTEMS</td>
+<td align="right">1</td>
+<td align="right">0</td>
+<td align="right">0</td>
+</tr>
+<tr class="even">
+<td align="right">12</td>
+<td align="left">NEW YORK REVIEW OF BOOKS</td>
+<td align="right">1</td>
+<td align="right">0</td>
+<td align="right">0</td>
+</tr>
+<tr class="odd">
+<td align="right">11</td>
+<td align="left">INSECTES SOCIAUX</td>
+<td align="right">0</td>
+<td align="right">0</td>
+<td align="right">1</td>
+</tr>
+<tr class="even">
+<td align="right">11</td>
+<td align="left">NATION</td>
+<td align="right">1</td>
+<td align="right">0</td>
+<td align="right">0</td>
+</tr>
+<tr class="odd">
+<td align="right">11</td>
+<td align="left">SCIENTIFIC REPORTS</td>
+<td align="right">0</td>
+<td align="right">1</td>
+<td align="right">0</td>
+</tr>
+<tr class="even">
+<td align="right">10</td>
+<td align="left">CHEMICAL &amp; ENGINEERING NEWS</td>
+<td align="right">1</td>
+<td align="right">0</td>
+<td align="right">0</td>
+</tr>
+<tr class="odd">
+<td align="right">10</td>
+<td align="left">COMPUTER LAW &amp; SECURITY REVIEW</td>
+<td align="right">1</td>
+<td align="right">0</td>
+<td align="right">0</td>
+</tr>
+<tr class="even">
+<td align="right">10</td>
+<td align="left">JOURNAL OF ECONOMIC ENTOMOLOGY</td>
+<td align="right">0</td>
+<td align="right">0</td>
+<td align="right">1</td>
+</tr>
+<tr class="odd">
+<td align="right">10</td>
+<td align="left">JOURNAL OF EXPERIMENTAL BIOLOGY</td>
+<td align="right">0</td>
+<td align="right">0</td>
+<td align="right">1</td>
+</tr>
+<tr class="even">
+<td align="right">9</td>
+<td align="left">SCIENCE</td>
+<td align="right">0</td>
+<td align="right">1</td>
+<td align="right">0</td>
+</tr>
+<tr class="odd">
+<td align="right">9</td>
+<td align="left">SECURITY DIALOGUE</td>
+<td align="right">1</td>
+<td align="right">0</td>
+<td align="right">0</td>
+</tr>
+<tr class="even">
+<td align="right">8</td>
+<td align="left">BULLETIN OF THE ATOMIC SCIENTISTS</td>
+<td align="right">1</td>
+<td align="right">0</td>
+<td align="right">0</td>
+</tr>
+<tr class="odd">
+<td align="right">8</td>
+<td align="left">INTERNATIONAL JOURNAL OF REMOTE SENSING</td>
+<td align="right">1</td>
+<td align="right">0</td>
+<td align="right">0</td>
+</tr>
+</tbody>
+</table>
+<p>In this case we can see that publications such as Apidologie can readily be excluded where as journals such as PLOS ONE that publish across a range of fields would require review. We can also see that a number of social science and humanities subjects are entering into the picture and depending on our purpose we might want to focus publications down to those relating to remote sensing, engineering and related subjects.</p>
+<p>As part of this review process it is important not to second guess the technology area. For example, we should not assume that everything associated with biology should be excluded. Biomimicry is for example an important area of inspiration in some areas of drone technology (such as swarming behaviour) while some publications that refer to drones and biology refer to the use of drone technology in anti-poaching and conservation biology. It is precisely because of the <em>lack of predictability</em> of new and emerging areas of technology that an approach concentrating initially on recall and then on precision is often the most succesful route to accurate analytics. The alternative is for analyts to impose a definition of a new technology area on the field of research and thus potentially exclude important features of the technology field and debates around those fields (such as military drone strikes).</p>
+<p>The outcome of this review process is that each record falls into a keep or exclude category and a smaller dataset is generated containing the data the analyst wishes to keep. At this stage the main body of data cleaning focusing on author organisations (in the author affiliation) and author names along with the text in funding acknowledgements can begin.</p>
+<p>The basic procedure for name cleaning has been described in Chapter 8 of the <a href="https://wipo-analytics.github.io/open-refine.html">WIPO Manual on Open Source Patent Analytics</a> using the free Open Refine software tool. However, accuracy in name cleaning is best achieved using multiple match criteria to address cases where an author shares a name with another author but is a distinct person. VantagePoint provides a means to achieve this by linking a fuzzy logic name cleaning algorithm that clusters names based on similarity scores with a setting that allows another field to be used to match the data. That is a search for John Smith that is run without match criteria will group different John Smiths together. A clean up that is run by grouping John Smiths using the author affiliation will distinguish between John Smiths working at say the University of California or John Smiths working at London University. As this example also suggests name cleaning is often a multi-step process because in reality multiple John Smiths may work at the University of California. In that case a second step might be to use shared coauthors or subject categories as a basis for decision making using the <code>keep, review, exclude</code> method described above. The same approach is then applied to the applicant organisation where particular attention is required to organisations that share similar names but are distinct entities. Thus Washington University and the University of Washington are distinct entities. When cleaning organisation names note that decisions need to be made on how to address regional and international organisations and to provide notes in the resulting report or publication on decision-making to inform the reader.</p>
+<p>In considering the clean up process for author names described above not that it is often easier to begin by cleaning up the author affiliation names and then to clean author names using the cleaned organisation names as the match criteria.</p>
+<p>An important development in recent years has been the increasing use of author identifiers in publication records. A number of author identifier systems exist such as Researcher ID from Web of Science or Scopus ID and PubMed ID but the most important of these is ORCID which is a non-profit open access researcher identifier system. Where a researcher identifier is available these identifiers can be used to cluster variations of names with a degree of certainty that they are the same person or that persons with the same name with distinct ORCID IDs will in fact be distinct persons. At a higher level of detail ORCID ID public profiles can be looked up online to assist with assessing whether a researcher listed as belonging to one institution has moved to another. Cases of author movement will frequently involve a research working in the same area of research but listing more than one affiliation. ORCID identifiers help to resolve these cases.</p>
+<p>Funding data is a relatively new feature in publication databases and the presence of this data, which commonly appears in the Acknowledgements field can be spectacularly messy. For example:</p>
+<blockquote>
+<p>The COLOSS (Prevention of honey bee COlony LOSSes) network aims to explain and prevent massive honey bee colony losses. It was funded through the COST Action FA0803. COST (European Cooperation in Science and Technology) is a unique means for European researchers to jointly develop their own ideas and new initiatives across all scientific disciplines through trans-European networking of nationally funded research activities. Based on a pan-European intergovernmental framework for cooperation in science and technology, COST has contributed since its creation more than 40 years ago to closing the gap between science, policy makers and society throughout Europe and beyond. COST is supported by the EU Seventh Framework Programme for research, technological development and demonstration activities (Official Journal L 412, 30 December 2006). The European Science Foundation as implementing agent of COST provides the COST Office through an EC Grant Agreement. The Council of the European Union provides the COST Secretariat. The COLOSS network is now supported by the Ricola Foundation - Nature &amp; Culture.</p>
+</blockquote>
+<p>Literature databases are attempting to parse relevant information from this data such as the name of the funder and the contract or award number with varying degrees of success as follows:</p>
+<blockquote>
+<p>COST Action, FA0803 | EU Seventh Framework Programme, - | Ricola Foundation - Nature Culture, -</p>
+</blockquote>
+<p>In considering the discussion of regular expressions above note the focus in the parsing of this data on Nouns and Proper Nouns and numeric entries although it is likely that dictionary based approaches and machine learning based funding entity recognition are under development.</p>
+<p>An important challenge when dealing with funding information is determining whether data should be grouped or not. For example should funding from the European Commission under the Framework programmes and those under European regional or sectoral funds be grouped together. The answer to this question will depend in part on the level of detail required by the research. In general the approach taken, such as grouping all EU level funding together, should be made clear in an explanatory note to the reader when presenting the results of the data.</p>
+<p>One important observation on cleaning data is to consider how detailed the cleaning operation needs to be. For example, if only the top ten or top 20 results will be shown to the reader it is important to ensure that person, organisation or funding organisation have been cleaned to capture all relevant name variants to ensure the accuracy of counts.</p>
+</div>
+<div id="visualizing-the-scientific-literature" class="section level2">
+<h2><span class="header-section-number">2.5</span> Visualizing the Scientific Literature</h2>
+<p>A wide range of options are available for visualising data from the scientific literature. Typically this will include basic data on trends, geographic distribution of records, subject areas, top ranking organisations and researchers. When working to visualize data it is a very good idea to become familiar with some of the excellent literature on this topic notably the classic book <em>The Visual Display of Quantitative Information</em> by Edward Tufte and Stephen Few (2012) <em>Show Me the Numbers: Designing Tables and Graphs to Englighten</em>.</p>
+<p>To illustrate some approaches to visualising data from the scientific literature we will use data from the WIPO report on marine genetic resources in South East Asian countries.</p>
+<div id="dashboards" class="section level3">
+<h3><span class="header-section-number">2.5.1</span> Dashboards</h3>
+<p>
+Dashboards are a powerful and popular way of summarising data. Figure <a href="literature.html#fig:foo">2.1</a> shows a summary of the overall data on scientific research on marine genetic resources in South East Asia.</p>
+<div class="figure" style="text-align: center"><span id="fig:foo"></span>
+<img src="images/aseanmarinlit_overview.png" alt="Overview of Research on Marine Genetic Resources in ASEAN Countries" width="100%" />
+<p class="caption">
+Figure 2.1: Overview of Research on Marine Genetic Resources in ASEAN Countries
+</p>
+</div>
+<p>Figure <a href="literature.html#fig:fig2">2.2</a> displays details of the species, subject areas, organisations and authors.</p>
+<div class="figure" style="text-align: center"><span id="fig:fig2"></span>
+<img src="images/aseanmarinlit_species_overview.png" alt="Overview of Marine Species, Organisations and Authors" width="100%" />
+<p class="caption">
+Figure 2.2: Overview of Marine Species, Organisations and Authors
+</p>
+</div>
+<p>The effect of the use of dashboards is to convey the principle factual information in an easily digestible form. As readers will commonly scan from left to right, the first panel should contain the key information that you wish to convey. In the first case above the aim of the first panel is to draw attention to the fact that the data is from South East Asia. In the second panel the aim is to draw attention to the marine species as the key to interpreting what the data is about. Note that attention may be required to issues such as the size of fonts and the number of panels in communicating results to the reader.</p>
+<p>The visualisations above were created using Tableau and a practical guide to creating dashboards is provided in Chapter 9 of the WIPO Manual on Open Source Patent Analytics using the free Tableau Public software.</p>
+<p>One issue with visualisations of data in this way is that they are vertical. We do not see the relationships between entities in the data when in practice scientific research is commonly conducted as part of networks of collaboration on different levels. Network visualisations address this problem</p>
+</div>
+<div id="network-visualisation" class="section level3">
+<h3><span class="header-section-number">2.5.2</span> Network Visualisation</h3>
+<p></p>
+<p>Figure <a href="literature.html#fig:fig3">2.3</a> displays a network view of the relationships between authors involved in scientific research on marine genetic resources in South East Asia. The dots are sized based on the number of publications associated with an author. The lines or edges represent co-authored publications. The network has been limited to display authors with 20 or more publications.</p>
+<div class="figure" style="text-align: center"><span id="fig:fig3"></span>
+<img src="images/aseanmarinlit_author20plus.png" alt="Research Networks for researchers with 20 or more publications on marine genetic resources" width="100%" />
+<p class="caption">
+Figure 2.3: Research Networks for researchers with 20 or more publications on marine genetic resources
+</p>
+</div>
+<p>These network images arfe important because they display relationships that are difficult to see in any other way. A particularly good example of this is networks of funding organisations as set out in Figure <a href="literature.html#fig:fig4">2.4</a>. Note that in Figure <a href="literature.html#fig:fig4">2.4</a> the size of the dots represents the number of publications where the funding agency appears in the acknowledgements ad does not reflect the size of financial investments. The lines represent publications where different funding agencies appear in the acknowledgements.</p>
+<div class="figure" style="text-align: center"><span id="fig:fig4"></span>
+<img src="images/aseanmarinlit_fundingnetwork.png" alt="Network of Funding Organisations Supporting Research on Marine Genetic Resources" width="100%" />
+<p class="caption">
+Figure 2.4: Network of Funding Organisations Supporting Research on Marine Genetic Resources
+</p>
+</div>
+<p>The full extent of network relationships is typically invisible to network participants. This is particularly true for networks of funding organisations. However, network visualisation is a powerful tool for engagement with researchers and audiences interested in a particular subject. The network visualisations presented above were created using the free Gephi software and a practical guide to creating these networks is provided in Chapter 10 of the <a href="https://wipo-analytics.github.io/gephi-1.html">WIPO Manual on Open Source Patent Analytics</a>.</p>
+</div>
+<div id="other-forms-of-visualisation" class="section level3">
+<h3><span class="header-section-number">2.5.3</span> Other forms of visualisation</h3>
+<p>
+Data visualisation has advanced rapidly in recent years and the D3 Javascript library has been responsible for a virtual explosion in creativity with interactive graphics. Examples of visualisation possibilites can be viewed in the D3 gallery on Github <a href="https://github.com/d3/d3/wiki/Gallery" class="uri">https://github.com/d3/d3/wiki/Gallery</a>. One among other possibly fruitful options for data visualization is the Sankey diagram a form of dendogram that aims to display the flow of energy between entities. Figure <a href="literature.html#fig:sankey">2.5</a> displays the flow of research publications on a marine species in South East Asia into journals by subject area.</p>
+<div class="figure" style="text-align: center"><span id="fig:sankey"></span>
+<div id="htmlwidget-974f2578ffba97c27b00" style="width:120%;height:480px;" class="sankeyNetwork html-widget"></div>
+<script type="application/json" data-for="htmlwidget-974f2578ffba97c27b00">{"x":{"links":{"source":[0,1,0,2,0,2,3,4,5,3,6,7,8,9,10,11,1,12,0,13,2,2,0,2,2,14,7,8,9,10,11,1,12,0,15,3,13,16,2,2,17,18,19,20,21,3,17,17,8,11,1,0,2,0,1,2],"target":[22,23,23,23,24,24,25,26,26,26,27,27,27,27,27,27,27,27,27,27,27,28,29,29,30,31,31,31,31,31,31,31,31,31,31,31,31,31,31,32,33,33,34,34,34,34,35,36,37,37,37,37,37,38,39,39],"value":[34,25,65,26,57,72,31,27,28,31,23,24,86,59,54,55,79,91,359,51,138,39,86,60,25,35,20,75,55,46,33,51,76,223,35,30,29,27,90,110,39,30,25,22,33,28,29,38,48,26,22,161,85,47,23,22]},"nodes":{"name":["penaeus","macrobrachium","vibrio","rhizophora","avicennia","perna","babylonia","cyprinus","epinephelus","haliotis","lates","litopenaeus","oreochromis","scylla","anguilla","porites","tridacna","ascaris","fasciola","bruguiera","fusarium","magnaporthe","Biochemical Research Methods","Biochemistry & Molecular Biology","Biotechnology & Applied Microbiology","Ecology","Environmental Sciences","Fisheries","Food Science & Technology","Immunology","Infectious Diseases","Marine & Freshwater Biology","Microbiology","Parasitology","Plant Sciences","Public, Environmental & Occupational Health","Tropical Medicine","Veterinary Sciences","Virology","Zoology"],"group":["penaeus","macrobrachium","vibrio","rhizophora","avicennia","perna","babylonia","cyprinus","epinephelus","haliotis","lates","litopenaeus","oreochromis","scylla","anguilla","porites","tridacna","ascaris","fasciola","bruguiera","fusarium","magnaporthe","Biochemical Research Methods","Biochemistry & Molecular Biology","Biotechnology & Applied Microbiology","Ecology","Environmental Sciences","Fisheries","Food Science & Technology","Immunology","Infectious Diseases","Marine & Freshwater Biology","Microbiology","Parasitology","Plant Sciences","Public, Environmental & Occupational Health","Tropical Medicine","Veterinary Sciences","Virology","Zoology"]},"options":{"NodeID":"name","NodeGroup":"name","LinkGroup":null,"colourScale":"d3.scaleOrdinal(d3.schemeCategory20);","fontSize":12,"fontFamily":"Arial","nodeWidth":15,"nodePadding":10,"units":"","margin":{"top":null,"right":null,"bottom":null,"left":null},"iterations":32,"sinksRight":false}},"evals":[],"jsHooks":[]}</script>
+<p class="caption">
+Figure 2.5: A Sankey Diagram showing flows of research on marine genera into journals by subject areas
+</p>
+</div>
+<p>This type of visualisation serves the useful purpose of showing the flow of research effort represented by publications as outputs into different subject areas. A particular strength of this visualisation is that we can see the proportion of research on a particular genus of marine organisms such as prawns in the genus Penaeus such as the Giant Tiger Prawn into journals on particular subjects. For Penaeus, a major focus of aquaculture in South East Asia, we can see that the flow of research energy is channeled towards fisheries, marine and freshwater biology and Veterinary Sciences (to address diseases with an effect on this commercially important genus such as viruses in the genus Vibrio). When viewed online this diagram is interactive and will highlight flows from a particular genus to a subject area.</p>
+<p>The ability to create Sankey diagrams depends in a large measure on a willingness to engage with a programming language such as Javascript, R or Python that provide libraries to make the calculations and generate the Javascript digrams. Thus the diagram above was generated with the D3network package in R. However, a number of online services offer the ability to create Sankey diagrams and these may meet your needs.</p>
+</div>
+</div>
+<div id="linking-the-scientific-literature-with-patent-analysis" class="section level2">
+<h2><span class="header-section-number">2.6</span> Linking the Scientific Literature with Patent Analysis</h2>
+<p>Analysis of the scientific literature is important because it allows us to understand the landscape of research for a particular topic. In the case of drone technology we saw that exploratory searches could assist in identifying key words for the construction of more refined search strategies and to progressively exclude noise from the results. In the data we have presented above on research on marine genetic resources in South East Asia we processed the data to answer the following fundamental questions:</p>
+<ol style="list-style-type: decimal">
+<li>Who (and with whom?)</li>
+<li>What</li>
+<li>Where</li>
+<li>When</li>
+<li>How</li>
+</ol>
+<p>These are standard questions in empirical research. The final question requires detailed attention to the literature itself in terms of understanding the precise subject matter of research by a particular individual or a research team. However, this type of landscape analysis allows us to investigate whether research has the potential to be transformed into a commercial product, method or process and therefore brings us to the patent and wider intellectual property system.</p>
+<p>This type of research can be useful on a range of different levels:</p>
+<ol style="list-style-type: lower-alpha">
+<li>universities may be interested in identifying research outputs that may have potential to turn into useful products, methods or processes</li>
+<li>companies active in particular sectors may be seeking to develop new products and are seeking to identify relevant existing research</li>
+<li>Funding agencies may be seeking to understand the existing outcomes of research investments and to identify relevant areas of priority research that promise to result in new and useful products.</li>
+</ol>
+<p>In many cases analysis of the scientific landscape will take place at a lower level than the ten countries covered by the research on South East Asian countries covered above. However, this example illustrates the possibility of using these methods and approaches to answer empirical questions at scale and then to drill down into the fine grained detail of research.</p>
+<p>One major question that arises here is how to link together research on the scientific literature with research in the patent system. There are two main answers to this.</p>
+<ol style="list-style-type: lower-alpha">
+<li>To use keywords and phrases identified in research from the scientific literature as the basis for searches of the patent literature.</li>
+</ol>
+<p>This is likely to be the most common approach. As discussed above access to sections of the literature such as titles, abstracts and author keywords allows for the application of basic text mining approaches to breaking texts into words and phrases. This in turn allows for the literature to be classified and refined to identify targets of interest. In software such as VantagePoint this is commonly done by sorting the data into groups. For example, in the case of drone technology one important area of research focuses on sensors while another separate area of research focuses on wireless devices to supply power to a drone while a third focuses on devices such as headsets and other devices for controlling a drone in flight.</p>
+<ol start="2" style="list-style-type: lower-alpha">
+<li>To focus on identifying individual researchers who are active in a research field who are also active in the patent system</li>
+</ol>
+<p>This approach to linking scientific research with patent data is rarer for the straightforward reason that it is much harder to do at scale than an approach using keywords. However, it has the advantage of providing a clearer view of researchers who are already active in commercial research and development with a high degree of precision.</p>
+<div id="mapping-authors-to-inventors" class="section level3">
+<h3><span class="header-section-number">2.6.1</span> Mapping Authors to Inventors</h3>
+<p>The identifying researchers who are active in the patent system involves a three step process</p>
+<ol style="list-style-type: decimal">
+<li>Joining a dataset with the scientific literature to a patent dataset and combining the inventor and author name fields.</li>
+<li>Identifying match criteria to establish whether an author and inventor are the same person</li>
+<li>Applying the match criteria to arrive at a dataset that includes authors who are also inventors</li>
+<li>Reviewing and summarising the data.</li>
+</ol>
+<p>The first step in the process involves identifying the appropriate approach to creating a patent dataset. This could involve the use of a broad set of terms to capture the likely universe of patent activity using the scientific literature as a guide to term selection. For example, in the case of drone technology it would be logical to create a working dataset using terms discussed above such as drone and unmanned aerial vehicle. The primary issue here is spreading the net wide enough to capture the universe of activity while narrowing the data sufficiently to avoid using a vast dataset.</p>
+<p>For research on national level activity, such as in the case of the landscape for research on marine genetic resources in South East Asia the approach taken was to identify patent activity from the national collections and patent activity worldwide linked to a South East Asian inventor or applicant followed by text mining the data for marine species and treating that data as the working dataset. This approach required access to patent data at scale and the ability to process that data (performed in VantagePoint and R).</p>
+<p>VantagePoint is an important tool for joining datasets of different types and creating a common field. Thus, in the research on South East Asia the scientific data and patent data were combined into one dataset . In the next step the authors full name field and the inventor name field were combined together. In both cases the names had previously been cleaned. In the case of the scientific literature there were a total of 17,625 names and in the case of the patent data there were 9,832 names.</p>
+<p>The next step in the approach is the use of match criteria. In this case the following criteria were used.</p>
+<ol style="list-style-type: decimal">
+<li>An author and a co-author appeared as inventors in the same patent document</li>
+<li>The name of an author and the organisation listed as the applicant matched with the author affiliation.</li>
+<li>An author name matched with an inventor name and the marine species name appeared in both the scientific publication and a patent document</li>
+</ol>
+<p>The purpose of these criteria is to identify author-inventors and it is important to note that the third match criteria can vary from dataset to dataset. The important point is to identify and use match criteria. In order to qualify as an author inventor the record was required to meet at least one and preferably two of the criteria above. Experience has revealed that the names of co-authors who appear as inventors is the most accurate match criteria. One exception to this is East Asian names where, in accordance with traditional naming practices, the names of co-authors and inventors may be very common. This can result in false positive matches and it is therefore important to isolate such cases to test against the other match criteria.</p>
+<p>As discussed above, one useful method for working with large amounts of data is to allocate records to keep, review and exclude groups and adopt a method of multiple passes. At the end of the first pass the review group will typically be large because it marks up those cases where there was an element of uncertainty on the match criteria. For example, where the author and co author names appear to match with inventors but are very common names. Alternatively, the first criteria might have been met but the affiliation and organisation records did not match. Finally, for review include instances where there is an author to inventor match but only the species names are shared. During the second and potentially multiple other passes, the review group is progressively allocated to either keep or exclude. While the same method can be used with programming languages VantagePoint is designed to facilitate this type of close work and has the advantage that other data fields can be reviewed for matching as the cleaning process proceeds.</p>
+<!---Insert vantage point screen shot to illustrate--->
+<p>At the end of the process a total of 290 authors of research on marine genetic resources in South East Asia who are also inventors were identified. As this suggests, developing this type of analysis involves reviewing a large number of records with the expectation of a low number of results. A particular advantage of the use of match criteria is that it limits the high probility of false positive matches if match criteria are not used.</p>
+<p>As this also suggests mapping researchers from the scientific literature into the patent literature can be very time consuming. This is a particular problem when research is on a large scale such as the level of millions of records. The problem of name disambiguation and corresponding challenges with name cleaning have proved to be a persistent challenge in both the scientific literature and in the patent literature. However, there are signs that the situation may be at least improving even if it is not solved.</p>
+<p>In the case of the scientific literature the growing us of free ORCID identifiers promises to help improve but not solve the challenge of name disambiguation. At the time of writing over 5 million ORCID identifiers have been issued and an increasing number of funding organisations and publishers are either requiring or requesting an ORCID identifier. Clarivate Analytics has also made the relationship between its longstanding Researcher ID system and ORCID seamless. In an innovative move the Lens Patent Database now encourages researcher-inventors to associate their ORCID. In addition, the Lens has linked over 10 million non-patent literature citations to ORCID records so that researchers can see patent literature that cites their research. This suggests that ORCID identifiers may potentially have an important role to play in name disambiguation across the scientific and patent literature if uptake by researchers continues to increase rapidly.</p>
+<p>In a separate development in 2015 the USPTO hosted an Inventor Disambiguation Workshop to discuss the problem of inventor name disambiguation.<a href="#fn5" class="footnote-ref" id="fnref5"><sup>5</sup></a> As a result of a competition held by the USPTO a team from the University of Massachusetts Amherst led by Andrew McCallum and Nicholas Monath developed an algorithm using discriminative hierarchical coreference or in essence a decision tree model for clustering inventor names based on coreferences to other data fields in the record <span class="citation">(for a detailed description of the approach see Wick, Singh, and McCallum <a href="#ref-Wick_2012">2012</a>)</span>. The outcome of this research was applied both the the USPTO inventor and assignee field and the creation of new tables with links to the original raw tables. While it is not expected to be error free the PatentsView data tables may offer opportunities to more easily establish linkages between data from the scientific literature and patent data, at least for USPTO data because it is freely available and has been pre-processed.</p>
+<p>The ability to match names between the scientific literature and patent literature at scale remains as a significant and time consuming challenge. However, in the case of ASEAN countries it revealed author-inventors such as Baldomera Olivera from the Philippines who pioneered research on cone snail toxins that would feature on the front page of Science magazine and lead to an approved pharmaceutical. Other researchers identified through this approach included husband and wife team Hu Bow and Ding Jeak Ling from the National University of Singapore who identified a recombinant cDNA factor from the Horseshoe Crab that is now used in endotoxin assays and biosensors. In short, the approach yields detailed evidence of researchers who have succesfully licensed inventions that have become products on the market.</p>
+<p>In practice, the majority of research activity does not result in patent activity. However, combining analysis of the scientific literature with the patent literature can lead to the identification of potential candidates to be taken forward for development and examples of successful licensing of research and inventions that can serve as positive examples for researchers and policy makers elsewhere.</p>
+<p>We will close this discussion of methods and approaches for linking analysis of scientific and patent literature with a recent development to link literature citations and patent data.</p>
+</div>
+</div>
+<div id="linking-citations-with-patent-literature" class="section level2">
+<h2><span class="header-section-number">2.7</span> Linking Citations with Patent Literature</h2>
+<p></p>
+<p>An alternative way to think about the relationship between the scientific literature and patent activity is to focus on non-patent literature citations <span class="citation">(Callaert et al. <a href="#ref-Callaert2006">2006</a>)</span>. In a recent development the open access Lens patent database has done extensive work to link document identifiers in the non-patent literature to the Crossref database of metadata on over 96 million publications and to link records with PubMed and Microsoft Academic. The effect is to create a bridge based on identifiers between the scientific and the patent literature. Figure <a href="literature.html#fig:lensbib">2.6</a></p>
+<div class="figure" style="text-align: center"><span id="fig:lensbib"></span>
+<img src="images/lens_scholar.png" alt="Literature Citations Linking to Patent Citations and to external data sources in the Lens" width="100%" />
+<p class="caption">
+Figure 2.6: Literature Citations Linking to Patent Citations and to external data sources in the Lens
+</p>
+</div>
+<p>This figure shows the top ranking literature citation across the data for the well known Basic Local Alignment Search Tool or BLAST that is widely used in fields such as genomics. Each entry links to a summary table include Medical Subject Headings (MeSH) terms where appropriate and a Citations page that will reveal Patent citations and Literature citations. Registered users, registration is free, can store and then export the results. Table <a href="literature.html#tab:synbio">2.5</a> presents a sample of fields from the top 5 of the 9000 exported results from a search of Lens Scholar for “synthetic biology”.</p>
+<table>
+<caption><span id="tab:synbio">Table 2.5: </span>Lens Scholar Exported Results for Synthetic Biology</caption>
+<thead>
+<tr class="header">
+<th align="left">Title</th>
+<th align="right">Referenced by Patent Count</th>
+<th align="right">Publication Year</th>
+<th align="left">Citation IDs</th>
+<th align="left">Author/s</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left">Accurate multiplex gene synthesis from programmable DNA microchips.</td>
+<td align="right">188</td>
+<td align="right">2004</td>
+<td align="left">(magid) mag2027912527; (doi) 10.1038/nature03151; (pmid) 15616567</td>
+<td align="left">Jingdong Tian; Hui Gong; Nijing Sheng; Xiaochuan Zhou; Erdogan Gulari; Xiaolian Gao; George M. Church</td>
+</tr>
+<tr class="even">
+<td align="left">De novo biosynthetic pathways: rational design of microbial chemical factories.</td>
+<td align="right">91</td>
+<td align="right">2008</td>
+<td align="left">(pmid) 18725289; (magid) mag2092471565; (doi) 10.1016/j.copbio.2008.07.009</td>
+<td align="left">Kristala L. J. Prather; Collin H. Martin</td>
+</tr>
+<tr class="odd">
+<td align="left">Harnessing homologous recombination in vitro to generate recombinant DNA via SLIC.</td>
+<td align="right">81</td>
+<td align="right">2007</td>
+<td align="left">(doi) 10.1038/nmeth1010; (pmid) 17293868; (magid) mag2102440675</td>
+<td align="left">Mamie Z. Li; Stephen J. Elledge</td>
+</tr>
+<tr class="even">
+<td align="left">Microfluidic PicoArray synthesis of oligodeoxynucleotides and simultaneous assembling of multiple DNA sequences</td>
+<td align="right">65</td>
+<td align="right">2004</td>
+<td align="left">(pmcid) pmc524290; (pmid) 15477391; (magid) mag2146545072; (doi) 10.1093/nar/gkh879</td>
+<td align="left">Xiaochuan Zhou; Shi-Ying Cai; Ailing Hong; Qimin You; Peilin Yu; Nijing Sheng; Onnop Srivannavit; Seema Muranjan; Jean Marie Rouillard; Yongmei Xia; Xiaolin Zhang; Qin Xiang; Renuka Ganesh; Qi Zhu; Anna Matejko; Erdogan Gulari; Xiaolian Gao</td>
+</tr>
+<tr class="odd">
+<td align="left">Gene Designer: a synthetic biology tool for constructing artificial DNA segments</td>
+<td align="right">59</td>
+<td align="right">2006</td>
+<td align="left">(pmcid) pmc1523223; (pmid) 16756672; (magid) mag1760665500; (doi) 10.1186/1471-2105-7-285</td>
+<td align="left">Alan Villalobos; Jon E. Ness; Claes Gustafsson; Jeremy Minshull; Sridhar Govindarajan</td>
+</tr>
+</tbody>
+</table>
+<p>As this suggests, growing trends towards the federation of the scientific and patent literature present important opportunities for designing search strategies and more flexible approaches to the analysis and communication of results building on both the scientific and the patent literature.</p>
+</div>
+<div id="conclusion" class="section level2">
+<h2><span class="header-section-number">2.8</span> Conclusion</h2>
+<p>This chapter has focus on methods for working with data from the scientific literature, using analysis of the scientific literature to build up a search strategy, the development of a scientific landscape study and methods for linking scientific literature to patent analytics.</p>
+
+</div>
+</div>
+<h3>References</h3>
+<div id="refs" class="references">
+<div id="ref-An_2018">
+<p>Ball, Rafael. 2018. <em>An Introduction to Bibliometrics</em>. Elsevier. <a href="https://doi.org/10.1016/c2016-0-03695-1" class="uri">https://doi.org/10.1016/c2016-0-03695-1</a>.</p>
+</div>
+<div id="ref-Fellbaum_2015">
+<p>Fellbaum, Christiane. 2015. <em>WordNet</em>. Edited by Susan E. F. Chipman. Oxford University Press. <a href="https://doi.org/10.1093/oxfordhb/9780199842193.013.001" class="uri">https://doi.org/10.1093/oxfordhb/9780199842193.013.001</a>.</p>
+</div>
+<div id="ref-SPARCK_JONES_1972">
+<p>Jones, Karen Sparck. 1972. “A Statitiscal Interpretation of Term Specificity and its Application in Retrieval.” <em>Journal of Documentation</em> 28 (1). Emerald: 11–21. <a href="https://doi.org/10.1108/eb026526" class="uri">https://doi.org/10.1108/eb026526</a>.</p>
+</div>
+<div id="ref-Leydesdorff_2009">
+<p>Leydesdorff, Loet, and Ismael Rafols. 2009. “A Global Map of Science Based on the ISI Subject Categories.” <em>Journal of the American Society for Information Science and Technology</em> 60 (2). Wiley: 348–62. <a href="https://doi.org/10.1002/asi.20967" class="uri">https://doi.org/10.1002/asi.20967</a>.</p>
+</div>
+<div id="ref-Wick_2012">
+<p>Wick, Michael, Sameer Singh, and Andrew McCallum. 2012. “A Discriminative Hierarchical Model for Fast Coreference at Large Scale.” In <em>Proceedings of the 50th Annual Meeting of the Association for Computational Linguistics: Long Papers - Volume 1</em>, 379–88. ACL ’12. Stroudsburg, PA, USA: Association for Computational Linguistics. <a href="http://dl.acm.org/citation.cfm?id=2390524.2390578" class="uri">http://dl.acm.org/citation.cfm?id=2390524.2390578</a>.</p>
+</div>
+<div id="ref-Callaert2006">
+<p>Callaert, Julie, Bart Van Looy, Arnold Verbeek, Koenraad Debackere, and Bart Thijs. 2006. “Traces of Prior Art: An Analysis of Non-Patent References Found in Patent Documents.” <em>Scientometrics</em> 69 (1): 3–20. <a href="https://doi.org/10.1007/s11192-006-0135-8" class="uri">https://doi.org/10.1007/s11192-006-0135-8</a>.</p>
+</div>
+</div>
+<div class="footnotes">
+<hr />
+<ol start="1">
+<li id="fn1"><p>Jeffrey Friedl Source of the famous “Now you have two problems” quote <a href="http://regex.info/blog/2006-09-15/247" class="uri">http://regex.info/blog/2006-09-15/247</a><a href="literature.html#fnref1" class="footnote-back">↩</a></p></li>
+<li id="fn2"><p> See for example the <code>Basic Regular Expressions in R</code> Cheatsheet by Ian Kopacka available from RStudio<a href="literature.html#fnref2" class="footnote-back">↩</a></p></li>
+<li id="fn3"><p>This example is adapted from the Wikipedia entry at <a href="https://en.wikipedia.org/wiki/Precision_and_recall" class="uri">https://en.wikipedia.org/wiki/Precision_and_recall</a><a href="literature.html#fnref3" class="footnote-back">↩</a></p></li>
+<li id="fn4"><p><a href="https://service.elsevier.com/app/answers/detail/a_id/15181/supporthub/scopus/related/1/session/L2F2LzEvdGltZS8xNTMzODE0NzYzL2dlbi8xNTMzODE0NzYzL3NpZC9mVXRPUTg2NVR0WEJ2SWp6cnFyZFZ1U2J2UFdiUE5GWEQ0VjhQWnpKVjVEektvRjVHOWNtbHBodGRha2pBb2lFbF9FclBrSGJzNHc4NnclN0VKV3ZlRTJRQTc3V2ZITUdSSXJpYzQwR2R0NHpTMlliVU5xYmQ0SGppdyUyMSUyMQ%3D%3D/">Scopus subjects</a>, <a href="https://images.webofknowledge.com/images/help/WOS/hp_subject_category_terms_tasca.html">Web of Science subjects</a><a href="literature.html#fnref4" class="footnote-back">↩</a></p></li>
+<li id="fn5"><p>The workshop livestream archive is available at <a href="https://livestream.com/uspto/PatentsViewInventorWorkshop" class="uri">https://livestream.com/uspto/PatentsViewInventorWorkshop</a><a href="literature.html#fnref5" class="footnote-back">↩</a></p></li>
+</ol>
+</div>
+            </section>
+
+          </div>
+        </div>
+      </div>
+<a href="introduction.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
+<a href="patents.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
+    </div>
+  </div>
+<script src="libs/gitbook-2.6.7/js/app.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/lunr.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-search.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-sharing.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-fontsettings.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-bookdown.js"></script>
+<script src="libs/gitbook-2.6.7/js/jquery.highlight.js"></script>
+<script>
+gitbook.require(["gitbook"], function(gitbook) {
+gitbook.start({
+"sharing": {
+"github": false,
+"facebook": true,
+"twitter": true,
+"google": false,
+"linkedin": false,
+"weibo": false,
+"instapper": false,
+"vk": false,
+"all": ["facebook", "google", "twitter", "linkedin", "weibo", "instapaper"]
+},
+"fontsettings": {
+"theme": "white",
+"family": "sans",
+"size": 2
+},
+"edit": {
+"link": null,
+"text": null
+},
+"download": ["handbook2.pdf", "handbook2.epub"],
+"toc": {
+"collapse": "subsection"
+}
+});
+});
+</script>
+
+</body>
+
+</html>

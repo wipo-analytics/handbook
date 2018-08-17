@@ -1,0 +1,1020 @@
+# Counting Patent Data {#patents}
+
+This chapter provides an in depth introduction to the development of descriptive patent statistics. While many readers will be familiar with patent statistics and the OECD Patents Statistics Manual is an important resource for thinking about patent statistics, to date a step by step approach to creating patent counts using real world data has been lacking [@OECD_2009]. This chapter aims to fill this gap by working up from the analysis of the structure of patent numbers through to the creation of counts priority or first filings. This is followed by exploration of patent families and concludes by graphing patent trends.
+
+The Chapter makes extensive use of the drones patent dataset and instructions on how to install it are provided the How to Use the Handbook section at the front of the book. 
+
+<!--to do Readers of this chapter online will be able to access the code and functions used to create the counts by selecting the `Code` icon.--> 
+
+## The structure of patent numbers
+
+Patent numbers are the key identifiers for patent documents. At the time of writing there are presently 107 million patent and related documents within the European Patent Office central DOCDB. The key to working with and counting these documents is an understanding of the structure of patent numbers.
+
+Table \@ref(tab:numbers) presents the principle formats of patent numbers as they are commonly retrieved from patent databases. 
+
+```{r numbers, echo=FALSE, message=FALSE}
+library(drones)
+library(tidyverse)
+drones::numbers %>% 
+  select(priority_number, application_number, publication_number) %>% 
+  head() %>% 
+  knitr::kable( caption = "Examples of Types of Patent Numbers")
+```
+
+For each of these numbers we observe the following structure
+
+1.  A two letter country code such as US (United States) or KR (South Korea)
+2.  A numeric identifier that, for more recent years, may include the year e.g 2016578323 or 15263985
+3.  A letter or combination of a letter and a number such as A, A1, B1, B2, S or P denoting the Kind of document
+4.  The date in Year - Month - Day format (known as YYYY-MM-DD)
+
+It is important to note that the patent numbers that are retrieved from patent databases are not necessarily presented in the way they are stored. For example, the country code, the numeric identifier, the kind code and the date are often stored in separate columns and are then combined together. When working with different databases this can be reflected in spaces between the country code, the number and the kind code. In addition, the original entries on patent application forms often include forward slashes `/`. In some cases databases will present numbers containing the forward slash character and in others they will be deleted as the do not add to the distinctiveness of the identifier. Be aware that some patent databases, notable Derwent Innovation from Clarivate Analytics, add padding 000s in the middle of some patent numbers to make them uniform and may add the year field at the beginning of patent numbers. For this reason using patent numbers across different databases is not as straightforward as it might be. Slight variations in the format will be the most common reason that a patent number is found in one database but not in another. 
+
+### The country code
+
+The two letter country code denotes either the country of filing, the country of application or the publication country. For example, in Table \@ref(tab:numbers) above, KR201528901A was first filed as an application in South Korea and then in the United States (US15057264A) and then published as a patent grant (US9807364B2) in the United States. A full list of two letter country codes, including the codes for the Patent Cooperation Treaty (WO) and regional instruments is available in the [WIPO Handbook on Industrial Property Information and Documentation under standard ST.3 Recommended Standard on two-letter Codes for the Representation of States, Other Entities and Intergovernmental Organizations](http://www.wipo.int/export/sites/www/standards/en/pdf/03-03-01.pdf). The same table is also available on [Wikipedia](https://en.wikipedia.org/wiki/WIPO_ST.3). Software tools such as VantagePoint provide thesaurii that will convert country codes to country names. \index{VantagePoint}
+
+The country codes tell us where a document is filed and published. This provides the foundation for identifying trends by country using a range of different counts and for geographic mapping.
+
+### The numeric identifier
+
+The second element of a patent number is a numeric identifier. As noted above, it is important to note that these identifiers may be edited by databases. For example, the Derwent World Patent Index often uses either a single or padding zero between the year in a field and the number. This probably arose from an effort to make patent numbers a uniform length but has the effect that these documents cannot easily be retrieved from databases that do not use padding zeros (such as esp@cenet). In other cases the numbers may include characters such as "/" that are not formally speaking part of the identifier. The kind code may also be added in some databases but not in others. 
+
+<!--- provide a simple example here --->
+
+### Kind Codes
+
+Kind Codes appear as letter and number combinations after the numeric identifier. Kind codes describe the type of document and the publication level. Kind codes are documented in WIPO Standard [ST.16 Recommended Standard Code for the Identification of Different Kinds of Patent Documents](http://www.wipo.int/patentscope/en/data/kind_codes.html). Formally speaking Kind Codes are applied to: 
+
+>"patents for invention, inventors’ certificates, medicament patents, plant patents, design patents, utility certificates, utility models, patents or certificates of addition, utility certificates of addition, and published applications therefor" (WIPO ST.16 page 3.16.1, October 2016)
+
+In connection with the publication level, the definition explains that:
+
+>"a “publication level” is defined as the level corresponding to a procedural stage at which normally a document is published under a given national industrial property law or under a regional or international industrial property convention or treaty"
+
+So, to take a common example, a patent document may be published at the application stage. This is commonly the first procedural stage and is the first publication level. In many countries standard patent applications will receive the kind code A at this first publication level. In many countries, when a patent is granted the document enters the second publication level and it is published with kind code B. Other types of patent documents commonly receive their own kind codes denoting their type. For example Utility Models receive the kind code U while design patents received kind code S.
+
+Kind codes are often accompanied by a number that adds additional information about the type of document. Within the WIPO standard these numbers range from 1 to 7 with numbers 8 and 9 reserved for corrections to the bibliographic data (e.g. A8) or to any part of the document (e.g. A9). WIPO [Examples and Kinds of Patent Documents](http://www.wipo.int/standards/en/pdf/07-03-01.pdf) forms part of the WIPO Handbook on Industrial Property Information and Documentation setting out common Kind Codes and is recommended reading for patent analysts. Quick reference tables are also produced by Clarivate Analytics and national patent offices and are available online.
+
+The use of patent kind codes has evolved over time and this can make accurate interpretation of a kind code difficult. In practice:
+
+a) The use of a kind code may vary in the same country over time. For example in the United States prior to 2001 patents were only published when they were granted (first publication level) and they were awarded kind code A. From 2001 onwards the United States adopted common practice elsewhere and published applications which now receive kind code A (as the first publication level) while patent grants are now the second publication level (and receive kind code B);
+b) The use of kind codes varies between countries.
+
+As a very rough rule of thumb, publications with kind code A commonly mean the publication of an application. Publications with kind code B mean publication of a patent grant. But, this is not always true and it can only be described as a rough rule of thumb. This rule can normally be used when working with data from the main jurisdictions such as the United States (bearing in mind the pre and post 2001 changes considered below), the European Patent Office and the Patent Cooperation Treaty (which only covers first level publications or applications) and Japan. However, when working with country level data to elaborate trends for applications and grants it is important to review the use of kind codes in each country to be covered and to identify changes in the use of kind codes over time. When developing data on statistical trends for applications and grants a note should normally be added to inform readers that the data is approximate in cases where the use of kind codes has not been thoroughly explored and documented.
+
+Patent kind codes denoting publication level and the kind of document (e.g. U) are important for statistical purposes because they allows for the identification of duplicates and, depending on the purpose of the analysis, the removal of unwanted data types (such as Utility models, design patents and plant patents) or the isolation of specific types of document. For most purposes kind codes are important for identifying patent applications and grants and critically for identifying republications of the same document (duplicates)
+
+The most common kind codes encountered in patent data are:
+
+First publication level (commonly but not exclusively patent applications)
+
+- A1
+- A2
+- A3
+
+Second publication level (commonly but not exclusively patent grants)
+
+- B1
+- B2
+- B3
+
+This means, to take a fictional example from the USPTO and its [common kind codes](https://www.uspto.gov/learning-and-resources/support-centers/electronic-business-center/kind-codes-included-uspto-patent), that:
+
+- US1234A1 Patent Application Publication
+- US1234A2 Patent Application Publication (Republication)
+- US1234A9 Patent Application Publication (Corrected Publication)
+- US1234B1 Granted Patent (no previously published as a patent application)
+- US1234B2 Granted Patent (previously published as a patent application)
+
+In this example we have 3 potential publications of the same application and one publication of a patent grant (although corrections to a granted patent are possible). For the purpose of counting patent data how we deal with these republications or duplicates depends on the question we are trying to answer.
+
+If we wanted to identify the priority application that is closest to the investment in research and development we would choose the earliest application number available to us (that may or may not have been published). In other cases we may want to count all applications that stem from a first filing or set of filings while in others we may want to identify applications and grants but remove administrative republications (simple republications and corrections or publication of the international search report) from the counts. 
+
+The main issue that arises here is determining what we wish to include and exclude from counts. One general approach to this issue is to simply _remove all republications of the same document (count the document only once on the earliest in the series)_ . For example, if we were interested in counting patent applications and patent grants in the United States we would count US1234A1 and we would count the patent grant (US1234B2) and exclude the republications of the application. If we are only interested in counting patent applications we might simply remove the kind code denoting the different publication levels to count document US1234 only one. In practice, basic patent statistics commonly involves the use of multiple counting methods as we will see in more detail below. 
+
+As the discussion above makes clear when working with patent data to elaborate patent counts we must address _multiplier effects_. These take two main forms:
+
+1. Republication of the same basic document in the same jurisdiction as applications, grants, or with modifications as continuations, continuations in part or divisionals.
+2. Submission of applications under regional patent instruments or the Patent Cooperation Treaty (WO) and their republication as applications, grants, other administrative publications or divisionals (in relevant jurisdictions). 
+
+Thus, under the Patent Cooperation Treaty an applicant may submit the same patent application for consideration in up to 152 Contracting States. In practice this is rare but in theory a single application could potentially lead to the republication of the same document as an application and grant 304 times (assuming a single publication of an application and the publication of a grant in each country). While this would be a very unusual case, it reveals the potential multiplier effects in patent counts introduced by regional instruments such as the European Patent Convention and the Patent Cooperation Treaty. As we will see below, in some cases a single document may be linked to over 1000 publications.  
+
+
+## Preparing to Count Patent Data
+
+The patent identifiers discussed above provide the key for tracking patent documents around the world, using the concept of patent families discussed below, and for elaborating patent counts. The most important single piece of information when thinking about patent counts using identifiers is that patent patent data involves multiplier effects that leads often leads to the duplication or republication of the same document or a document that has been modified based on an earlier version. 
+
+Patent identifiers provide the basis for navigating these multiplier effects and the basis of patent counts commonly consists of removing duplicates or deduplication at different levels or combining documents in a variety of ways. 
+
+We will use the drones dataset as an example of this. Table \@ref(tab:dronenumbers) shows a sample of different patent numbers.
+
+```{r dronenumbers, echo=FALSE}
+library(tidyverse)
+library(drones)
+numbers %>%
+  select(priority_number, application_number, publication_number,  inpadoc_family_members) %>% 
+  head(5) %>% 
+  knitr::kable(caption = "Priority, Applications, Publication and INPADOC Family Members")
+```
+
+We can see here that one or more priority numbers are linked to application numbers. In some cases those numbers are identical while in other cases they will be distinct. The application number is linked to one or more publication numbers. Patent databases commonly return data based on publication numbers. However, this is often only a partial picture of the set of documents linked to an application or set of applications and their underlying priority filings. 
+
+In the fifth example in Table \@ref(tab:dronenumbers) we can see that we have one publication number. However, we can see that under the INPADOC Family Member Number there are multiple patent publications that are not captured in the publication number field. There are two reasons for this.
+
+a) A search of a patent database commonly returns patent publications based on criteria such as limiting the search by jurisdiction. This does not reveal all documents linked to a filing or set of filings worldwide.
+b) The INPADOC Family Members column groups publications based on a particular definition of a patent family. The number of documents will vary here depending on the definition of the patent family used in the data and whether the documents are deduplicated.  
+
+```{r echo=FALSE, message=FALSE, warning=FALSE}
+numbers <- drones::numbers
+numbers <- numbers %>% select(priority_number, application_number, inpadoc_family_members, publication_number)
+
+# CHECK OFF THESE COUNTS AGAINST VANTAGE POINT AND THEN REMOVE THIS NOTE. THREE FAIL TO PARSE> WHY?
+
+# Extract application date and application country, then count priority numbers and families
+applications <- numbers %>%
+  separate(application_number, into = c("application", "application_date"), sep = " ", remove = FALSE) %>% 
+  mutate(application_date = lubridate::ymd(application_date)) %>% 
+  mutate(application_country = substr(application_number, 1,2)) %>%
+  mutate(priority_count = str_count(priority_number, ";")) %>% # count separators in priority numbers
+  mutate(priority_count = priority_count+1) %>% 
+  mutate(family_count = str_count(inpadoc_family_members, ";")) %>% # count family menmbers
+  mutate(family_count = family_count + 1) # expect 15776
+
+# This code takes the applications table, separates out the priority numbers, extracts the priority date, ranks the priority numbers to find the first filing, adds the count of applications linked to a priority number. Note that each priority number associated with a set of applications will receive the same score. 
+
+priority_raw <- applications %>%
+  separate_rows(priority_number, sep = ";") %>% 
+  mutate(priority_number = str_trim(priority_number, side = "both")) %>% 
+  separate(priority_number, into = c("priority", "priority_date"), sep = " ", remove = FALSE) %>%
+  mutate(priority_date = lubridate::ymd(priority_date)) %>% 
+  mutate(priority_country = substr(priority_number, 1,2)) %>% # extract country
+  group_by(application_number) %>% # prepare to rank by grouping on the application_number
+  mutate(filing_order = rank(priority_date, ties.method = "first")) %>% # add rank by the priority date
+  ungroup() %>% 
+  group_by(priority_number) %>% # add application count 
+  mutate(application_count = n()) %>% 
+  arrange(priority_number) %>% 
+  ungroup() # 68,645 (one on each row per associated application)
+
+# This table reduces the priority number associated with the applications to one priority number per application. 
+
+priority_application_count <- priority_raw %>% 
+  filter(filing_order == 1) %>% # returns the 15776 applications
+  mutate(earliest_priority = priority_number) %>% 
+  mutate(earliest_priority_date = priority_date) %>% 
+  select(application_number, earliest_priority, earliest_priority_date, filing_order, application_count)
+
+#left_join(applications, priority_application_count, by = "application_number") # take a look
+
+# The application counts and the family member counts check out as do the priority count on test cases. Note that in VP the priority count is accessed from the application
+
+applications <- left_join(applications, priority_application_count, by = "application_number")
+
+# reduce the applicants table to a single application for each first filing
+unique_priority <- applications %>% mutate(duplicated = duplicated(earliest_priority)) %>% 
+  filter(duplicated == FALSE) # 9359 unique first filings
+
+families_raw <- unique_priority %>% 
+  separate_rows(inpadoc_family_members, sep = ";") %>%
+  mutate(inpadoc_family_members = str_trim(inpadoc_family_members, side = "both")) %>%
+  mutate(inpadoc_family_members = str_replace_all(inpadoc_family_members, "_", " ")) %>% 
+  separate(inpadoc_family_members, into = c("family_members", "family_date"), sep = " ", remove = FALSE) %>% 
+  select(earliest_priority, priority_count, inpadoc_family_members, family_members, family_date, family_count) %>%
+  mutate(family_date = str_trim(family_date, side = "both")) %>% 
+  mutate(family_date = lubridate::ymd(family_date)) %>% 
+  mutate(year = lubridate::year(family_date)) %>% 
+  mutate(duplicated = duplicated(family_members)) %>% 
+  arrange(earliest_priority) # 65366
+
+families <- unique_priority %>% 
+  separate_rows(inpadoc_family_members, sep = ";") %>%
+  mutate(inpadoc_family_members = str_trim(inpadoc_family_members, side = "both")) %>%
+  mutate(inpadoc_family_members = str_replace_all(inpadoc_family_members, "_", " ")) %>% 
+  separate(inpadoc_family_members, into = c("family_members", "family_date"), sep = " ", remove = FALSE) %>% 
+  select(earliest_priority, application_number, family_count, inpadoc_family_members, family_members, family_date) %>%
+  mutate(family_date = str_trim(family_date, side = "both")) %>% 
+  mutate(family_date = lubridate::ymd(family_date)) %>% 
+  mutate(year = lubridate::year(family_date)) %>% 
+  mutate(duplicated = duplicated(family_members)) %>%
+  filter(duplicated == FALSE) %>% 
+  mutate(family_country = str_sub(inpadoc_family_members, 1,2))
+
+# this function is located in patent R. 
+extract_kind <- function(x, col, year = NULL){
+  # the year field needs to be addressed in the US case to allow for the raw input. 
+  # convert to a date and extract the year?
+  x <- x %>% mutate(one := stringr::str_detect(.[[col]], "[[:alpha:]]$")) %>% 
+    mutate(two := stringr::str_detect(.[[col]], "[[:digit:]]$"))
+  one <- x %>% filter(one == TRUE) %>%
+    mutate(kind_original := str_extract(.[[col]], "[[:alpha:]]$")) %>%
+    mutate(family_consolidated := str_sub(.[[col]], 1, str_length(.[[col]])-1))
+  two <- x %>% filter(two == TRUE) %>% 
+     mutate(kind_original := str_extract(.[[col]], "[[:alpha:]][[:digit:]]$")) %>% 
+    mutate(family_consolidated := str_sub(.[[col]], 1, str_length(.[[col]])-2))
+  out <- bind_rows(one, two) %>% 
+     select(-one, -two)
+  
+  # Filter the US data and convert patent grants with kind code A prior to 2001 to kind code B for patent grants to match with the 2001 plus system.
+   
+    us <- out %>%
+      filter(family_country == "US") %>%
+      mutate(kind_adjusted = stringr::str_extract(kind_original, "[[:alpha:]]")) %>%
+      mutate(grants = str_detect(year, "^18|^19|^2000") | str_detect(kind_adjusted, "B")) # need to include code to detect if is 4 character or more and then attempt to convert and provide warnings
+   
+    usb <- us %>%
+         filter(grants == TRUE) %>%
+         mutate(kind_adjusted = stringr::str_replace_all(kind_adjusted, "A", "B")) # note that a few H and E in this
+     
+   usother <- us %>%
+        filter(grants == FALSE)
+     
+   usa <- usother %>%
+        filter(kind_adjusted == "A")
+   
+   uso <- usother %>%
+        filter(kind_adjusted != "A")
+     
+   usadjusted <- bind_rows(usb, usa, uso)
+  
+   # A3 documents not for EPC and PCT
+   out <- out %>% 
+     filter(family_country != "US") %>% 
+     mutate(kind_adjusted = stringr::str_extract(kind_original, "[[:alpha:]]")) %>% 
+     bind_rows(usadjusted) %>% 
+     select(-grants)
+  
+   # Identify EPC member states and convert the kind code T for Translation of a regional grant to  kind code B
+    
+   epc_list <- c("AL", "AT", "BE", "BG", "CH", "CY", "CZ", "DE", "DK", "EE", "ES", "FI", "FR", "GB", "GR", "HR", "HU", "IE", "IS", "IT", "LI", "LT", "LU", "LV", "MC", "MK", "MT", "NL", "NO", "PL", "PT", "RO", "RS", "SE", "SI", "SK", "SM", "TR")
+   
+   out <- out %>%
+     mutate(epc = family_country %in% epc_list)
+   
+  epc <- out %>%
+      mutate(epc = family_country %in% epc_list) %>% 
+      filter(epc == TRUE) %>% 
+      mutate(kind_adjusted = str_replace_all(kind_adjusted, "T", "B"))
+    
+   out <- out %>% 
+     filter(epc == FALSE) %>% 
+     bind_rows(epc)
+}
+
+families <- extract_kind(families, col = "family_members")
+
+
+# 49,625 in VP. before deduplication I'm on 65,366 and afterwards Im on 49509 which is 116 out so not quite there. Note that INPADOC family members only cover 98% of the dataset. See the proofs in the drones dataset. The NAs in the priority and the NAs in the family member after trimming make up the difference
+
+# some entries for the inpadoc family members are NA and a small number of dates are `00000000` which may be the problem
+
+#  mutate(family_date == lubridate::ymd(family_date)) %>% 
+#  mutate(family_country = str_sub(family_members, 1,2))
+
+```
+
+Table \@ref(tab:countsummary) summarises the data by showing the counts of the different types of documents.
+
+```{r countsummary, echo=FALSE}
+summary <- unique_priority %>%
+  select(earliest_priority, priority_count, application_count, family_count) %>% 
+  drop_na(family_count)
+head(summary) %>% 
+  knitr::kable(caption = 'Sample of Patent Counts linked to the earliest priority number')
+```
+
+Table \@ref(tab:countsummary) helps to make clear that we may be dealing with simple cases (one priority or first filing) leads to one application and one family member. Or, we may be dealing with a group of priorities leading to multiple applications and multiple family members. This helps to clarify that, when working with patent data we are often dealing with *many to many relationships*
+
+In the next section we will progressively move up from counting patent documents using priority numbers and finish by using counts of INPADOC family members to elucidate trends for drone related technology. 
+
+## Counting Priority or First Filings
+
+When a patent application is filed for the first time anywhere in the world it becomes the priority document or first filing. The use of this term is based on the 1883 Paris Convention. The WIPO summary of the key provisions of the Paris Convention explains the right of priority introduced by the Convention as follows.  
+
+
+> The Convention provides for the right of priority in the case of patents (and utility models where they exist), marks and industrial designs. This right means that, on the basis of a regular first application filed in one of the Contracting States, the applicant may, within a certain period of time (12 months for patents and utility models; 6 months for industrial designs and marks), apply for protection in any of the other Contracting States. These subsequent applications will be regarded as if they had been filed on the same day as the first application. In other words, they will have priority (hence the expression "right of priority") over applications filed by others during the said period of time for the same invention, utility model, mark or industrial design. Moreover, these subsequent applications, being based on the first application, will not be affected by any event that takes place in the interval, such as the publication of an invention or the sale of articles bearing a mark or incorporating an industrial design. One of the great practical advantages of this provision is that applicants seeking protection in several countries are not required to present all of their applications at the same time but have 6 or 12 months to decide in which countries they wish to seek protection, and to organize with due care the steps necessary for securing protection.^[WIPO Summary of the Paris Convention for the Protection of Industrial Property (1883) http://www.wipo.int/treaties/en/ip/paris/summary_paris.html]
+
+The OECD Manual on Patent Statistics describes the priority number and the priority date as follows
+
+ > Priority number. This is the application or publication number of the priority application, if applicable. It makes it possible to identify the priority country, reconstruct patent families, etc.
+
+> Priority date. This is the first date of filing of a patent application, anywhere in the world (usually in the applicant’s domestic patent office), to protect an invention. It is the closest to the date of invention. (OECD 2009: 25)
+
+The most important issue here from the perspective of patent counts is the priority date. Table \@ref(tab:countsummary) above revealed that patent applications may be linked to multiple underlying priority applications. The earliest filing, as shown in Table \@ref(tab:countsummary), is the Paris priority in the sense that it is the first of a set of filings giving rise to a claimed invention. 
+
+In the simple cases as shown in the first, second and fourth entries of Table \@ref(tab:dronenumbers), the priority number and the application number are the same. Therefore we have identified the priority or first filing. However, there are two other cases in Table \@ref(tab:dronenumbers). The fifth example shown in Table \@ref(tab:jpwo) reveals a common case where a national level filing gives rise to an international filing under the Patent Cooperation Treaty. 
+
+**1. National Filing to International Filing**
+
+First let's look at the example in Table \@ref(tab:dronenumbers)
+
+```{r jpwo, echo=FALSE}
+library(tidyverse)
+library(drones)
+numbers %>%
+  select(priority_number, application_number, publication_number,  inpadoc_family_members) %>% 
+  head(5) %>% 
+  knitr::kable(caption = "Priority, Applications, Publication and INPADOC Family Members")
+```
+
+`JP2015122335A 2015-06-17` is for a `Floating Type Flying Body`. We can see in row 5 that `JP2015122335A 2015-06-17` lists a second priority number for a Patent Cooperation Treaty filing `WO2016JP67809A 2016-06-15` . At first sight this leads to US patent application `US15322008A 2016-12-23` that is published as `US9802691B2`. However, when working with priority numbers we commonly encounter multiple applications arising from the priorities. Table \@ref(tab:jpwo1) displays counts of the priorities and applications linked to `JP2015122335A 2015-06-17`  for a `Buoyant Aerial Vehicle`
+
+```{r jpwo1, echo=FALSE}
+unique_priority %>%
+  select(earliest_priority, priority_count, application_count) %>% 
+  filter(earliest_priority == "JP2015122335A 2015-06-17") %>% 
+  head() %>% 
+  knitr::kable(caption = 'Applications arising from JP2015122335A 2015-06-17')
+```
+
+The second priority number is the Patent Cooperation Treaty `WO2016JP67809A 2016-06-15`. 
+
+Table \@ref(tab:jpwo2) shows the sequence of applications arising from the the two priorities and the INPADOC patent family. 
+
+```{r jpwo2, echo=FALSE}
+library(tidyverse)
+library(drones)
+numbers %>%
+  select(priority_number, application_number, publication_number,  inpadoc_family_members) %>% 
+  separate_rows(priority_number, sep = ";") %>% 
+  mutate(priority_number = str_trim(priority_number, side = "both")) %>% 
+  filter(priority_number == "JP2015122335A 2015-06-17") %>% 
+  #filter(application_number == "US15322008A 2016-12-23") %>% 
+  knitr::kable(caption = "Patent Applications arising from JP2015122335A with PCT application WO2016JP67809A")
+```
+
+The first point to note is that Japanese priority application `JP2015122335A 2015-06-17` becomes application JP2015122335A 2015-06-17 and is then published as a patent application in Japan as `JP2017007411A 20170112` in January 2017 (first publication level) and also as a granted patent `JP05875093B1 20160302`.^[The observant reader will note that for reasons that are unclear publication of the granted patent in 2016 takes place before the publication of the application in 2017]
+
+However, the Patent Cooperation Treaty application `WO2016JP67809A 2016-06-15` filed a year later triggers applications (on the same date) in the United States and at the European Patent Office.
+
+Application number `US15322008A 2016-12-23` is published in May 2017 as `US20170137104A1 20170518` (first publication level) and on the second publication level as `US9802691B2`.
+
+European application `EP2016811654A 2016-06-15` is published as `EP3150483A1 20170405` (first publication level with the search report) and as `EP3150483A4 20170920` with a supplementary search report.
+
+Note here that the database entry for the inpadoc family members for the United States application is blank (NA stands for Not Available) indicating that this record had not been updated or correctly updated. An up to date view of the patent family is available from esp@cenet and includes the US records and more recent patent activity.
+
+The priority data in this case reflects the decision taken by the applicant on the filing route to pursue protection in other countries in this case the United States using the Patent Cooperation Treaty. The Patent Cooperation Treaty has the advantage of extending the time that applicants enjoy before deciding where else to pursue protection from 12 months under the Paris Convention to up to 30 months [CROSS CHECK AND REF]. Applicants also enjoy reduced costs compared with the Paris Convention because a single application is submitted that may then go forward for consideration in other Contracting States.
+
+Note that the filing route can be detected in the priority number `WO2016JP67809A 2016-06-15` which contains the country code JP as part of the application number. It is commonly the case that the listing of priorities numbers follows a sequence where the first priority number listed on a document is the earliest, followed by later applications.^[This common pattern may give rise to the temptation to simply take the first priority number in a sequence of priorities as the earliest priority. However, experience demonstrates that databases are not consistent in listing the earliest filing in this way. The temptation should therefore be resisted.]
+
+As this example makes clear when working with patent data we are typically following a pattern consisting of: 
+
+>priority number (earliest) > application number > publications (under different family definitions)
+
+At each step the publications associated with the original filings multiply. 
+
+In this case we are observing the *distinctive filing route* arising from a single priority filing. The filing route has nothing to do with the invention *per se*. However a more complex example reveals that inventions may arise from multiple claimed inventions. 
+
+**2. Multiple Inventions**
+
+We have seen above that in some cases patent applications involve multiple priority numbers. Most will follow the pattern identified above. However, in some technology areas, notably those involving computing, multiple priority numbers may be quite common. In the case of the drones dataset a single application `US14815121A 2015-07-31` lists no less that 146 priorities and has given rise, at the time of writing, to an INPADOC patent family consisting of 340 publications. This example concerns a `Wireless Power System for an Electronic Display with Associated Impedence Matching Network`. It can be identified in esp@cenet using publication number `US2015357831A1` and a summary is presented in Table \@ref(tab:witricitysource).
+
+```{r witricity, eval=FALSE, echo=FALSE}
+library(tidyverse)
+library(drones)
+numbers %>%
+  select(priority_number, application_number, publication_number,  inpadoc_family_members) %>% 
+  filter(publication_number == "US20150357831A1") %>%
+  knitr::kable(caption = "Multiple Priorities and US Provisional and Continuation Filings")
+```
+
+
+```{r witricitysource, echo=FALSE, fig.align='center'}
+library(tidyverse)
+library(drones)
+numbers %>%
+  select(priority_number, application_number, publication_number,  inpadoc_family_members) %>% 
+  filter(publication_number == "US20150357831A1") %>%
+  separate_rows(priority_number, sep = ";") %>% 
+  mutate(priority_number = str_trim(priority_number, side = "both")) %>% 
+  mutate(priority_country = str_sub(priority_number, 1,2)) %>% 
+  count(priority_country) %>% 
+  knitr::kable(caption = "Multiple Priorities and US Provisional and Continuation Filings")
+```
+
+Table \@ref(tab:witricitysource) reveals that the majority of priorities are domestic US priorities (144) with two foreign priorities in the form of Australia (1) and Taiwan. 
+
+```{r witricitytype, eval=FALSE, echo=FALSE}
+# not used
+library(tidyverse)
+library(drones)
+numbers %>%
+  select(priority_number, application_number, publication_number,  inpadoc_family_members) %>% 
+  filter(publication_number == "US20150357831A1") %>%
+  separate_rows(priority_number, sep = ";") %>% 
+  mutate(priority_number = str_trim(priority_number, side = "both")) %>% 
+  mutate(priority_country = str_sub(priority_number, 1,2)) %>% 
+  filter(priority_country == "US")
+```
+
+The earliest priority filing listed in the set of priorities is `US2007647705A 2007-12-28` and the latest are in 2017 signifying that the underlying filings linked to this application spanned nearly a decade. Of the 143 priorities linked to the application originating from the United States 107 carry kind code A and 36 contain kind code P for a Provisional application. This therefore appears to be a case dominated by so called continuation and continuation in part, divisional and provisional applications. 
+
+In the United States applicants are allowed to file continuation and continuation in part applications. In the case of continuations the applicant adds new claims that claim priority to the earlier filed application. In the case of continuation in part, these applications add new subject matter focusing on enhancements to the original application. Divisional applications claim priority to the original application but claim distinct new inventions rather than adding new claims or subject matter. In the United States and elsewhere divisional applications often arise where the examiner determines that an application contains more than one invention. Provisional applications are a distinct category whereby an applicant for patent rights in the United States may submit and claim priority to what is effectively an outline of a full application that does not contain patent claims. These applications are useful for establishing priority but do not take effect until an actual application is filed and they are not published. Details of the procedures for these types of patent applications are found in the USPTO "Manual of Patent Examining Procedure (MPEP)".
+
+The use of continuation and continuation in part applications in the United States has been a significant focus of debate and criticism [@Hegde_2007]. As Dechezlepretre et. al. have recently highlighted:
+
+> "At the national or regional levels, applicants can in turn use second domestic filings, including divisional and continuing applications, to delay a patent grant. By filing a di- visional application while the parent application is still pending, applicants can obtain a second (or possibly more) divisional patent(s) granted later, and meanwhile maintain some uncertainty on the claims. In the U.S. patent system, continuations and continuations-in- part can be filed after the examination, and aim precisely at adding more claims to a patent (Hegde et al. 2009). Filing a first application with narrow claims thus makes it possible for the applicant to obtain several patents on the same invention, thereby gradually extending the overall scope of the claims and even, in the case of continuations-in-part, the duration of the patent family." [@Dechezleprêtre_2017 at 802]
+
+From the perspective of patent counts the question that arises here is what should be counted? Having gained an understanding of some of the potential issues involved in preparing to count patent data we now turn to methods for counting priority applications
+
+## Counting Priority Applications
+
+Counts of priority filings are widely used in patent statistics and economic analysis because they focus attention on the relationship between the filing of an application for an invention and the underlying investment in Research and Development leading to the invention. Viewed from this perspective, and as highlighted in the OECD Patent Statistics Manual, the earliest filing of a patent application provides a proxy indicator for investments in Research and Development in a particular technology area. This information can therefore be used as a basis for identifying and exploring trends.
+
+Within the economics literature the preference therefore is for identifying and counting the earliest priority filing in a set of priorities. This is the approach that we will adopt here. However, the discussion of the Witricity case above involving multiple filings also reveals that we should be aware of some of the potential limitations of that approach. Thus, as mentioned above the priority filing of a patent application normally corresponds with the identical application number in the priority field. However, in the Witricity case the earliest filing was listed in December 2007 while the application was in mid 2015 roughly 7 years after the original filing. This raises the question of whether the date corresponding with the specific claimed invention should be taken or whether the earliest date should be taken as the basis for the proxy indicator. 
+
+In practice, in methodological terms it is easiest to identify the earliest priority in a set as the basis for elucidating trends in priority filings. However, this type of issue helps to illustrate that counts of priority filings are a proxy for underlying investments in Research and Development or in formal terms an *output indicator* and depending on your needs may merit refinement to more closely match the required granularity.
+
+Counting patent filings by priority involves x basic steps
+
+1.  Checking the priority field for missing priority data (we can't count missing data)
+2.  Separating out the concatenated column containing priority numbers. These numbers are commonly separated with a semi-colon.
+3.  Removing extra white space that is revealed by the separation process
+4.  Separating out the priority number and the priority date (commonly using the space between these fields)
+5.  Grouping the priority numbers by the application number and rank them from 1 to x with 1 being the earliest
+6.  Filter the priority numbers to the earliest (rank 1)
+7.  Detect duplicate priority numbers arising from those that share application numbers in the source set and remove them
+8.  Graph the results
+
+The methodological steps required for this task can be performed using tools such as Open Refine which can easily separate out the data or in VantagePoint. The key challenge is in grouping and ranking the priority numbers by the earliest data. This is most easily achieved using a programming language (such as an SQL GROUP BY, PARTITION BY and RANK) or in a language such as Python or R. In the case of R this can be achieved in the following lines of code. The code is commented to show the steps identified above.
+
+```{r}
+earliest_priority <- numbers %>%
+  select(priority_number, application_number) %>% 
+  drop_na(priority_number) %>% # drop empty priority fields
+  separate_rows(priority_number, sep = ";") %>% # separate priority numbers on ";"
+  mutate(priority_number = str_trim(priority_number, side = "both")) %>% # trim whitespace
+  separate(priority_number, into = c("priority", "priority_date"), sep = " ", remove = FALSE) %>% # extract the date 
+  mutate(priority_date = lubridate::ymd(priority_date)) %>% 
+  mutate(year = lubridate::year(priority_date)) %>% # add the priority year field
+  mutate(priority_number = str_trim(priority_number, side = "both")) %>% # trim whitespace
+  mutate(priority_country = str_sub(.$priority_number, 1,2)) %>% # extract the priority country
+  group_by(application_number) %>%  # group by application number
+  mutate(filing_order = rank(priority_date, ties.method = "first")) %>% # rank by priority date 
+  ungroup() %>% # remove grouping for later calculations
+  filter(filing_order == 1) %>% # filter to the earliest priority at rank 1
+  mutate(duplicate_priority = duplicated(.$priority_number)) %>% # identify duplicate priority numbers
+  filter(duplicate_priority == "FALSE") %>% # remove duplicate priority numbers
+  select(-priority) # drop uneccesary field
+```
+
+While the above may appear initially appear complex it follows step 1 to 7 above. Because the data lacks a priority country and year field it extract these fields from the data to use in graphing as the next step. The key steps in arriving at accurate counts in the above process is trimming the separated fields to remove any leading and trailing white space. Note that the amount of cleaning required is likely to vary when working with data from different databases.
+
+The steps above reduce the dataset from 15,776 applications containing 23,382 priority numbers (after the exclusion of Not Available results) to 9,358 earliest priority numbers.
+
+We are now in a position to graph the data. For convenience we will continue to use R and the popular `ggplot2` package. The results of a raw count are presented in Figure \@ref(fig:priorityraw)
+
+```{r priorityraw, echo=FALSE, fig.align='center', fig.cap="Raw Graph of Trends in Priority Filings"}
+earliest_priority %>% 
+  #mutate(year = lubridate::year(priority_date)) %>% 
+  #filter(year >= 1990 & year <= 2015) %>% 
+  group_by(year) %>%
+  tally() %>%  
+  ggplot(., aes(x = year, y = n)) +
+  geom_line() +
+  labs(title = "Trends in First Filings of Patent Applications for Drone Technology", x = "priority year", y = "first filings")
+```
+
+This is not generally what we will be expecting because it transpires that we have a long tail of low frequency records where the priority year is invalid  such as `0001-01-01`, or the date was not in the expected YYYY-MM-DD. In addition this test dataset includes historic records from the 19th Century that we will not in this case be interested in seeing. It is therefore sensible to filter the results to a more recent period. Figure \@ref(fig:priorityraw1) shows the effect of filtering the priority year to 1990 to 2017. 
+
+```{r priorityraw1, echo=FALSE, fig.align='center', fig.cap="Graph of Trends in Priority Filings showing the Priority Data Cliff"}
+earliest_priority %>% 
+  filter(year >= 1990 & year <= 2017) %>% 
+  group_by(year) %>%
+  tally() %>%  
+  ggplot(., aes(x = year, y = n)) +
+  geom_line() +
+  labs(title = "Trends in First Filings of Patent Applications for Drone Technology", x = "priority year", y = "first filings")
+```
+
+This version of the graph brings us closer but note that the data falls off a cliff between 2015 and 2017. This is a characteristic of counts of patents by priority filings and you should always expect to see it. The reason it occurs is not because of a collapse in patent activity but because of the lag time between the filing of applications and their availability as publications in patent databases. The gap between the filing of an application and its publication is generally 18 months but it may be at *least* two years. This problem is referred to as `timeliness` in patent statistics. The safest option is to pull back to the date range between 2 - 3 years to avoid giving the impression of a collapse in activity. Figure \@ref(fig:priorityraw2) shows the effect of this approach.
+
+```{r priorityraw2, echo=FALSE, fig.align='center', fig.cap="Graph of Trends in Priority Filings excluding the Data Cliff"}
+prior_yr <- earliest_priority %>% 
+  filter(year >= 1990 & year <= 2015) %>% 
+  group_by(year) %>%
+  tally()
+
+prior_yr %>%
+  ggplot(., aes(x = year, y = n)) +
+  geom_line() +
+  labs(title = "Trends in First Filings of Patent Applications for Drone Technology", x = "priority year", y = "first filings")
+```
+
+More advanced techniques for addressing the problem of timeliness were developed by Helene Dernis at the OECD and subsequently taken forward by Eurostat [@Dernis_2007, de_Rassenfosse_2013]. 
+
+The key advantage of counts of the earliest priority filings is that they remove the duplication that is inherent in patent data and allows us to focus in on the underlying filing rate: that is to examine trends in filings linked to underlying investments in Research and Development. 
+
+However, trends in the first filings of patent applications are not the whole story. Other types of patent counts focusing on applications, patent families and patent family members focus on the nature and geography of demand for patent rights.
+
+## Counting Applications
+
+One challenge for the patent analyst is that data on priority applications may not be readily available or accessible when preparing a report. Patent databases vary in the quality of priority data and in these circumstances the use of simple counts of patent applications, accompanied by an explanatory note are likely to be an appropriate alternative. Here we need to bear in mind 
+
+a) That we need to use the application year
+b) That we will be counting distinct applications that may arise from the same underlying filing. 
+
+Figure \@ref(fig:applnyr) shows trends in patent applications by application year. 
+
+```{r applnyr, echo=FALSE, message=FALSE, fig.align='center', fig.cap="Graph of Trends in Applications by Application Year"}
+appln_year <- applications %>%
+  select(application_number, application_date) %>% 
+  mutate(year = lubridate::year(application_date)) %>%
+  filter(year >= 1990 & year <= 2016) %>% 
+  group_by(year) %>%
+  tally()
+
+appln_year %>% ggplot(., aes(x = year, y = n)) +
+  geom_line() +
+  labs(title = "Trends in Patent Applications for Drone Technology", x = "application year", y = "first filings") + scale_x_continuous(, limits=c(1990, 2015))
+```
+
+In this case the data cliff (not shown) occurs from 2016 onwards. This reflects the fact that when compared with counts by the earliest priority year, counts by application year *lean forward*. Because these counts also capture the applications stemming from a priority, such as applications in more than one country, they will also be at a higher level.
+
+Figure \@ref(fig:priorappln) compares the two figures. Figure \@ref(fig:priorappln1) zooms in to the figure for the period 2005 to 2015.
+
+```{r create_priorappln, echo=FALSE}
+prior_year <- prior_yr %>% rename(first_filings = n)
+appln_year <- appln_year %>% rename(applications = n)
+priorappln <- full_join(prior_year, appln_year, by = "year")
+```
+
+```{r priorappln, echo=FALSE, message = FALSE, fig.align='center', fig.cap="Trends in First Filings and Patent Applications", warning=FALSE}
+ggplot(data=priorappln, aes(x = year)) +
+  geom_line(aes(y = first_filings, colour = "first filings", group = 1)) +
+  geom_line(aes(y = applications, colour = "applications", group = 1)) +
+  theme(legend.title=element_blank()) +
+  labs(title = "", y = "Applications") + 
+  scale_x_continuous(limits = c(1990, 2015), minor_breaks = priorappln$year)
+```
+
+Figure \@ref(fig:priorappln1) focuses in on the period 2007 to 2015 to more clearly see the divergences between the data.
+
+```{r priorappln1, echo=FALSE, fig.align='center', fig.cap="Trends in First Filings and Patent Applications"}
+priorappln %>% filter(year >= 2007 & year <= 2015) %>% 
+ggplot(., aes(x = year))  +
+    geom_line(aes(y = first_filings, colour = "first filings", group = 1)) +
+    geom_line(aes(y = applications, colour = "applications", group = 1)) +
+    theme(legend.title=element_blank()) +
+    labs(title = "", y = "Applications") +
+  scale_x_continuous(limits = c(2007, 2015), minor_breaks = priorappln$year)
+```
+
+
+As we might expect Figure \@ref(fig:priorappln)  makes clear that counts of applications run parallel to trends in first filings. However, this is not the entire picture. Note the speed bump that appears between 2007 and 2010 starting with a downward inflexion in 2008 followed by an upward inflection and downward inflexion in 2010 reflecting a decrease then rapid increase and decrease in first filings. While the initial downward inflexion is displayed in the trend for applications the speed bump is replaced by a steadily increasing slope until 2013. 
+
+What this reflects is the follow on multiplier effect of applications based on the underlying filings being published in multiple jurisdictions that disguises the temporary bottoming out of first filings over the same period before growth in filings accelerates dramatically. 
+
+We can also see that in 2013 an inflexion occurs in filings and applications with the inflexion occurring at a higher document count for applications. 
+
+In summary, the application rate runs broadly in parallel with the priority rate *but* it smooths out and disguises changes in the  priority filing rate that are likely to more closely reflect underlying investments in research and development. 
+
+### Mapping Publications
+
+So far we have focused on mapping trends using the earliest priority documents and application numbers. We will now examine what happens if we map patent publications using the data contained in the inpadoc family member field consisting of 49,508 publications linked to the applications and their priorities. Figure \@ref(fig:family) shows the trend for counts of publications in the inpadoc family members field.  
+
+```{r family, echo=FALSE, fig.align='center', fig.cap="Trends in Publications (INPADOC Family Members)"}
+families_year <- families %>% 
+  filter(year >= 1990 & year <= 2017) %>% 
+  group_by(year) %>% 
+  tally() %>% 
+  rename(family_members = n)
+
+families_year %>% ggplot(., aes(x = year, y = family_members)) +
+  geom_line() +
+  labs(title = "Trends in Patent Publications for Drone Technology (INPADOC Family Members)", x = "Publication Year", y = "Family members") +
+  scale_x_continuous(limits = c(1990, 2017), minor_breaks = families$year)
+```
+
+
+We can now place this data which simply counts the number of publications within the INPADOC family members field into a graph with the counts by priority and applications as in Figure \@ref(fig:combined).
+
+```{r combined, echo=FALSE, fig.align='center', fig.cap="Trends in Publications (INPADOC Family Members)", message=FALSE, warning=FALSE}
+comb <- full_join(families_year, priorappln, by = "year")
+
+ggplot(data=comb, aes(year)) +
+  geom_line(aes(y = first_filings, colour = "first filings")) +
+  geom_line(aes(y = applications, colour = "applications")) +
+  geom_line(aes(y = family_members, colour = "family members")) +
+  ylab("patent documents") +
+  scale_x_continuous(limits = c(1990, 2017), minor_breaks = families$year)
+```
+
+We can see in Figure \@ref(fig:combined) that the difference between the patent publications linked to the applications and the first filings is dramatic. We will consider different definitions of patent families below. For the moment, the important observation here is that trends in the publication of INPADOC family members linked to the applications and priority filings do not closely match the pattern displayed by the applications and priority filings. What we are observing here is the multiplication effect of demand for patent rights in multiple countries around the world. 
+
+Demand for patent rights, as manifest in the filing, pursuit and maintenance of patent rights in multiple countries is an expression of the importance of the underlying invention to the applicants expressed in their willingness to pay for the pursuit of patent protection in different jurisdictions. Whereas first filings of patent applications are a proxy indicator for investments in research and development, trends in patent publications are an indicator of the commercial importance of those inventions to the applicants expressed in willingness to pay the relevant fees for examination of applications and the maintenance of patent grants. As we will see below the size of a patent family is therefore an indicator of the importance of an underlying invention to the applicant. However, as we will now see, while the majority of attention in patent statistics focuses on counts of priority filings and applications, publication data provides a route to identifying trends in patent applications and grants on the country and instrument level. 
+
+
+<!--SHOULD A DISCUSSION AND TABLE OF PRIORITY COUNTRY, APPLICATION COUNTRY AND FAMILY COUNTRY GO HERE.
+
+```{r echo=FALSE, eval=FALSE}
+# use cowplot to place side by side
+
+library(ggthemes)
+earliest_priority %>%
+  filter(priority_date >= "1990-01-01" & priority_date <= "2017-12-01") %>% 
+  group_by(priority_country) %>% 
+  tally(sort = TRUE) %>% 
+  filter(n > 100) %>% 
+  ggplot(aes(x = reorder(priority_country, n), y = n, fill = priority_country)) +
+  geom_bar(stat = "identity") +
+  coord_flip() +
+  labs(x = "Priority Country", y = "First Filings") +
+  geom_text(aes(y = n, label = n), size = 3, hjust = -0.1) +
+  theme_igray() +
+  #scale_fill_tableau("Tableau 20") + # Bookdown has a problem with this for some reason
+  theme(legend.position = "none")
+```
+
+```{r echo=FALSE, eval=FALSE}
+library(ggthemes)
+applications %>%
+  #select(-n) %>% 
+  filter(application_date >= "1990-01-01" & application_date <= "2017-12-01") %>% 
+  group_by(application_country) %>% 
+  tally(sort = TRUE) %>% 
+  filter(n > 10) %>% 
+  ggplot(aes(x = reorder(application_country, n), y = n, fill = application_country)) +
+  geom_bar(stat = "identity") +
+  coord_flip() +
+  labs(x = "Application Country", y = "Applications") +
+  geom_text(aes(y = n, label = n), size = 3, hjust = -0.1) +
+  theme_igray() +
+  #scale_fill_tableau("Tableau 20") +
+  theme(legend.position = "none")
+```
+
+```{r echo=FALSE, eval=FALSE}
+library(ggthemes)
+applications %>%
+  filter(application_date >= "1990-01-01" & application_date <= "2017-12-01") %>% 
+  group_by(application_country) %>% 
+  tally(sort = TRUE) %>% 
+  filter(n > 10) %>% 
+  ggplot(aes(x = reorder(application_country, n), y = n, fill = application_country)) +
+  geom_bar(stat = "identity") +
+  coord_flip() +
+  labs(x = "Application Country", y = "Applications") +
+  geom_text(aes(y = n, label = n), size = 3, hjust = -0.1) +
+  theme_igray() +
+  #scale_fill_tableau("Tableau 20") +
+  theme(legend.position = "none")
+```
+
+-->
+
+
+
+## Trends by Country using Publication Data
+
+In this section we illustrate the process for developing patent trends analysis at the country level using the drones data. However, it is important to emphasise that the drones dataset is not complete. A complete analysis would require the construction of a patent dataset that used searches for relevant jurisdictions in the appropriate languages using tools such as Patentscope CLIR (Cross Lingual Information Retrieval) which facilitates the translation of search terms into other languages. As such the drones data we will be working with is incomplete for national level analysis. However, bearing this major limitation in mind, it is nevertheless useful for illustrating methods, considering the issues that are likely to be encountered and how to deal with them.
+
+When seeking to develop analysis on the country level it is important to note that some countries and instruments will display high levels of activity (WO, EP, US, JP, CN and others) while others will display very low levels of activity. As a consequence, attempts to graph the data will results in a large number of countries appearing at the bottom of the graph. 
+
+
+```{r echo=FALSE}
+publication_trends <- families %>% 
+  count(family_country, year) %>%
+  group_by(family_country) %>% 
+  mutate(rank = sum(n)) %>% 
+  ungroup()
+```
+
+One approach to this is to simply focus on graphing the countries/instruments with the highest number of results. We will focus on mapping trends for the top countries and instruments. Figure \@ref(fig:pubtrends) displays the trends in publications, as an indicator of demand, for the top countries and instruments. 
+
+```{r pubtrends, echo=FALSE, fig.align='center', fig.cap="Trends in Publications using INPADOC Family data"}
+publication_trends %>% 
+  filter(year >= 1990 & year <= 2015) %>% 
+  filter(family_country == "US" | family_country == "WO" | family_country == "EP" | family_country == "JP" | family_country == "CN") %>% 
+  ggplot(.) + 
+  geom_line(aes(year, n, , colour = family_country))
+```
+
+Figure \@ref(fig:pubtrends) reveals that in terms of patent publication counts the United States is the lead country by a considerable margin, followed some distance behind by the PCT and the EPO. Note however, that this is not comparing like with like as the US data is confined to a single country whereas the EP and PCT are vehicles for the pursuit of protection in multiple countries. 
+
+We can also see that the dominance of the US data in terms of counts of publications is compressing the data for the other main countries and instruments to the bottom of the graph. In practice, the difference is so marked that we would probably seek to separate out the data. We will address this in greater detail below. 
+
+Patent publication data, in this case derived from INPADOC Family Member numbers is important because it allows for the analysis of trends in patent applications and patent grants using patent kind codes. 
+
+As discussed above, one challenge with patent kind codes that describe publication levels is that their use has varied over time. Thus in the United States prior to 2001 patent documents were only published when granted and received kind code A (first publication level). After 2001 the United States began publishing patent applications as the first publication level and they received kind code A while kind code B is used for the second publication level (granted patents). 
+
+This has two impacts on counts of patent data. First, as we see in Figure \@ref(fig:pubtrends) the data for the United States appears to leap between 2000 and 2001. This does not reflect a leap in patent activity but is instead a reporting effect arising from the publication of both applicants and grants. Second, we cannot simply use the A and B kind codes to separate out trends in patent applications and grants for the United States because they refer to different types of publications over time. 
+
+To address this we have created a field in the families table called `kind-adjusted` that has converted US kind code A documents to kind code B in the period before 2001. The original kind code is maintained in a field called `kind_original` as good practice when transforming the original data. 
+
+Figure \@ref(fig:ustrends) displays trends in patent applications and grants based on this adjustment.^[counts cross validated in Vantage Point in light of the spike in B publications between 2000 and 2001] 
+
+```{r ustrends, echo=FALSE, fig.align='center', fig.cap="Trends in US Patent Applications and Grants", message=FALSE}
+us_trends <- families %>%
+  filter(family_country == "US") %>% 
+  filter(year >= 1990 & year <= 2017) %>% 
+  filter(kind_adjusted == "A" | kind_adjusted == "B") %>% 
+  count(year, kind_adjusted)
+
+us_trends %>% 
+  ggplot(.) + 
+  geom_line(aes(year, n, , colour = kind_adjusted)) +
+  theme(legend.title=element_blank()) +
+  labs(title = "", x = "Publication Year", y = "Publications")
+```
+
+These raw counts of publications with kind code A for applications and kind code B for patent grants reveal two points. In the case of this data there appears to have been a spike in patent grants between 2000 and 2001 from 67 to 184 grants which may, or may not, be associated with the shift to the publication of patent applications from 2001 onwards. The second point is that we observe the start of the publication of patent grants from 2001 onwards with notable peaks and troughs suggesting that this graph would benefit from smoothing. However, for our purposes we can clearly see the point at which US data is transformed in scale by the publication of applications. The important point to bear in mind here is that in the period prior to 2001, US patent activity was under-reported relative to activity elsewhere because only data on grants was published. From 2001 the US harmonises with the rest of the world and we see an apparent jump in activity that is in fact a reporting effect. 
+
+In considering the use of patent publication data (in this case arising from INPADOC family members) it is important to remember that data by publications also leans forward. Peaks and troughs in this data will in fact reflect changes in underlying filing activity from at least two years before. In addition, peaks and troughs will be affected by strategic behaviour by applicants such as the filing of continuation, continuation in part and divisional patent applications [see @Hegde_2007 for discussion] along with administrative issues within patent offices that may affect the publication of patent documents.
+
+As this example suggests, significant caution is required when seeking to use publication data to map patent applications and grants in any given country. That is, it is important to investigate the use of kind codes over time for each country that is included in an analysis. For example, in a number of EPC member states, a regional European patent grant only becomes a national patent grant when it is translated. These documents are awarded kind code T. In EPC member states kind code T is therefore equivalent to a patent grant. 
+
+We will now look at trends across the top 10 countries. In doing so we need to recall the major caveat that this data will be incomplete for drone technology in each country. However, to get a feel for this we will start simply by mapping trends in publications and then break the data down using kind codes. Because some of the countries in the top ten have relatively limited activity we will include a loess smoothing trend line rather thank linking the data points. The results are presented in Figure \@ref(fig:familiescount) and limited to the period 2000-2017 for ease of visibility. 
+
+```{r familiescount, echo=FALSE, echo=FALSE, fig.align='center', fig.cap="Publication Trends for Top Ten Countries (INPADOC Family Members)", message=FALSE, warning=FALSE}
+families_count <- families %>% 
+  group_by(family_country, year) %>% 
+  tally()
+
+families_ranks <- families %>%
+  group_by(family_country) %>% 
+  tally() %>% 
+  arrange(desc(n)) 
+
+top10 <- families_ranks %>% 
+  top_n(10)
+
+families_count$top_ten <- families_count$family_country %in% top10$family_country # identify top 10 in families count
+
+families_count %>% 
+  filter(top_ten == TRUE) %>% 
+  filter(year >= 2000 & year <= 2017) %>%
+  ggplot(., aes(x = year, y = n, color = family_country)) +
+  geom_point() +
+  geom_smooth(se = FALSE) +
+  facet_wrap(~family_country, scales = "free_y", as.table = FALSE) +
+  theme(legend.position = "none") +
+  labs(title = "", x = "Publication Year", y = "Publications")
+```
+
+In considering Figure \@ref(fig:familiescount) note that the scale of activity (shown by the y axis for each country) reveals quite dramatic differences in activity for each country. We can also see that Australia and Germany display unusual patterns. This type of pattern typically reflects a relative *lack of pattern* in low frequency data. As such, this type of graph can assist with decision making in identifying the most significant sources of data to present to readers for analysis. 
+
+In work on the development of the scientific and patent landscape for marine genetic resources for South East Asian countries a problem emerged where major peaks were encountered followed by zero or very low activity. Radical peaks and troughs in patent data typically suggest *missing data*. In the case of South East Asia it transpired that PATSTAT had very limited coverage of ASEAN national collections and thus presented a very partial view when compared with Derwent Innovation which includes the ASEAN national collections. As such, graphs of the type displayed above should be initially used for exploratory data analysis with a focus on the assessment of the completeness of the data (in this case we know that the data will be incomplete).
+
+Figure \@ref(fig:familiescount) also provides us with important clues on what we might expect when we seek to visualise patent trends by kind codes for these countries. That is we should expect to see erratic data or *no real pattern* for countries with lower counts. For illustration Figure \@ref(fig:familieskind) presents the breakout of the data for each country above using kind code A and B and excluding other types of document (e.g, Utility models and designs). 
+
+```{r familieskind, echo=FALSE, echo=FALSE, fig.align='center', fig.cap="Publication Trends for Top Ten Countries with Kind Code A and B", message=FALSE, warning=FALSE}
+
+# create families_kind
+
+families_kind <- families %>% 
+  group_by(family_country, year, kind_adjusted) %>% 
+  tally()
+
+families_kind$top_ten <- families_kind$family_country %in% top10$family_country # identify the top 10
+
+families_kind %>% 
+  filter(kind_adjusted == "A" | kind_adjusted == "B") %>% 
+  filter(top_ten == TRUE) %>% 
+  filter(year >= 2000 & year <= 2017) %>%
+  ggplot(., aes(year)) + 
+  geom_line(aes(year, n, , colour = kind_adjusted)) +
+  theme(legend.title=element_blank()) +
+  labs(title = "", x = "Publication Year", y = "Publications") +
+  facet_wrap(~family_country, scales = "free_y", as.table = FALSE) +
+  #theme(legend.position = "none") +
+  labs(title = "", x = "Publication Year", y = "Publications")
+```
+
+A number of features emerge in Figure \@ref(fig:familieskind), In the case of the PCT we can see a small number of patent documents with Kind Code B. In practice there are two PCT documents in the dataset with Kind Code B. This is presumably a data entry mistake because WIPO does not issue documents with Kind Code B as the PCT has no second publication level. A second feature emerges in the case of Japan where the number of patent applications dips dramatically below the level of B documents before increasing dramatically. We would reasonably expect that the application rate would be higher than the grant rate. In practice, this issue will reflect the incomplete nature of the dataset we are working with.
+
+A third issue arises with Australia which exhibits a peak in activity around 2000/2001 and then collapses. One known issue with data from Australia is that around this period Australia recorded PCT designations as if they were actual applications leading to distortion of the statistics between approximately 2000 an 2003 [ref patstat forum].
+
+In the case of Canada (CA) we observe activity for Kind code A but no activity for Kind code B. This illustrates the importance, as emphasised above, of examining the use of kind codes in individual countries that will be the focus for analysis. Canada uses Kind code C for patent grants while Kind Code B is used for reissue patents. 
+
+The case of China (CN) which displays data for kind code B from 2010 onwards may suggest that there are limitations in the availability of patent grant data that require investigation. In the case of Germany (DE) this exposes the limitations of our dataset (which did not involve searching the German collection). While bearing this in mind, note that the data on patent grants (which exceeds those for applications) is reflecting the translation of EPC patent grants. In practice the landscape of Kind Codes for Germany is quite complicated and once again reveals the need to review Kind Codes with considerable care when developing this type of analysis. 
+
+
+## Patent Families
+
+In the preceding sections we have moved from counting patent data by priority or first filings, to counting applications and then using patent publications to explore the issues involved in mapping trends in patent applications and grants on the country level. As we have seen when we move to the country level issues of data capture from the search strategy and the interpretation of Kind Codes become major issues.
+
+As part of this discussion we used patent publication data from INPADOC Family Members that are linked to the underlying first filings. We will now look at patent families and their uses in more detail.
+
+At its simplest a patent family is simply a grouping of patent documents based on a relationship or set of relationships. As we will see below that relationship can vary. However, for everyday purposes the following working definition has the benefit of being simple and easy to remember. 
+
+> At its simplest a patent family can be understood as a stack of documents published in any language anywhere in the world that share a common parent in the form of a priority number. 
+
+As we will see, this simple working definition describes around 75% of patent families in the PATSTAT database. 
+
+In practice, there are a number of different definitions of patent families. 
+
+1. Simple first filing based families. These are families where members must share a priority number [@Martinez_2010].
+2 [DOCDB families](https://www.epo.org/searching-for-patents/helpful-resources/first-time-here/patent-families/docdb.html). Similar to the above except that based on expert review at the EPO documents with the same technical content are added to the family. DOCDB refers to the EPO central documentation database [@Martinez_2010]
+2. [INPADOC extended families](https://www.epo.org/searching-for-patents/helpful-resources/first-time-here/patent-families/inpadoc.html). These families share the DOCDB definition but the definition is expanded so if document A shares a priority number with document B they are in the same family. However, if document C shares a priority with document B but not document A then document C will still be grouped in the family of document A.^[Source: https://wiki.piug.org/display/PIUG/Patent+Families#PatentFamilies-WPI] In addition, examiners may identify other technically related documents that are added to the family. INPADOC patent families are therefore larger than DOCDB simple families (see below). 
+3. [Triadic patent families](https://data.oecd.org/rd/triadic-patent-families.htm) (OECD definition for filings shared between the US, EP and JP). This is used by the OECD in patent analysis to refer to patent filings that are made in the United States, at the European Patent Office and in Japan. The aim of these families is to allow for analysis of the internationalisation of technology by neutralising the home bias created by the fact that most applications are made in national offices. This is achieved by focusing on those made at the three major offices [@Dernis_2004; @Criscuolo_2006; @Sternitzke_2009]. 
+4. [Derwent Patent families](https://wiki.piug.org/display/PIUG/Patent+Families). A type of patent family used in the Derwent World Patent Index from Clarivate Analytics. This type of patent family relies on the identification of new priority filings that become the Basic patent for a patent family. Documents sharing that priority are classified as equivalents and become part of the patent family and includes continuation and continuations in part. In addition, what are called non-convention equivalents that do not share a priority but with the same technical content are added to the family and marked. This allows users to identify documents for the same invention that do not share a priority.
+5. [PatBase](https://www.patbase.com/login.asp) defines its families as follows: "A PatBase family contains all publications that share one or more common priority number(s). This includes continuations-in-part. If PatBase families become very large (100+ members) where possible these are broken down into sub-groups of simple families. A simple family is one where all priority numbers are shared.
+
+It is likely that this list of definitions of patent families is incomplete but it indicates the range of possible groupings. 
+
+In practice, the most commonly encountered definitions of patent families are simple families, DOCDB families and INPADOC extended families.
+However, as we can see from the definitions above one challenge with patent families is that there appears to be an element of subjective judgement whereby examiners or database providers take decisions on the members of patent families. In addition patent database providers do not always clearly describe the process for determining patent families. This can make patent families confusing and the simple working definition provided above is designed to give clarity of focus. 
+
+Research on patent families has been greatly enhanced by the creation in 2006 of the EPO World Patent Statistical Database (PATSTAT). In 2010 Catalina Martinez published an important OECD Working Paper entitled  *Insight into Different Types of Patent Families" on the structure of patent families using PATSTAT data for the period between 1991 and 2009* [@Martinez_2010; @Martinez_2010a]. This study made a major contribution to clarifying the impact of different definitions of patent families using PATSTAT as an international baseline and also explored the structure of patent families. We will now briefly summarise and explore the main findings from this study. 
+
+Martinez focuses on the important question of how to build patent families and identifies four types of linkages that can be used to build patent families:
+
+1.  Paris Convention priorities
+2.  Technical similarities (also called non-convention priorities, intellectual priorities or technical relations)
+3.  Domestic priorities (e.g.continuations, continuations in part, provisionals, divisionals)
+4.  PCT regional/national phase entries (Martinez 2010: 23)
+
+Each of these types of linkages is accompanied by a definition and whether the information is provided by the applicant as in Table \@ref(tab:martineztab) reproduced from Martinez below (Martinez, 2010. Table 7, 23)
+
+```{r martineztab, echo=FALSE, fig.align='center', fig.cap="Sources of the Building Blocks for Patent Families", echo=FALSE, message=FALSE, warning=FALSE}
+martinez_definitions <- read_csv("data/martinez_definitions.csv")
+martinez_definitions %>% knitr::kable()
+```
+
+
+
+As we can see in this table, the source of information for building patent families predominantly comes from the applicant except for the technical similarities. Technical similarities are identified by examiners based on their assessment of the scope, inventor and applicant names and result in an artificial priority link. As such, the identification of technical similarities is not purely subjective. 
+
+Martinez then uses the EPO World Patent Statistical Database (PATSTAT) to quantify the impact of the use of the different linkages on the size of patent families for the period 1991 to 1999. Table \@ref(tab:martinezcounts) reproduces Table 9 from Martinez's research.
+
+```{r martinezcounts, echo=FALSE, fig.align='center', fig.cap="Counts of families and applications in them, by source of family relations 1991-1999 [@Martinez_2010]"}
+library(readxl)
+martinez_table <- read_excel("data/martinez_table.xlsx")
+library(knitr)
+library(formattable)
+library(kableExtra)
+martinez_table <- martinez_table %>% 
+  rename(families = families__1, members = members__1, families = families__2, members = members__2, families = families__3, members = members__3)
+
+  kable(martinez_table) %>% 
+  kable_styling("striped") %>% 
+  add_header_above(c(" ", "Paris Convention" = 2, "Paris Convention + Domestic Continuations" = 2, "Paris Convention
++ Domestic continuations + Technical similarities)" = 2, "Paris Convention + Domestic continuations + Technical similarities + PCT national phase entries" = 2)) %>% 
+  add_header_above(c(" ", "Source 1 Families" = 2, "Source 2 Families" = 2, "Source 3 Families" = 2, "Source 4 Families" = 2)) 
+```
+
+Note that Table \@ref(fig:martinezcounts) focuses on the earliest priorities and excludes singletons.b 
+
+A number of important points emerge in Martinez's analysis. The first of these is that "Paris Convention priorities alone make up more than 95%, which make them the most relevant patent linkage by far in the construction of extended patent families." As such Paris Convention priorities are the foundation of patent families. 
+
+The second major observation is that the number and size of families increases as the definition is expanded in the first three cases. The third case exactly matches with the widely used INPADOC extended patent family definition (Paris, domestic continuations and technical similarities). However, observe that the number of _families_ in the final case in the table is lower in all cases than for the source 3 (INPADOC) even while the number of family members increases. The reason for this is that first three types create new independent families. In contrast, the final type consolidates families by revealing shared links through the Patent Cooperation Treaty. That is, the number of families falls because otherwise hidden linkages with the PCT become obvious (see Martinez 2010: 25). 
+
+Using this data we can visualise the impact of different types of counts of families and family members. We will focus here on displaying the difference between the simple family definition and the INPADOC definition (source 3 above). Figure \@ref(fig:martinezfamilies) trends in the number of patent families using the simple and INPADOC definitions. 
+
+```{r martinezfamilies, echo=FALSE, fig.align='center', fig.cap="PATSTAT Trends in DOCDB Simple and INPADOC Extended Patent Families [@Martinez_2010]"}
+martinez_table2 <- read_excel("data/martinez_table.xlsx")
+
+martinez_table2 <- martinez_table2 %>% filter(year != "1991-1999") %>% 
+  rename(simple = families, inpadoc = families__2) %>% 
+  rename(simple_members = members, inpadoc_members = members__2)
+  
+  ggplot(data=martinez_table2, aes(x = year))  +
+    geom_line(aes(y = simple, colour = "DOCDB simple", group = 1)) +
+    geom_line(aes(y = inpadoc, colour = "inpadoc", group = 1)) +
+    theme(legend.title=element_blank()) +
+    labs(title = "PATSTAT Trends in DOCDB Simple and INPADOC Extended Patent Families", x = "Year", y = "Families")
+```
+
+We can see here that the DOCDB simple families and the INPADOC family counts follow the same pattern except that the number of inpadoc families are consistently larger than the DOCDB simple families. 
+
+Figure \@ref(fig:familiesandmembers) places counts of the families and family members onto the same graph the difference between counting the number of families rather than the number of family members comes into focus. 
+
+```{r familiesandmembers, echo=FALSE, fig.align='center', fig.cap="Trends in Patent Families (priority filings) and Family Members compared"}
+  ggplot(data=martinez_table2, aes(x = year)) +
+  geom_line(aes(y = simple, colour = "DOCDB families", group = 1)) +
+    geom_line(aes(y = inpadoc, colour = "INPADOC families", group = 1)) +
+  geom_line(aes(y = simple_members, colour = "DOCDB simple members", group = 1)) +
+    geom_line(aes(y = inpadoc_members, colour = "INPADOC members", group = 1)) +
+    theme(legend.title=element_blank())
+```
+
+In considering this graph note that while the families count range is in the hundreds of thousands, with 205,222 INPADOC families in 1999, the equivalent count for INAPDOC family members was 1,106,929. Under both definitions this brings home the scale of the multiplier effects arising from the publication and republication of patent documents. We have seen a similar type of pattern in Figure \@ref(fig:combined) for the drones data where the number of patent family members accelerates away from the priority filings as publications multiply.
+
+Martinez also explores and quantifies the different structures of patent families in the period between 1991 and 1999 [see in particular @Martinez_2010]. Martinez developed an algorithm to assess the structure of the INPADOC patent families discussed above and found that:
+
+>"Applying the algorithm just described to the 1 311 745 INPADOC extended patent families with earliest priorities in the 1990s, as reported in PATSTAT September 2008, and excluding families formed by one patent document only (singletons), a total of 47 437 different family structures are identified. Among them, however, only a few structures are really popular: 86% of the structures represent just one family each, whereas only 10 structures represent 73% of all families and 25 represent 81%. In addition, more than half of the top 25 structures are made up of one earliest priority followed by several direct subsequent filings, what we will call “simple structures” from now onwards." ^[Martinez notes that PATSTAT data from the 2008 edition may vary in subsequent editions, for example new documents may be added that increase the size or new data sources may be included in PATSTAT] 
+
+The important point here is that while initially the structure of patent families may appear to be extremely diverse, with 47,437 different family structures, in practice 10 structures described 73% of the families and 25 structures accounted for 81%. This is a very significant finding because it informs us that the majority of the time the structure of patent families falls within a limited set. Furthermore, of the top 25 structures, over half are made up of a simple structure consisting of a single earliest priority followed by several direct filings. Martinez goes on to conclude that "...we have found that 75% of all INPADOC extended priority patent families with earliest priorities between 1991 and 1999 have a simple structure, consisting of one single first filing and its direct subsequent filings" [@Martinez_2010]. The broader significance of this is because INPADOC extended families are the broadest category of common family types that 75% of other patent families will be of the single first filing and direct subsequent (child) filing type.   
+
+From this we can reasonably conclude that the majority of patent families that we will ever encounter will be of the simple type (single priority followed by several direct filings). However as Martinez also notes "Complex families may favor specific technologies, countries or more valuable patents" (Martinez 2010: 17) so it is important to bear in mind that complex families while representing a much smaller proportion of the data may also be important.
+
+In considering the use of different types of family counts the most commonly encountered forms will be the DOCDB simple family types or the INPADOC family types. In the sections above we have graphed families (priority filings) and used raw family members to explore trends in different countries. However, as mentioned above the size of patent families is an indication of the importance of an invention to the applicants based on their willingness to pay fees for the stages of the procedure and for the maintenance of any granted patents in one or more jurisdiction. Table \@ref(tab:topfamily) displays the raw count of INPADOC family members across the drones dataset linked to the earliest priority number.
+
+```{r topfamily, fig.align='center', echo=FALSE, fig.cap="Top INPADOC Families"}
+unique_priority %>% 
+  drop_na(family_count) %>% 
+  select(earliest_priority, application_number, family_count) %>% 
+  arrange(desc(family_count)) %>%
+  head(10) %>% 
+  knitr::kable(caption = "Top INPADOC Families")
+```
+
+<!--drones related is publn US9033116B2 and appln US14024204A 2013-09-11-->
+
+The top result in the drones dataset lists an earliest priority filing in 1997 and concerns a *Methods for Manufacturing Inkjet Print Head using Multilayer Material Layer* by Silverbrook Research in Australia involving Kia Silverbrook who has been described on Wikipedia as having been the worlds most prolific inventor.^[This example can be identified in esp@cenet with application number JP200944799A  [https://worldwide.espacenet.com/publicationDetails/biblio?FT=D&date=20090820&DB=EPODOC&locale=en_EP&CC=JP&NR=2009184358A&KC=A&ND=4](https://worldwide.espacenet.com/publicationDetails/biblio?FT=D&date=20090820&DB=EPODOC&locale=en_EP&CC=JP&NR=2009184358A&KC=A&ND=4)] According to news reports Silverbrook Research went into administration in 2014.^[https://print21.com.au/kia-silverbrook-dumps-name-as-business-gets-thrashed/71812]. 
+
+This is an example of noise in our drones dataset and a historic example, however the size of the INPADOC patent family indicates that the claimed invention was of great importance to the applicants. Table \@ref(tab:topfamilycountry) displays the countries that have been the focus for the development of this family. Note that each document in the family is counted. 
+
+```{r topfamilycountry, echo=FALSE, fig.align='center', fig.cap="Top Family Countries for priority AU19977991A"}
+# show results for the raw counts of family members and the results where deduplicated onto the number minus the kind code
+f1 <- families %>% 
+  select(earliest_priority, application_number, inpadoc_family_members, family_country, family_date, family_consolidated) %>% 
+  filter(earliest_priority == "AU19977991A 1997-07-15") %>%
+  group_by(family_country) %>%
+  tally() %>% 
+  rename(raw = n) %>% 
+  arrange(family_country)
+
+f2 <- families %>% 
+  select(earliest_priority, application_number, inpadoc_family_members, family_country, family_date, family_consolidated) %>% 
+  filter(earliest_priority == "AU19977991A 1997-07-15") %>%
+  select(family_country, family_consolidated) %>% 
+  mutate(duplicated = duplicated(family_consolidated)) %>% 
+  filter(duplicated == FALSE) %>% 
+  group_by(family_country) %>%
+  tally() %>% 
+  rename(consolidated = n) %>% 
+  arrange(family_country)
+
+f3 <- bind_cols(f1, f2) %>% 
+  select(-family_country1) %>% 
+  arrange(desc(consolidated)) %>% 
+  rename("family country" = family_country)
+
+f3 %>% 
+  head(15) %>% 
+  knitr::kable(caption="Top Family Countries for priority AU19977991A")
+```
+
+
+Table \@ref(tab:topfamilycountry) shows the raw counts of family member documents for each country and the consolidated counts (with the kind codes removed to group by document identifier). The documents are ranked on the count of the consolidated family members. 
+
+We can immediately see that while the applicant company was Australian the key target market was the United States followed by Australia, Singapore, Europe (through the European Patent Office) and Japan. By far the greatest intensity of family members is found in the United States and it transpires that these family members are clustered by date. Figure \@ref(fig:uscluster) shows US family member publications as a simple frequency plot over time. 
+
+```{r uscluster, echo=FALSE, fig.align='center', fig.cap="Frequency Plot for the Publication of US Family Members for priority number AU19977991A 1997-07-15"}
+families %>% 
+  select(earliest_priority, application_number, inpadoc_family_members, family_country, family_date, family_consolidated) %>% 
+  filter(earliest_priority == "AU19977991A 1997-07-15") %>% 
+  filter(family_country == "US") %>% 
+  group_by(family_date) %>% 
+  tally() %>% 
+  arrange(family_date) %>% 
+  ggplot(aes(x = family_date, y = n)) +
+  geom_line()
+  
+```
+
+Figure \@ref(fig:uscluster) shows a strong clustering effect. In order to more clearly understand what is happening inside this plot Figure \@ref(fig:usclustergrants) displays the frequencies for US granted patents within the family over time (kind code B)
+
+```{r usclustergrants, echo=FALSE, fig.align='center', fig.cap="Frequency Plot for Patent Grants among US Family Members for priority number AU19977991A 1997-07-15"}
+families %>% 
+  select(earliest_priority, application_number, inpadoc_family_members, family_country, family_date, family_consolidated, kind_original, kind_adjusted) %>% 
+  filter(earliest_priority == "AU19977991A 1997-07-15") %>%
+  filter(family_country == "US") %>% 
+  filter(kind_adjusted == "B") %>%
+  group_by(family_date) %>% 
+  tally() %>% 
+  ggplot(aes(x = family_date, y = n)) +
+  geom_line()
+```
+
+
+What emerges here is that there are 1,086 US patent grants that can be traced to the single Australian priority filing.^[Thirty priorities are associated with this patent family. There are two documents that share the earliest date AU19977991A 1997-07-15 and AU19978004A 1997-07-15. esp@cenet lists the earliest priority as AU1997PO08010 19970715. The use of the letter P suggests that this could be some form of provisional filing although we have not been able to trace the use of this kind code in WIPO's examples for Australia.] The earliest US patent grant in the set was published in March 2000 as US6041600A
+for the `Utilization of quantum wires in MEMS actuators` that claims priority to the Australian document. The latest patent grants in 2017 provide the explanation for what has been happening with the family members. 
+
+```{r inspectus, eval=FALSE, echo=FALSE}
+# used to inspect the data
+families %>% 
+  select(earliest_priority, application_number, inpadoc_family_members, family_country, family_date, family_consolidated, kind_original, kind_adjusted) %>% 
+  filter(earliest_priority == "AU19977991A 1997-07-15") %>%
+  filter(family_country == "US") %>% 
+  filter(kind_adjusted == "B") %>% View()
+```
+
+
+The text of the most recent patent grant US9584681B2 for a `Handheld Imaging Device Incorporating Multi-Core Image Processor` in the description on related applications says:
+
+> This application is a continuation of U.S. application Ser. No. 13/101,131 filed May 4, 2011, which is a continuation of U.S. application Ser. No. 10/656,791 filed Sep. 8, 2003, issued Jun. 7, 2011, as U.S. Pat. No. 7,957,009, which is a continuation application of U.S. application Ser. No. 09/922,274 filed Aug. 6, 2001, issued Sep. 9, 2003, as U.S. Pat. No. 6,618,117, which is a continuation-in-part application of U.S. application Ser. No. 09/113,053, filed Jul. 10, 1998, issued Mar. 26, 2002, as U.S. Pat. No. 6,362,868. Each of the above identified patents and applications and U.S. Pat. No. 6,238,044 are hereby incorporated herein by reference in their entirety. 
+
+While we have not been able to review the entire portfolio of patent grants, a review of the five most recent documents suggests that the US members of this family have been constructed from a long series of continuation and continuation in part applications. 
+
+Further analysis of this specific case is beyond the scope of the Handbook. However, as discussed in the recent in depth review of patent family research by Dechezleprêtre et. al. 2017 it highlights the strategic uses of the patent system with respect to continuation filings [@Dechezleprêtre_2017]. Lemley and Moore provide a critique of the use of continuations in the US system and focus on the extreme example of patent activity by a Jerome Lemelson in connection with bar code readers [@Lemley_2003]. They highlight that using continuations and continuations in part:
+
+
+>"Inventors can keep an application pending in the PTO for years, all the while monitoring developments in the marketplace. They can then draft claims that will cover those developments. In the most extreme cases, patent applicants add claims during the continuation process to cover ideas they never thought of themselves, but instead learned from a competitor. The most egregious example is Jerome Lemelson, who regularly rewrote claims over the decades his patents were in prosecution in order to cover technologies developed long after he first filed his applications. Lemelson filed eight of the ten continuation patents with the longest delays in prosecution in our study. Those Lemelson patents spent anywhere from thirty-eight to more than forty-four years in the PTO." [@Lemley_2003]
+
+As Dechezleprêtre et. al. point out the aspects of US patent law that facilitated the specific strategic behaviour by this applicant have been abolished. However, continuations and continuations in part continue to feature as part of the US patent system. 
+
+From the perspective of patent analytics, this example demonstrates that we are able to move from the use of patent family data to explore patent activity linked to a priority filing or set of priorities anywhere in the world. We are also able to identify the top ranking patent families and to explore the details of those families in individual countries. Simple techniques such as the use of a frequency plot over time help us to identify patterns in activity. In the case of Silverbrook we have seen that while the company reportedly went into administration in 2014, with a collapse in US family activity observable in the frequency plots above for that period, we then observe the issuance of patent grants from 2015 into 2017 (the end of our data). This suggests that this portfolio has been taken over (perhaps through the sale of the IP to a third party). To proceed further in the analysis of this case we would want to look at the legal status for the documents in the portfolio. Thus, a review of the legal status for the most recent patent grant US9584681B2 reveals that it is now owned by Google.^[esp@cenet Legal Status for [US9584681B2]( https://worldwide.espacenet.com/publicationDetails/inpadoc?CC=US&NR=2013016233A1&KC=A1&FT=D&ND=3&date=20130117&DB=EPODOC&locale=en_EP)]. In addition, as discussed by [@Hall_2012] the analysis of patent renewal fees has an important role to play in analysis of the economic value of patent grants within a family portfolio. 
+ 
+The discussion of patent families presented above points to the richness of research that is possible using patent family data. It is important to note that different definitions of patent families are important in patent analytics and may yield different insights. Thus, one criticism of INPADOC patent families is that they are too broad and a simpler more focused definition may be preferred. In other cases as in the work by the OECD the use of trilateral patent families is intended to promote international comparability by removing the home bias in patent data. The use of this type of definition is important for both comparability and identification of more important patents. Thus in the case of countries such as China, where filings are heavily focused on the national level, the selection of patent families with international members can facilitate the analysis of cases where Chinese inventors and applicants may be seeking to invest in external markets.
+ 
+In closing this discussion it is important to emphasise that patent families continue to be a very active focus of research in economics and innovation studies. As the most recent review of the literature by Dechezleprêtre et. al. 2017 has highlighted to date the main focus in this literature has been on using family size as the indicator of value (focusing on the number of countries represented in a family) the number of filings in the priority country along with the time span between the first and last filings within a family also offer insights into patent value [@Dechezleprêtre_2017]. As such, the discussion presented above presents a starting point for engaging with this increasingly rich literature. 
+
+## Forecasting Patent Activity
+
+TBD
+
+
+
