@@ -4,7 +4,7 @@ author: "Paul Oldham"
 date: "`r Sys.Date()`"
 site: bookdown::bookdown_site
 documentclass: book
-bibliography: [book.bib]
+bibliography: [book.bib, crossref.bib]
 biblio-style: apalike
 link-citations: yes
 description: "This is a working draft of the WIPO Patent Analytics Handbook."
@@ -96,13 +96,13 @@ The WIPO Patent Analytics Handbook is being written with the generous financial 
 
 The WIPO Patent Analytics Handbook provides a guide to advanced methods for patent analytics. The Handbook builds on the [WIPO Manual for Open Source Patent Analytics](https://wipo-analytics.github.io/) which provided an introduction to working with patent data using a range of free tools to obtain, clean and visualize patent data. The handbook aims to address two challenges. 
 
-The first of these challenges is that anyone seeking to start work in patent analytics is confronted by the challenge that there is a lack of a source of practical guidance on how to develop descriptive patent statistics. The *OECD Patent Statistics Manual* is required reading for anyone seeking to engage with patent statistics and is an invaluable resource [@OECD_2009]. However, it focuses on the issues we need to think about rather than practical demonstration. The Handbook addresses this problem by moving from first principles in the development of patent counts for descriptive statistics to the basics of statistical models for forecasting patent trends. In the process the Handbook build a bridge to more sophisticated approaches to working with patent data at scale in fields such as econometrics and points to important resources in these areas. 
+The first of these challenges is that anyone seeking to start work in patent analytics is confronted by a lack of reliable practical guidance on how to develop descriptive patent statistics. The *OECD Patent Statistics Manual* is required reading for anyone seeking to engage with patent statistics and is an invaluable resource [@OECD_2009]. However, it focuses on the issues we need to think about rather than practical demonstration. The Handbook addresses this problem by moving from first principles in the development of patent counts for descriptive statistics to the basics of statistical models for forecasting patent trends. In the process the Handbook aims to build a bridge to more sophisticated approaches to working with patent data at scale in fields such as econometrics and points to important resources in these areas. 
 
 The ability to generate descriptive patent statistics and statistical models is only one aspect of patent analytics. Recent years have witnessed an explosion in the availability of different data types that can be integrated with patent data to better inform and enrich analysis. The second and major challenge addressed by the Handbook is integrating different data types from the scientific literature, to geographic information and the results of text mining into patent analytics. In turn the range of methods that are available to patent analysts for working with patent data promises to be transformed by the emergence of accessible machine learning tools for use across a range of topics such as applicant name cleaning, text mining and image classification. In common with many other fields of research the emergence of machine learning appears to hold considerable promise for patent analytics but it remains to be seen whether this promise will be realised. 
 
 The Handbook is therefore intended to be used by researchers and professionals who are relatively new to working with patent data. It is also intended to be of interest for experienced researchers and professionals who are interested in expanding their skills in working with patent and related data. 
 
-One important challenge that has emerged in recent years with the growth of patent analytics and patent landscape analysis is the problem of reproducibility [@Smith_2017]. Patent analysts typically work with data from a number of different databases and use a number of different methods in their analysis. However, the precise details of the coverage of different sources, the methods used, and the limitations of different approaches are often not made explicit. This makes it difficult for other to reproduce the results and to assess the quality of the analysis presented. The Handbook takes the approach that patent analysis should be reproducible. The Handbook addresses this issue by using examples from standardised open access datasets created for this purpose. The online version of the Handbook is accompanied by the code used to develop the examples.
+One important challenge that has emerged in recent years with the growth of patent analytics and patent landscape analysis is the problem of reproducibility [@Smith_2017]. Patent analysts typically work with data from a number of different databases and use a number of different methods in their analysis. However, the precise details of the coverage of different sources, the methods used, and the limitations of different approaches are often not made explicit. This makes it difficult for others to reproduce the results and to assess the quality of the analysis presented. The Handbook takes the approach that patent analysis should be reproducible. The Handbook addresses this issue by using examples from standardised open access datasets created for this purpose. The online version of the Handbook is accompanied by the code used to develop the examples.
 
 # How to use the Handbook {-} 
 \index{howto}
@@ -118,7 +118,9 @@ The handbook and its examples were written mainly in RStudio. RStudio is an easy
 
 This Handbook is open access and each chapter and the code used to develop the examples can be downloaded free of charge from Github at [https://github.com/wipo-analytics/handbook](https://github.com/wipo-analytics/handbook). The Handbook can be opened in RStudio using the `handbook.Rproj` file. 
 
-The Handbook makes use of a number of R packages. To install all packages used in the Handbook run the following lines in the console:```{r eval=FALSE}
+The Handbook makes use of a number of R packages. To install all packages used in the Handbook run the following lines in the console:
+
+```{r eval=FALSE}
 install.packages("tidyverse")
 install.packages("rcrossref")
 install.packages("rorcid")
@@ -157,5 +159,8 @@ devtools::install_github("wipo-analytics/drones")
 When the drones package is installed review the contents of each dataset in the package documentation (see Packages in Rstudio) and load the data into your workspace using the following. 
 
 ```{r load_drones, eval=FALSE}
+library(drones)
 drones <- drones::drones
 ```
+
+
