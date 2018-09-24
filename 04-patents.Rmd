@@ -829,7 +829,7 @@ Each of these types of linkages is accompanied by a definition and whether the i
 
 ```{r martineztab, echo=FALSE, fig.align='center', fig.cap="Sources of the Building Blocks for Patent Families", echo=FALSE, message=FALSE, warning=FALSE}
 martinez_definitions <- read_csv("data/martinez_definitions.csv")
-martinez_definitions %>% knitr::kable()
+martinez_definitions %>% knitr::kable(caption = "Sources of the Building Blocks for Patent Families")
 ```
 
 
@@ -847,14 +847,14 @@ library(kableExtra)
 martinez_table <- martinez_table %>% 
   rename(families = families__1, members = members__1, families = families__2, members = members__2, families = families__3, members = members__3)
 
-  kable(martinez_table) %>% 
+  kable(martinez_table, caption = "Counts of families and applications in them, by source of family relations 1991-1999 [@Martinez_2010]") %>% 
   kable_styling("striped") %>% 
   add_header_above(c(" ", "Paris Convention" = 2, "Paris Convention + Domestic Continuations" = 2, "Paris Convention
 + Domestic continuations + Technical similarities)" = 2, "Paris Convention + Domestic continuations + Technical similarities + PCT national phase entries" = 2)) %>% 
   add_header_above(c(" ", "Source 1 Families" = 2, "Source 2 Families" = 2, "Source 3 Families" = 2, "Source 4 Families" = 2)) 
 ```
 
-Note that Table \@ref(fig:martinezcounts) focuses on the earliest priorities and excludes singletons.b 
+Note that Table \@ref(tab:martinezcounts) focuses on the earliest priorities and excludes singletons.b 
 
 A number of important points emerge in Martinez's analysis. The first of these is that "Paris Convention priorities alone make up more than 95%, which make them the most relevant patent linkage by far in the construction of extended patent families." As such Paris Convention priorities are the foundation of patent families. 
 

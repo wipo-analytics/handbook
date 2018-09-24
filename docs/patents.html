@@ -25,7 +25,7 @@
 <meta name="author" content="Paul Oldham">
 
 
-<meta name="date" content="2018-08-17">
+<meta name="date" content="2018-09-24">
 
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="apple-mobile-web-app-capable" content="yes">
@@ -52,7 +52,561 @@
 <script src="libs/sankey-1/sankey.js"></script>
 <script src="libs/sankeyNetwork-binding-0.4/sankeyNetwork.js"></script>
 <script src="libs/kePrint-0.0.1/kePrint.js"></script>
-\usepackage{booktabs}
+<link href="libs/leaflet-1.3.1/leaflet.css" rel="stylesheet" />
+<script src="libs/leaflet-1.3.1/leaflet.js"></script>
+<link href="libs/leafletfix-1.0.0/leafletfix.css" rel="stylesheet" />
+<script src="libs/Proj4Leaflet-1.0.1/proj4-compressed.js"></script>
+<script src="libs/Proj4Leaflet-1.0.1/proj4leaflet.js"></script>
+<link href="libs/rstudio_leaflet-1.3.1/rstudio_leaflet.css" rel="stylesheet" />
+<script src="libs/leaflet-binding-2.0.1/leaflet.js"></script>
+
+<script>
+/* ========================================================================
+ * Bootstrap: transition.js v3.3.7
+ * http://getbootstrap.com/javascript/#transitions
+ * ========================================================================
+ * Copyright 2011-2016 Twitter, Inc.
+ * Licensed under MIT (https://github.com/twbs/bootstrap/blob/master/LICENSE)
+ * ======================================================================== */
+
+
++function ($) {
+  'use strict';
+
+  // CSS TRANSITION SUPPORT (Shoutout: http://www.modernizr.com/)
+  // ============================================================
+
+  function transitionEnd() {
+    var el = document.createElement('bootstrap')
+
+    var transEndEventNames = {
+      WebkitTransition : 'webkitTransitionEnd',
+      MozTransition    : 'transitionend',
+      OTransition      : 'oTransitionEnd otransitionend',
+      transition       : 'transitionend'
+    }
+
+    for (var name in transEndEventNames) {
+      if (el.style[name] !== undefined) {
+        return { end: transEndEventNames[name] }
+      }
+    }
+
+    return false // explicit for ie8 (  ._.)
+  }
+
+  // http://blog.alexmaccaw.com/css-transitions
+  $.fn.emulateTransitionEnd = function (duration) {
+    var called = false
+    var $el = this
+    $(this).one('bsTransitionEnd', function () { called = true })
+    var callback = function () { if (!called) $($el).trigger($.support.transition.end) }
+    setTimeout(callback, duration)
+    return this
+  }
+
+  $(function () {
+    $.support.transition = transitionEnd()
+
+    if (!$.support.transition) return
+
+    $.event.special.bsTransitionEnd = {
+      bindType: $.support.transition.end,
+      delegateType: $.support.transition.end,
+      handle: function (e) {
+        if ($(e.target).is(this)) return e.handleObj.handler.apply(this, arguments)
+      }
+    }
+  })
+
+}(jQuery);
+</script>
+<script>
+/* ========================================================================
+ * Bootstrap: collapse.js v3.3.7
+ * http://getbootstrap.com/javascript/#collapse
+ * ========================================================================
+ * Copyright 2011-2016 Twitter, Inc.
+ * Licensed under MIT (https://github.com/twbs/bootstrap/blob/master/LICENSE)
+ * ======================================================================== */
+
+/* jshint latedef: false */
+
++function ($) {
+  'use strict';
+
+  // COLLAPSE PUBLIC CLASS DEFINITION
+  // ================================
+
+  var Collapse = function (element, options) {
+    this.$element      = $(element)
+    this.options       = $.extend({}, Collapse.DEFAULTS, options)
+    this.$trigger      = $('[data-toggle="collapse"][href="#' + element.id + '"],' +
+                           '[data-toggle="collapse"][data-target="#' + element.id + '"]')
+    this.transitioning = null
+
+    if (this.options.parent) {
+      this.$parent = this.getParent()
+    } else {
+      this.addAriaAndCollapsedClass(this.$element, this.$trigger)
+    }
+
+    if (this.options.toggle) this.toggle()
+  }
+
+  Collapse.VERSION  = '3.3.7'
+
+  Collapse.TRANSITION_DURATION = 350
+
+  Collapse.DEFAULTS = {
+    toggle: true
+  }
+
+  Collapse.prototype.dimension = function () {
+    var hasWidth = this.$element.hasClass('width')
+    return hasWidth ? 'width' : 'height'
+  }
+
+  Collapse.prototype.show = function () {
+    if (this.transitioning || this.$element.hasClass('in')) return
+
+    var activesData
+    var actives = this.$parent && this.$parent.children('.panel').children('.in, .collapsing')
+
+    if (actives && actives.length) {
+      activesData = actives.data('bs.collapse')
+      if (activesData && activesData.transitioning) return
+    }
+
+    var startEvent = $.Event('show.bs.collapse')
+    this.$element.trigger(startEvent)
+    if (startEvent.isDefaultPrevented()) return
+
+    if (actives && actives.length) {
+      Plugin.call(actives, 'hide')
+      activesData || actives.data('bs.collapse', null)
+    }
+
+    var dimension = this.dimension()
+
+    this.$element
+      .removeClass('collapse')
+      .addClass('collapsing')[dimension](0)
+      .attr('aria-expanded', true)
+
+    this.$trigger
+      .removeClass('collapsed')
+      .attr('aria-expanded', true)
+
+    this.transitioning = 1
+
+    var complete = function () {
+      this.$element
+        .removeClass('collapsing')
+        .addClass('collapse in')[dimension]('')
+      this.transitioning = 0
+      this.$element
+        .trigger('shown.bs.collapse')
+    }
+
+    if (!$.support.transition) return complete.call(this)
+
+    var scrollSize = $.camelCase(['scroll', dimension].join('-'))
+
+    this.$element
+      .one('bsTransitionEnd', $.proxy(complete, this))
+      .emulateTransitionEnd(Collapse.TRANSITION_DURATION)[dimension](this.$element[0][scrollSize])
+  }
+
+  Collapse.prototype.hide = function () {
+    if (this.transitioning || !this.$element.hasClass('in')) return
+
+    var startEvent = $.Event('hide.bs.collapse')
+    this.$element.trigger(startEvent)
+    if (startEvent.isDefaultPrevented()) return
+
+    var dimension = this.dimension()
+
+    this.$element[dimension](this.$element[dimension]())[0].offsetHeight
+
+    this.$element
+      .addClass('collapsing')
+      .removeClass('collapse in')
+      .attr('aria-expanded', false)
+
+    this.$trigger
+      .addClass('collapsed')
+      .attr('aria-expanded', false)
+
+    this.transitioning = 1
+
+    var complete = function () {
+      this.transitioning = 0
+      this.$element
+        .removeClass('collapsing')
+        .addClass('collapse')
+        .trigger('hidden.bs.collapse')
+    }
+
+    if (!$.support.transition) return complete.call(this)
+
+    this.$element
+      [dimension](0)
+      .one('bsTransitionEnd', $.proxy(complete, this))
+      .emulateTransitionEnd(Collapse.TRANSITION_DURATION)
+  }
+
+  Collapse.prototype.toggle = function () {
+    this[this.$element.hasClass('in') ? 'hide' : 'show']()
+  }
+
+  Collapse.prototype.getParent = function () {
+    return $(this.options.parent)
+      .find('[data-toggle="collapse"][data-parent="' + this.options.parent + '"]')
+      .each($.proxy(function (i, element) {
+        var $element = $(element)
+        this.addAriaAndCollapsedClass(getTargetFromTrigger($element), $element)
+      }, this))
+      .end()
+  }
+
+  Collapse.prototype.addAriaAndCollapsedClass = function ($element, $trigger) {
+    var isOpen = $element.hasClass('in')
+
+    $element.attr('aria-expanded', isOpen)
+    $trigger
+      .toggleClass('collapsed', !isOpen)
+      .attr('aria-expanded', isOpen)
+  }
+
+  function getTargetFromTrigger($trigger) {
+    var href
+    var target = $trigger.attr('data-target')
+      || (href = $trigger.attr('href')) && href.replace(/.*(?=#[^\s]+$)/, '') // strip for ie7
+
+    return $(target)
+  }
+
+
+  // COLLAPSE PLUGIN DEFINITION
+  // ==========================
+
+  function Plugin(option) {
+    return this.each(function () {
+      var $this   = $(this)
+      var data    = $this.data('bs.collapse')
+      var options = $.extend({}, Collapse.DEFAULTS, $this.data(), typeof option == 'object' && option)
+
+      if (!data && options.toggle && /show|hide/.test(option)) options.toggle = false
+      if (!data) $this.data('bs.collapse', (data = new Collapse(this, options)))
+      if (typeof option == 'string') data[option]()
+    })
+  }
+
+  var old = $.fn.collapse
+
+  $.fn.collapse             = Plugin
+  $.fn.collapse.Constructor = Collapse
+
+
+  // COLLAPSE NO CONFLICT
+  // ====================
+
+  $.fn.collapse.noConflict = function () {
+    $.fn.collapse = old
+    return this
+  }
+
+
+  // COLLAPSE DATA-API
+  // =================
+
+  $(document).on('click.bs.collapse.data-api', '[data-toggle="collapse"]', function (e) {
+    var $this   = $(this)
+
+    if (!$this.attr('data-target')) e.preventDefault()
+
+    var $target = getTargetFromTrigger($this)
+    var data    = $target.data('bs.collapse')
+    var option  = data ? 'toggle' : $this.data()
+
+    Plugin.call($target, option)
+  })
+
+}(jQuery);
+</script>
+<script>
+window.initializeCodeFolding = function(show) {
+
+  // handlers for show-all and hide all
+  $("#rmd-show-all-code").click(function() {
+    $('div.r-code-collapse').each(function() {
+      $(this).collapse('show');
+    });
+  });
+  $("#rmd-hide-all-code").click(function() {
+    $('div.r-code-collapse').each(function() {
+      $(this).collapse('hide');
+    });
+  });
+
+  // index for unique code element ids
+  var currentIndex = 1;
+
+  // select all R code blocks
+  var rCodeBlocks = $('pre.sourceCode, pre.r, pre.python, pre.bash, pre.sql, pre.cpp, pre.stan, pre.js');
+  rCodeBlocks.each(function() {
+
+    // create a collapsable div to wrap the code in
+    var div = $('<div class="collapse r-code-collapse"></div>');
+    if (show)
+      div.addClass('in');
+    var id = 'rcode-643E0F36' + currentIndex++;
+    div.attr('id', id);
+    $(this).before(div);
+    $(this).detach().appendTo(div);
+
+    // add a show code button right above
+    var showCodeText = $('<span>' + (show ? 'Hide' : 'Code') + '</span>');
+    var showCodeButton = $('<button type="button" class="btn btn-default btn-xs code-folding-btn pull-right"></button>');
+    showCodeButton.append(showCodeText);
+    showCodeButton
+        .attr('data-toggle', 'collapse')
+        .attr('data-target', '#' + id)
+        .attr('aria-expanded', show)
+        .attr('aria-controls', id);
+
+    var buttonRow = $('<div class="row"></div>');
+    var buttonCol = $('<div class="col-md-12"></div>');
+
+    buttonCol.append(showCodeButton);
+    buttonRow.append(buttonCol);
+
+    div.before(buttonRow);
+
+    // update state of button on show/hide
+    div.on('hidden.bs.collapse', function () {
+      showCodeText.text('Code');
+    });
+    div.on('show.bs.collapse', function () {
+      showCodeText.text('Hide');
+    });
+  });
+
+}
+</script>
+<script>
+/* ========================================================================
+ * Bootstrap: dropdown.js v3.3.7
+ * http://getbootstrap.com/javascript/#dropdowns
+ * ========================================================================
+ * Copyright 2011-2016 Twitter, Inc.
+ * Licensed under MIT (https://github.com/twbs/bootstrap/blob/master/LICENSE)
+ * ======================================================================== */
+
+
++function ($) {
+  'use strict';
+
+  // DROPDOWN CLASS DEFINITION
+  // =========================
+
+  var backdrop = '.dropdown-backdrop'
+  var toggle   = '[data-toggle="dropdown"]'
+  var Dropdown = function (element) {
+    $(element).on('click.bs.dropdown', this.toggle)
+  }
+
+  Dropdown.VERSION = '3.3.7'
+
+  function getParent($this) {
+    var selector = $this.attr('data-target')
+
+    if (!selector) {
+      selector = $this.attr('href')
+      selector = selector && /#[A-Za-z]/.test(selector) && selector.replace(/.*(?=#[^\s]*$)/, '') // strip for ie7
+    }
+
+    var $parent = selector && $(selector)
+
+    return $parent && $parent.length ? $parent : $this.parent()
+  }
+
+  function clearMenus(e) {
+    if (e && e.which === 3) return
+    $(backdrop).remove()
+    $(toggle).each(function () {
+      var $this         = $(this)
+      var $parent       = getParent($this)
+      var relatedTarget = { relatedTarget: this }
+
+      if (!$parent.hasClass('open')) return
+
+      if (e && e.type == 'click' && /input|textarea/i.test(e.target.tagName) && $.contains($parent[0], e.target)) return
+
+      $parent.trigger(e = $.Event('hide.bs.dropdown', relatedTarget))
+
+      if (e.isDefaultPrevented()) return
+
+      $this.attr('aria-expanded', 'false')
+      $parent.removeClass('open').trigger($.Event('hidden.bs.dropdown', relatedTarget))
+    })
+  }
+
+  Dropdown.prototype.toggle = function (e) {
+    var $this = $(this)
+
+    if ($this.is('.disabled, :disabled')) return
+
+    var $parent  = getParent($this)
+    var isActive = $parent.hasClass('open')
+
+    clearMenus()
+
+    if (!isActive) {
+      if ('ontouchstart' in document.documentElement && !$parent.closest('.navbar-nav').length) {
+        // if mobile we use a backdrop because click events don't delegate
+        $(document.createElement('div'))
+          .addClass('dropdown-backdrop')
+          .insertAfter($(this))
+          .on('click', clearMenus)
+      }
+
+      var relatedTarget = { relatedTarget: this }
+      $parent.trigger(e = $.Event('show.bs.dropdown', relatedTarget))
+
+      if (e.isDefaultPrevented()) return
+
+      $this
+        .trigger('focus')
+        .attr('aria-expanded', 'true')
+
+      $parent
+        .toggleClass('open')
+        .trigger($.Event('shown.bs.dropdown', relatedTarget))
+    }
+
+    return false
+  }
+
+  Dropdown.prototype.keydown = function (e) {
+    if (!/(38|40|27|32)/.test(e.which) || /input|textarea/i.test(e.target.tagName)) return
+
+    var $this = $(this)
+
+    e.preventDefault()
+    e.stopPropagation()
+
+    if ($this.is('.disabled, :disabled')) return
+
+    var $parent  = getParent($this)
+    var isActive = $parent.hasClass('open')
+
+    if (!isActive && e.which != 27 || isActive && e.which == 27) {
+      if (e.which == 27) $parent.find(toggle).trigger('focus')
+      return $this.trigger('click')
+    }
+
+    var desc = ' li:not(.disabled):visible a'
+    var $items = $parent.find('.dropdown-menu' + desc)
+
+    if (!$items.length) return
+
+    var index = $items.index(e.target)
+
+    if (e.which == 38 && index > 0)                 index--         // up
+    if (e.which == 40 && index < $items.length - 1) index++         // down
+    if (!~index)                                    index = 0
+
+    $items.eq(index).trigger('focus')
+  }
+
+
+  // DROPDOWN PLUGIN DEFINITION
+  // ==========================
+
+  function Plugin(option) {
+    return this.each(function () {
+      var $this = $(this)
+      var data  = $this.data('bs.dropdown')
+
+      if (!data) $this.data('bs.dropdown', (data = new Dropdown(this)))
+      if (typeof option == 'string') data[option].call($this)
+    })
+  }
+
+  var old = $.fn.dropdown
+
+  $.fn.dropdown             = Plugin
+  $.fn.dropdown.Constructor = Dropdown
+
+
+  // DROPDOWN NO CONFLICT
+  // ====================
+
+  $.fn.dropdown.noConflict = function () {
+    $.fn.dropdown = old
+    return this
+  }
+
+
+  // APPLY TO STANDARD DROPDOWN ELEMENTS
+  // ===================================
+
+  $(document)
+    .on('click.bs.dropdown.data-api', clearMenus)
+    .on('click.bs.dropdown.data-api', '.dropdown form', function (e) { e.stopPropagation() })
+    .on('click.bs.dropdown.data-api', toggle, Dropdown.prototype.toggle)
+    .on('keydown.bs.dropdown.data-api', toggle, Dropdown.prototype.keydown)
+    .on('keydown.bs.dropdown.data-api', '.dropdown-menu', Dropdown.prototype.keydown)
+
+}(jQuery);
+</script>
+<style type="text/css">
+.code-folding-btn { margin-bottom: 4px; }
+.row { display: flex; }
+.collapse { display: none; }
+.in { display:block }
+.pull-right > .dropdown-menu {
+    right: 0;
+    left: auto;
+}
+.open > .dropdown-menu {
+    display: block;
+}
+.dropdown-menu {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    z-index: 1000;
+    display: none;
+    float: left;
+    min-width: 160px;
+    padding: 5px 0;
+    margin: 2px 0 0;
+    font-size: 14px;
+    text-align: left;
+    list-style: none;
+    background-color: #fff;
+    -webkit-background-clip: padding-box;
+    background-clip: padding-box;
+    border: 1px solid #ccc;
+    border: 1px solid rgba(0,0,0,.15);
+    border-radius: 4px;
+    -webkit-box-shadow: 0 6px 12px rgba(0,0,0,.175);
+    box-shadow: 0 6px 12px rgba(0,0,0,.175);
+}
+</style>
+<script>
+$(document).ready(function () {
+  window.initializeCodeFolding("show" === "show");
+});
+</script>
+
+
+<script>
+document.write('<div class="btn-group pull-right" style="position: absolute; top: 20%; right: 2%; z-index: 200"><button type="button" class="btn btn-default btn-xs dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true" data-_extension-text-contrast=""><span>Code</span> <span class="caret"></span></button><ul class="dropdown-menu" style="min-width: 50px;"><li><a id="rmd-show-all-code" href="#">Show All Code</a></li><li><a id="rmd-hide-all-code" href="#">Hide All Code</a></li></ul></div>')
+</script>
 
 
 <style type="text/css">
@@ -182,14 +736,36 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li class="chapter" data-level="3.7" data-path="patents.html"><a href="patents.html#patent-families"><i class="fa fa-check"></i><b>3.7</b> Patent Families</a></li>
 <li class="chapter" data-level="3.8" data-path="patents.html"><a href="patents.html#forecasting-patent-activity"><i class="fa fa-check"></i><b>3.8</b> Forecasting Patent Activity</a></li>
 </ul></li>
-<li class="chapter" data-level="4" data-path="patstat.html"><a href="patstat.html"><i class="fa fa-check"></i><b>4</b> PATSTAT</a></li>
-<li class="chapter" data-level="5" data-path="indicators.html"><a href="indicators.html"><i class="fa fa-check"></i><b>5</b> Indicators</a></li>
-<li class="chapter" data-level="6" data-path="textmining.html"><a href="textmining.html"><i class="fa fa-check"></i><b>6</b> Text Mining</a></li>
-<li class="chapter" data-level="7" data-path="geocoding.html"><a href="geocoding.html"><i class="fa fa-check"></i><b>7</b> Geocoding for Patent Analytics</a></li>
-<li class="chapter" data-level="8" data-path="machinelearning.html"><a href="machinelearning.html"><i class="fa fa-check"></i><b>8</b> Machine Learning</a></li>
-<li class="chapter" data-level="9" data-path="classification.html"><a href="classification.html"><i class="fa fa-check"></i><b>9</b> Using Patent Classfication Schemes in Patent Analytics</a></li>
-<li class="chapter" data-level="10" data-path="citations.html"><a href="citations.html"><i class="fa fa-check"></i><b>10</b> Patent Citations</a></li>
-<li class="chapter" data-level="11" data-path="social.html"><a href="social.html"><i class="fa fa-check"></i><b>11</b> Social Media and Patent Analytics</a></li>
+<li class="chapter" data-level="4" data-path="patstat.html"><a href="patstat.html"><i class="fa fa-check"></i><b>4</b> PATSTAT (placeholder)</a></li>
+<li class="chapter" data-level="5" data-path="indicators.html"><a href="indicators.html"><i class="fa fa-check"></i><b>5</b> Indicators (placeholder)</a></li>
+<li class="chapter" data-level="6" data-path="textmining.html"><a href="textmining.html"><i class="fa fa-check"></i><b>6</b> Text Mining (placeholder)</a></li>
+<li class="chapter" data-level="7" data-path="geocoding.html"><a href="geocoding.html"><i class="fa fa-check"></i><b>7</b> Geocoding</a><ul>
+<li class="chapter" data-level="7.0.1" data-path="geocoding.html"><a href="geocoding.html#getting-started"><i class="fa fa-check"></i><b>7.0.1</b> Getting Started</a></li>
+<li class="chapter" data-level="7.0.2" data-path="geocoding.html"><a href="geocoding.html#getting-set-up-with-the-google-maps-api"><i class="fa fa-check"></i><b>7.0.2</b> Getting set up with the Google Maps API</a></li>
+<li class="chapter" data-level="7.0.3" data-path="geocoding.html"><a href="geocoding.html#using-the-api"><i class="fa fa-check"></i><b>7.0.3</b> Using the API</a></li>
+<li class="chapter" data-level="7.0.4" data-path="geocoding.html"><a href="geocoding.html#the-source-data"><i class="fa fa-check"></i><b>7.0.4</b> The Source Data</a></li>
+<li class="chapter" data-level="7.1" data-path="geocoding.html"><a href="geocoding.html#lookup-the-records"><i class="fa fa-check"></i><b>7.1</b> Lookup the Records</a><ul>
+<li class="chapter" data-level="7.1.1" data-path="geocoding.html"><a href="geocoding.html#using-placement"><i class="fa fa-check"></i><b>7.1.1</b> Using placement</a></li>
+<li class="chapter" data-level="7.1.2" data-path="geocoding.html"><a href="geocoding.html#using-ggmap"><i class="fa fa-check"></i><b>7.1.2</b> Using ggmap</a></li>
+<li class="chapter" data-level="7.1.3" data-path="geocoding.html"><a href="geocoding.html#using-googleway"><i class="fa fa-check"></i><b>7.1.3</b> Using Googleway</a></li>
+</ul></li>
+<li class="chapter" data-level="7.2" data-path="geocoding.html"><a href="geocoding.html#reviewing-initial-results"><i class="fa fa-check"></i><b>7.2</b> Reviewing Initial Results</a><ul>
+<li class="chapter" data-level="7.2.1" data-path="geocoding.html"><a href="geocoding.html#tackling-abbreviations"><i class="fa fa-check"></i><b>7.2.1</b> Tackling Abbreviations</a></li>
+<li class="chapter" data-level="7.2.2" data-path="geocoding.html"><a href="geocoding.html#lookup-edited-names"><i class="fa fa-check"></i><b>7.2.2</b> Lookup edited names</a></li>
+<li class="chapter" data-level="7.2.3" data-path="geocoding.html"><a href="geocoding.html#bringing-the-data-together"><i class="fa fa-check"></i><b>7.2.3</b> Bringing the data together</a></li>
+<li class="chapter" data-level="7.2.4" data-path="geocoding.html"><a href="geocoding.html#assessing-the-quality-of-geocoding"><i class="fa fa-check"></i><b>7.2.4</b> Assessing the Quality of Geocoding</a></li>
+</ul></li>
+<li class="chapter" data-level="7.3" data-path="geocoding.html"><a href="geocoding.html#preprocess-the-data-and-rerun-the-query"><i class="fa fa-check"></i><b>7.3</b> Preprocess the Data and Rerun the Query</a><ul>
+<li class="chapter" data-level="7.3.1" data-path="geocoding.html"><a href="geocoding.html#duplicated-affiliation-names"><i class="fa fa-check"></i><b>7.3.1</b> Duplicated Affiliation Names</a></li>
+<li class="chapter" data-level="7.3.2" data-path="geocoding.html"><a href="geocoding.html#quickly-mapping-the-data"><i class="fa fa-check"></i><b>7.3.2</b> Quickly Mapping the Data</a></li>
+</ul></li>
+<li class="chapter" data-level="7.4" data-path="geocoding.html"><a href="geocoding.html#round-up"><i class="fa fa-check"></i><b>7.4</b> Round Up</a></li>
+</ul></li>
+<li class="chapter" data-level="8" data-path="references.html"><a href="references.html"><i class="fa fa-check"></i><b>8</b> References</a></li>
+<li class="chapter" data-level="9" data-path="machinelearning.html"><a href="machinelearning.html"><i class="fa fa-check"></i><b>9</b> Machine Learning (placeholder)</a></li>
+<li class="chapter" data-level="10" data-path="classification.html"><a href="classification.html"><i class="fa fa-check"></i><b>10</b> Patent Classfication (placeholder)</a></li>
+<li class="chapter" data-level="11" data-path="citations.html"><a href="citations.html"><i class="fa fa-check"></i><b>11</b> Patent Citations (placeholder)</a></li>
+<li class="chapter" data-level="12" data-path="social.html"><a href="social.html"><i class="fa fa-check"></i><b>12</b> Social Media and Patent Analytics (placeholder)</a></li>
 <li class="divider"></li>
 <li><a href="https://github.com/wipo-analytics/handbook" target="blank">Published with bookdown</a></li>
 
@@ -618,23 +1194,23 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li>Graph the results</li>
 </ol>
 <p>The methodological steps required for this task can be performed using tools such as Open Refine which can easily separate out the data or in VantagePoint. The key challenge is in grouping and ranking the priority numbers by the earliest data. This is most easily achieved using a programming language (such as an SQL GROUP BY, PARTITION BY and RANK) or in a language such as Python or R. In the case of R this can be achieved in the following lines of code. The code is commented to show the steps identified above.</p>
-<div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb5-1" data-line-number="1">earliest_priority &lt;-<span class="st"> </span>numbers <span class="op">%&gt;%</span></a>
-<a class="sourceLine" id="cb5-2" data-line-number="2"><span class="st">  </span><span class="kw">select</span>(priority_number, application_number) <span class="op">%&gt;%</span><span class="st"> </span></a>
-<a class="sourceLine" id="cb5-3" data-line-number="3"><span class="st">  </span><span class="kw">drop_na</span>(priority_number) <span class="op">%&gt;%</span><span class="st"> </span><span class="co"># drop empty priority fields</span></a>
-<a class="sourceLine" id="cb5-4" data-line-number="4"><span class="st">  </span><span class="kw">separate_rows</span>(priority_number, <span class="dt">sep =</span> <span class="st">&quot;;&quot;</span>) <span class="op">%&gt;%</span><span class="st"> </span><span class="co"># separate priority numbers on &quot;;&quot;</span></a>
-<a class="sourceLine" id="cb5-5" data-line-number="5"><span class="st">  </span><span class="kw">mutate</span>(<span class="dt">priority_number =</span> <span class="kw">str_trim</span>(priority_number, <span class="dt">side =</span> <span class="st">&quot;both&quot;</span>)) <span class="op">%&gt;%</span><span class="st"> </span><span class="co"># trim whitespace</span></a>
-<a class="sourceLine" id="cb5-6" data-line-number="6"><span class="st">  </span><span class="kw">separate</span>(priority_number, <span class="dt">into =</span> <span class="kw">c</span>(<span class="st">&quot;priority&quot;</span>, <span class="st">&quot;priority_date&quot;</span>), <span class="dt">sep =</span> <span class="st">&quot; &quot;</span>, <span class="dt">remove =</span> <span class="ot">FALSE</span>) <span class="op">%&gt;%</span><span class="st"> </span><span class="co"># extract the date </span></a>
-<a class="sourceLine" id="cb5-7" data-line-number="7"><span class="st">  </span><span class="kw">mutate</span>(<span class="dt">priority_date =</span> lubridate<span class="op">::</span><span class="kw">ymd</span>(priority_date)) <span class="op">%&gt;%</span><span class="st"> </span></a>
-<a class="sourceLine" id="cb5-8" data-line-number="8"><span class="st">  </span><span class="kw">mutate</span>(<span class="dt">year =</span> lubridate<span class="op">::</span><span class="kw">year</span>(priority_date)) <span class="op">%&gt;%</span><span class="st"> </span><span class="co"># add the priority year field</span></a>
-<a class="sourceLine" id="cb5-9" data-line-number="9"><span class="st">  </span><span class="kw">mutate</span>(<span class="dt">priority_number =</span> <span class="kw">str_trim</span>(priority_number, <span class="dt">side =</span> <span class="st">&quot;both&quot;</span>)) <span class="op">%&gt;%</span><span class="st"> </span><span class="co"># trim whitespace</span></a>
-<a class="sourceLine" id="cb5-10" data-line-number="10"><span class="st">  </span><span class="kw">mutate</span>(<span class="dt">priority_country =</span> <span class="kw">str_sub</span>(.<span class="op">$</span>priority_number, <span class="dv">1</span>,<span class="dv">2</span>)) <span class="op">%&gt;%</span><span class="st"> </span><span class="co"># extract the priority country</span></a>
-<a class="sourceLine" id="cb5-11" data-line-number="11"><span class="st">  </span><span class="kw">group_by</span>(application_number) <span class="op">%&gt;%</span><span class="st">  </span><span class="co"># group by application number</span></a>
-<a class="sourceLine" id="cb5-12" data-line-number="12"><span class="st">  </span><span class="kw">mutate</span>(<span class="dt">filing_order =</span> <span class="kw">rank</span>(priority_date, <span class="dt">ties.method =</span> <span class="st">&quot;first&quot;</span>)) <span class="op">%&gt;%</span><span class="st"> </span><span class="co"># rank by priority date </span></a>
-<a class="sourceLine" id="cb5-13" data-line-number="13"><span class="st">  </span><span class="kw">ungroup</span>() <span class="op">%&gt;%</span><span class="st"> </span><span class="co"># remove grouping for later calculations</span></a>
-<a class="sourceLine" id="cb5-14" data-line-number="14"><span class="st">  </span><span class="kw">filter</span>(filing_order <span class="op">==</span><span class="st"> </span><span class="dv">1</span>) <span class="op">%&gt;%</span><span class="st"> </span><span class="co"># filter to the earliest priority at rank 1</span></a>
-<a class="sourceLine" id="cb5-15" data-line-number="15"><span class="st">  </span><span class="kw">mutate</span>(<span class="dt">duplicate_priority =</span> <span class="kw">duplicated</span>(.<span class="op">$</span>priority_number)) <span class="op">%&gt;%</span><span class="st"> </span><span class="co"># identify duplicate priority numbers</span></a>
-<a class="sourceLine" id="cb5-16" data-line-number="16"><span class="st">  </span><span class="kw">filter</span>(duplicate_priority <span class="op">==</span><span class="st"> &quot;FALSE&quot;</span>) <span class="op">%&gt;%</span><span class="st"> </span><span class="co"># remove duplicate priority numbers</span></a>
-<a class="sourceLine" id="cb5-17" data-line-number="17"><span class="st">  </span><span class="kw">select</span>(<span class="op">-</span>priority) <span class="co"># drop uneccesary field</span></a></code></pre></div>
+<div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb4-1" data-line-number="1">earliest_priority &lt;-<span class="st"> </span>numbers <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb4-2" data-line-number="2"><span class="st">  </span><span class="kw">select</span>(priority_number, application_number) <span class="op">%&gt;%</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb4-3" data-line-number="3"><span class="st">  </span><span class="kw">drop_na</span>(priority_number) <span class="op">%&gt;%</span><span class="st"> </span><span class="co"># drop empty priority fields</span></a>
+<a class="sourceLine" id="cb4-4" data-line-number="4"><span class="st">  </span><span class="kw">separate_rows</span>(priority_number, <span class="dt">sep =</span> <span class="st">&quot;;&quot;</span>) <span class="op">%&gt;%</span><span class="st"> </span><span class="co"># separate priority numbers on &quot;;&quot;</span></a>
+<a class="sourceLine" id="cb4-5" data-line-number="5"><span class="st">  </span><span class="kw">mutate</span>(<span class="dt">priority_number =</span> <span class="kw">str_trim</span>(priority_number, <span class="dt">side =</span> <span class="st">&quot;both&quot;</span>)) <span class="op">%&gt;%</span><span class="st"> </span><span class="co"># trim whitespace</span></a>
+<a class="sourceLine" id="cb4-6" data-line-number="6"><span class="st">  </span><span class="kw">separate</span>(priority_number, <span class="dt">into =</span> <span class="kw">c</span>(<span class="st">&quot;priority&quot;</span>, <span class="st">&quot;priority_date&quot;</span>), <span class="dt">sep =</span> <span class="st">&quot; &quot;</span>, <span class="dt">remove =</span> <span class="ot">FALSE</span>) <span class="op">%&gt;%</span><span class="st"> </span><span class="co"># extract the date </span></a>
+<a class="sourceLine" id="cb4-7" data-line-number="7"><span class="st">  </span><span class="kw">mutate</span>(<span class="dt">priority_date =</span> lubridate<span class="op">::</span><span class="kw">ymd</span>(priority_date)) <span class="op">%&gt;%</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb4-8" data-line-number="8"><span class="st">  </span><span class="kw">mutate</span>(<span class="dt">year =</span> lubridate<span class="op">::</span><span class="kw">year</span>(priority_date)) <span class="op">%&gt;%</span><span class="st"> </span><span class="co"># add the priority year field</span></a>
+<a class="sourceLine" id="cb4-9" data-line-number="9"><span class="st">  </span><span class="kw">mutate</span>(<span class="dt">priority_number =</span> <span class="kw">str_trim</span>(priority_number, <span class="dt">side =</span> <span class="st">&quot;both&quot;</span>)) <span class="op">%&gt;%</span><span class="st"> </span><span class="co"># trim whitespace</span></a>
+<a class="sourceLine" id="cb4-10" data-line-number="10"><span class="st">  </span><span class="kw">mutate</span>(<span class="dt">priority_country =</span> <span class="kw">str_sub</span>(.<span class="op">$</span>priority_number, <span class="dv">1</span>,<span class="dv">2</span>)) <span class="op">%&gt;%</span><span class="st"> </span><span class="co"># extract the priority country</span></a>
+<a class="sourceLine" id="cb4-11" data-line-number="11"><span class="st">  </span><span class="kw">group_by</span>(application_number) <span class="op">%&gt;%</span><span class="st">  </span><span class="co"># group by application number</span></a>
+<a class="sourceLine" id="cb4-12" data-line-number="12"><span class="st">  </span><span class="kw">mutate</span>(<span class="dt">filing_order =</span> <span class="kw">rank</span>(priority_date, <span class="dt">ties.method =</span> <span class="st">&quot;first&quot;</span>)) <span class="op">%&gt;%</span><span class="st"> </span><span class="co"># rank by priority date </span></a>
+<a class="sourceLine" id="cb4-13" data-line-number="13"><span class="st">  </span><span class="kw">ungroup</span>() <span class="op">%&gt;%</span><span class="st"> </span><span class="co"># remove grouping for later calculations</span></a>
+<a class="sourceLine" id="cb4-14" data-line-number="14"><span class="st">  </span><span class="kw">filter</span>(filing_order <span class="op">==</span><span class="st"> </span><span class="dv">1</span>) <span class="op">%&gt;%</span><span class="st"> </span><span class="co"># filter to the earliest priority at rank 1</span></a>
+<a class="sourceLine" id="cb4-15" data-line-number="15"><span class="st">  </span><span class="kw">mutate</span>(<span class="dt">duplicate_priority =</span> <span class="kw">duplicated</span>(.<span class="op">$</span>priority_number)) <span class="op">%&gt;%</span><span class="st"> </span><span class="co"># identify duplicate priority numbers</span></a>
+<a class="sourceLine" id="cb4-16" data-line-number="16"><span class="st">  </span><span class="kw">filter</span>(duplicate_priority <span class="op">==</span><span class="st"> &quot;FALSE&quot;</span>) <span class="op">%&gt;%</span><span class="st"> </span><span class="co"># remove duplicate priority numbers</span></a>
+<a class="sourceLine" id="cb4-17" data-line-number="17"><span class="st">  </span><span class="kw">select</span>(<span class="op">-</span>priority) <span class="co"># drop uneccesary field</span></a></code></pre></div>
 <p>While the above may appear initially appear complex it follows step 1 to 7 above. Because the data lacks a priority country and year field it extract these fields from the data to use in graphing as the next step. The key steps in arriving at accurate counts in the above process is trimming the separated fields to remove any leading and trailing white space. Note that the amount of cleaning required is likely to vary when working with data from different databases.</p>
 <p>The steps above reduce the dataset from 15,776 applications containing 23,382 priority numbers (after the exclusion of Not Available results) to 9,358 earliest priority numbers.</p>
 <p>We are now in a position to graph the data. For convenience we will continue to use R and the popular <code>ggplot2</code> package. The results of a raw count are presented in Figure <a href="patents.html#fig:priorityraw">3.1</a></p>
@@ -802,8 +1378,9 @@ However, as we can see from the definitions above one challenge with patent fami
 <li>Domestic priorities (e.g.continuations, continuations in part, provisionals, divisionals)</li>
 <li>PCT regional/national phase entries (Martinez 2010: 23)</li>
 </ol>
-<p>Each of these types of linkages is accompanied by a definition and whether the information is provided by the applicant as in Table <a href="#tab:martineztab"><strong>??</strong></a> reproduced from Martinez below (Martinez, 2010. Table 7, 23)</p>
+<p>Each of these types of linkages is accompanied by a definition and whether the information is provided by the applicant as in Table <a href="patents.html#tab:martineztab">3.8</a> reproduced from Martinez below (Martinez, 2010. Table 7, 23)</p>
 <table>
+<caption><span id="tab:martineztab">Table 3.8: </span>Sources of the Building Blocks for Patent Families</caption>
 <thead>
 <tr class="header">
 <th align="left">Type</th>
@@ -835,8 +1412,11 @@ However, as we can see from the definitions above one challenge with patent fami
 </tbody>
 </table>
 <p>As we can see in this table, the source of information for building patent families predominantly comes from the applicant except for the technical similarities. Technical similarities are identified by examiners based on their assessment of the scope, inventor and applicant names and result in an artificial priority link. As such, the identification of technical similarities is not purely subjective.</p>
-<p>Martinez then uses the EPO World Patent Statistical Database (PATSTAT) to quantify the impact of the use of the different linkages on the size of patent families for the period 1991 to 1999. Table <a href="#tab:martinezcounts"><strong>??</strong></a> reproduces Table 9 from Martinez’s research.</p>
+<p>Martinez then uses the EPO World Patent Statistical Database (PATSTAT) to quantify the impact of the use of the different linkages on the size of patent families for the period 1991 to 1999. Table <a href="patents.html#tab:martinezcounts">3.9</a> reproduces Table 9 from Martinez’s research.</p>
 <table class="table table-striped" style="margin-left: auto; margin-right: auto;">
+<caption>
+<span id="tab:martinezcounts">Table 3.9: </span>Counts of families and applications in them, by source of family relations 1991-1999 <span class="citation">(Martinez <a href="#ref-Martinez_2010">2010</a><a href="#ref-Martinez_2010">a</a>)</span>
+</caption>
 <thead>
 <tr>
 <th style="border-bottom:hidden" colspan="1">
@@ -1209,7 +1789,7 @@ members
 </tr>
 </tbody>
 </table>
-<p>Note that Table <a href="#fig:martinezcounts"><strong>??</strong></a> focuses on the earliest priorities and excludes singletons.b</p>
+<p>Note that Table <a href="patents.html#tab:martinezcounts">3.9</a> focuses on the earliest priorities and excludes singletons.b</p>
 <p>A number of important points emerge in Martinez’s analysis. The first of these is that “Paris Convention priorities alone make up more than 95%, which make them the most relevant patent linkage by far in the construction of extended patent families.” As such Paris Convention priorities are the foundation of patent families.</p>
 <p>The second major observation is that the number and size of families increases as the definition is expanded in the first three cases. The third case exactly matches with the widely used INPADOC extended patent family definition (Paris, domestic continuations and technical similarities). However, observe that the number of <em>families</em> in the final case in the table is lower in all cases than for the source 3 (INPADOC) even while the number of family members increases. The reason for this is that first three types create new independent families. In contrast, the final type consolidates families by revealing shared links through the Patent Cooperation Treaty. That is, the number of families falls because otherwise hidden linkages with the PCT become obvious (see Martinez 2010: 25).</p>
 <p>Using this data we can visualise the impact of different types of counts of families and family members. We will focus here on displaying the difference between the simple family definition and the INPADOC definition (source 3 above). Figure <a href="patents.html#fig:martinezfamilies">3.13</a> trends in the number of patent families using the simple and INPADOC definitions.</p>
@@ -1234,10 +1814,10 @@ Figure 3.14: Trends in Patent Families (priority filings) and Family Members com
 </blockquote>
 <p>The important point here is that while initially the structure of patent families may appear to be extremely diverse, with 47,437 different family structures, in practice 10 structures described 73% of the families and 25 structures accounted for 81%. This is a very significant finding because it informs us that the majority of the time the structure of patent families falls within a limited set. Furthermore, of the top 25 structures, over half are made up of a simple structure consisting of a single earliest priority followed by several direct filings. Martinez goes on to conclude that “…we have found that 75% of all INPADOC extended priority patent families with earliest priorities between 1991 and 1999 have a simple structure, consisting of one single first filing and its direct subsequent filings” <span class="citation">(Martinez <a href="#ref-Martinez_2010">2010</a><a href="#ref-Martinez_2010">a</a>)</span>. The broader significance of this is because INPADOC extended families are the broadest category of common family types that 75% of other patent families will be of the single first filing and direct subsequent (child) filing type.</p>
 <p>From this we can reasonably conclude that the majority of patent families that we will ever encounter will be of the simple type (single priority followed by several direct filings). However as Martinez also notes “Complex families may favor specific technologies, countries or more valuable patents” (Martinez 2010: 17) so it is important to bear in mind that complex families while representing a much smaller proportion of the data may also be important.</p>
-<p>In considering the use of different types of family counts the most commonly encountered forms will be the DOCDB simple family types or the INPADOC family types. In the sections above we have graphed families (priority filings) and used raw family members to explore trends in different countries. However, as mentioned above the size of patent families is an indication of the importance of an invention to the applicants based on their willingness to pay fees for the stages of the procedure and for the maintenance of any granted patents in one or more jurisdiction. Table <a href="patents.html#tab:topfamily">3.8</a> displays the raw count of INPADOC family members across the drones dataset linked to the earliest priority number.</p>
+<p>In considering the use of different types of family counts the most commonly encountered forms will be the DOCDB simple family types or the INPADOC family types. In the sections above we have graphed families (priority filings) and used raw family members to explore trends in different countries. However, as mentioned above the size of patent families is an indication of the importance of an invention to the applicants based on their willingness to pay fees for the stages of the procedure and for the maintenance of any granted patents in one or more jurisdiction. Table <a href="patents.html#tab:topfamily">3.10</a> displays the raw count of INPADOC family members across the drones dataset linked to the earliest priority number.</p>
 <table>
 <caption>
-<span id="tab:topfamily">Table 3.8: </span>Top INPADOC Families
+<span id="tab:topfamily">Table 3.10: </span>Top INPADOC Families
 </caption>
 <thead>
 <tr>
@@ -1367,10 +1947,10 @@ WO2014US62477A 2014-10-27
 </table>
 <!--drones related is publn US9033116B2 and appln US14024204A 2013-09-11-->
 <p>The top result in the drones dataset lists an earliest priority filing in 1997 and concerns a <em>Methods for Manufacturing Inkjet Print Head using Multilayer Material Layer</em> by Silverbrook Research in Australia involving Kia Silverbrook who has been described on Wikipedia as having been the worlds most prolific inventor.<a href="#fn12" class="footnote-ref" id="fnref12"><sup>12</sup></a> According to news reports Silverbrook Research went into administration in 2014.<a href="#fn13" class="footnote-ref" id="fnref13"><sup>13</sup></a>.</p>
-<p>This is an example of noise in our drones dataset and a historic example, however the size of the INPADOC patent family indicates that the claimed invention was of great importance to the applicants. Table <a href="patents.html#tab:topfamilycountry">3.9</a> displays the countries that have been the focus for the development of this family. Note that each document in the family is counted.</p>
+<p>This is an example of noise in our drones dataset and a historic example, however the size of the INPADOC patent family indicates that the claimed invention was of great importance to the applicants. Table <a href="patents.html#tab:topfamilycountry">3.11</a> displays the countries that have been the focus for the development of this family. Note that each document in the family is counted.</p>
 <table>
 <caption>
-<span id="tab:topfamilycountry">Table 3.9: </span>Top Family Countries for priority AU19977991A
+<span id="tab:topfamilycountry">Table 3.11: </span>Top Family Countries for priority AU19977991A
 </caption>
 <thead>
 <tr>
@@ -1553,7 +2133,7 @@ ES
 </tr>
 </tbody>
 </table>
-<p>Table <a href="patents.html#tab:topfamilycountry">3.9</a> shows the raw counts of family member documents for each country and the consolidated counts (with the kind codes removed to group by document identifier). The documents are ranked on the count of the consolidated family members.</p>
+<p>Table <a href="patents.html#tab:topfamilycountry">3.11</a> shows the raw counts of family member documents for each country and the consolidated counts (with the kind codes removed to group by document identifier). The documents are ranked on the count of the consolidated family members.</p>
 <p>We can immediately see that while the applicant company was Australian the key target market was the United States followed by Australia, Singapore, Europe (through the European Patent Office) and Japan. By far the greatest intensity of family members is found in the United States and it transpires that these family members are clustered by date. Figure <a href="patents.html#fig:uscluster">3.15</a> shows US family member publications as a simple frequency plot over time.</p>
 <div class="figure" style="text-align: center"><span id="fig:uscluster"></span>
 <img src="handbook2_files/figure-html/uscluster-1.png" alt="Frequency Plot for the Publication of US Family Members for priority number AU19977991A 1997-07-15" width="672" />

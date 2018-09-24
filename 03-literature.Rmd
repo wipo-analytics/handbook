@@ -87,7 +87,7 @@ knitr::kable(
 )
 ```
 
-When we inspect the results in Table \@ref(tab:wos_tab) we see a full list of words and phrases. Many of these will not be relevant to drones as such, for example the words article or study and common noisy terms such as "and, or, of, for" are commonly excluded as stop words. In other cases references to the word "queens" or its root "queen" along with "Apis mellifera" and "colonies" suggests that we have a lot of data on bees in the data. In our next iteration of the search we would probably want to explicitly exclude these terms from the search. However we can also detect other works that we might want to include in our search such as "UAV" for Unmanned Aerial Vehicle.  
+When we inspect the results in Table \@ref(tab:table1) we see a full list of words and phrases. Many of these will not be relevant to drones as such, for example the words article or study and common noisy terms such as "and, or, of, for" are commonly excluded as stop words. In other cases references to the word "queens" or its root "queen" along with "Apis mellifera" and "colonies" suggests that we have a lot of data on bees in the data. In our next iteration of the search we would probably want to explicitly exclude these terms from the search. However we can also detect other works that we might want to include in our search such as "UAV" for Unmanned Aerial Vehicle.  
 
 In practice multi word phrases (ngrams) commonly express concepts (ref Mogatov?) and bring us closer to the terms that we will want to use in a search. Table \@ref(tab:table2) ranks the data based on multi-word phrases. 
 
@@ -117,9 +117,9 @@ In practice, the use of matrices to identify nearby words and phrases or TFIDF m
 
 Many databases include options for operator based searching. The common operators are: OR, AND and NOT. 
 
-this OR that
-this AND that
-this NOT that
+>this OR that
+>this AND that
+>this NOT that
 
 The OR operator is an open operator for example we could search for 
 
@@ -171,7 +171,7 @@ Regular expressions can be combined in a whole variety of ways. One of the most 
 
 Very basic engagement with regular expressions is a powerful tool and it is well worth learning the basics. A good place to start is the long standing [Regular Expressions Tutorial](https://www.regular-expressions.info/tutorial.html). However, be warned that regular expressions can become complex and difficult to understand quite rapidly. A well known quote about regular expressions is attributed to former Netscape Engineer Jamie Zawinski in a Usenet discussion group from 1997. 
 
->Some people, when confronted with a problem, think “I know, I'll use regular expressions.” Now they have two problems. ^[Jeffrey Friedl Source of the famous “Now you have two problems” quote http://regex.info/blog/2006-09-15/247]
+>Some people, when confronted with a problem, think “I know, I'll use regular expressions.” Now they have two problems. ^[Jeffrey Friedl, Source of the famous “Now you have two problems” quote http://regex.info/blog/2006-09-15/247]
 
 The point that is being made here is that regular expressions should not be the tool of first resort for every problem. Regular expressions can rapidly become very complex and difficult for a reader, including its author, to understand. Having said this a basic understanding of regular expressions is a very important part of the patent analysts toolbox as it allows you to precisely control what you are searching for and to parse the results. Tokenization of texts discussed above is an example of this that is typically based on word boundary matches (such as `\\b`) while named entity recognition in texts is often based on the identification of capitalized terms such as `^[[:upper]]` or the equivalent `^[A-Z]` to identify proper nouns (which are marked by the use of capital letters at the start of the word) such as people, place and other entity names. The precise form of a regular expression often depends on the language being used with Open Refine's GREL or Google Regular Expression Language providing a nice practical introduction to using regular expressions as discussed in Chapter 8 of the [WIPO Manual on Open Source Patent Analytics](https://wipo-analytics.github.io/open-refine.html). Programming languages such as R include speciality packages such as `stringr` that make it easier to work with regular expressions and cheatsheets have been developed to assist in remembering regular expressions.^[ See for example the `Basic Regular Expressions in R` Cheatsheet by Ian Kopacka available from RStudio].  Websites such as the Regular Expressions Tutorial and [https://regex101.com/](https://regex101.com/) allow you to test out regular expressions in a range of different programmming languages. 
 

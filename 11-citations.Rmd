@@ -1,4 +1,4 @@
-# Patent Citations {#citations}
+# Patent Citations (placeholder) {#citations}
 \index{citations}
 
 This is a placeholder, please come back later

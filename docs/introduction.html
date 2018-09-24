@@ -25,7 +25,7 @@
 <meta name="author" content="Paul Oldham">
 
 
-<meta name="date" content="2018-08-17">
+<meta name="date" content="2018-09-24">
 
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="apple-mobile-web-app-capable" content="yes">
@@ -52,7 +52,561 @@
 <script src="libs/sankey-1/sankey.js"></script>
 <script src="libs/sankeyNetwork-binding-0.4/sankeyNetwork.js"></script>
 <script src="libs/kePrint-0.0.1/kePrint.js"></script>
-\usepackage{booktabs}
+<link href="libs/leaflet-1.3.1/leaflet.css" rel="stylesheet" />
+<script src="libs/leaflet-1.3.1/leaflet.js"></script>
+<link href="libs/leafletfix-1.0.0/leafletfix.css" rel="stylesheet" />
+<script src="libs/Proj4Leaflet-1.0.1/proj4-compressed.js"></script>
+<script src="libs/Proj4Leaflet-1.0.1/proj4leaflet.js"></script>
+<link href="libs/rstudio_leaflet-1.3.1/rstudio_leaflet.css" rel="stylesheet" />
+<script src="libs/leaflet-binding-2.0.1/leaflet.js"></script>
+
+<script>
+/* ========================================================================
+ * Bootstrap: transition.js v3.3.7
+ * http://getbootstrap.com/javascript/#transitions
+ * ========================================================================
+ * Copyright 2011-2016 Twitter, Inc.
+ * Licensed under MIT (https://github.com/twbs/bootstrap/blob/master/LICENSE)
+ * ======================================================================== */
+
+
++function ($) {
+  'use strict';
+
+  // CSS TRANSITION SUPPORT (Shoutout: http://www.modernizr.com/)
+  // ============================================================
+
+  function transitionEnd() {
+    var el = document.createElement('bootstrap')
+
+    var transEndEventNames = {
+      WebkitTransition : 'webkitTransitionEnd',
+      MozTransition    : 'transitionend',
+      OTransition      : 'oTransitionEnd otransitionend',
+      transition       : 'transitionend'
+    }
+
+    for (var name in transEndEventNames) {
+      if (el.style[name] !== undefined) {
+        return { end: transEndEventNames[name] }
+      }
+    }
+
+    return false // explicit for ie8 (  ._.)
+  }
+
+  // http://blog.alexmaccaw.com/css-transitions
+  $.fn.emulateTransitionEnd = function (duration) {
+    var called = false
+    var $el = this
+    $(this).one('bsTransitionEnd', function () { called = true })
+    var callback = function () { if (!called) $($el).trigger($.support.transition.end) }
+    setTimeout(callback, duration)
+    return this
+  }
+
+  $(function () {
+    $.support.transition = transitionEnd()
+
+    if (!$.support.transition) return
+
+    $.event.special.bsTransitionEnd = {
+      bindType: $.support.transition.end,
+      delegateType: $.support.transition.end,
+      handle: function (e) {
+        if ($(e.target).is(this)) return e.handleObj.handler.apply(this, arguments)
+      }
+    }
+  })
+
+}(jQuery);
+</script>
+<script>
+/* ========================================================================
+ * Bootstrap: collapse.js v3.3.7
+ * http://getbootstrap.com/javascript/#collapse
+ * ========================================================================
+ * Copyright 2011-2016 Twitter, Inc.
+ * Licensed under MIT (https://github.com/twbs/bootstrap/blob/master/LICENSE)
+ * ======================================================================== */
+
+/* jshint latedef: false */
+
++function ($) {
+  'use strict';
+
+  // COLLAPSE PUBLIC CLASS DEFINITION
+  // ================================
+
+  var Collapse = function (element, options) {
+    this.$element      = $(element)
+    this.options       = $.extend({}, Collapse.DEFAULTS, options)
+    this.$trigger      = $('[data-toggle="collapse"][href="#' + element.id + '"],' +
+                           '[data-toggle="collapse"][data-target="#' + element.id + '"]')
+    this.transitioning = null
+
+    if (this.options.parent) {
+      this.$parent = this.getParent()
+    } else {
+      this.addAriaAndCollapsedClass(this.$element, this.$trigger)
+    }
+
+    if (this.options.toggle) this.toggle()
+  }
+
+  Collapse.VERSION  = '3.3.7'
+
+  Collapse.TRANSITION_DURATION = 350
+
+  Collapse.DEFAULTS = {
+    toggle: true
+  }
+
+  Collapse.prototype.dimension = function () {
+    var hasWidth = this.$element.hasClass('width')
+    return hasWidth ? 'width' : 'height'
+  }
+
+  Collapse.prototype.show = function () {
+    if (this.transitioning || this.$element.hasClass('in')) return
+
+    var activesData
+    var actives = this.$parent && this.$parent.children('.panel').children('.in, .collapsing')
+
+    if (actives && actives.length) {
+      activesData = actives.data('bs.collapse')
+      if (activesData && activesData.transitioning) return
+    }
+
+    var startEvent = $.Event('show.bs.collapse')
+    this.$element.trigger(startEvent)
+    if (startEvent.isDefaultPrevented()) return
+
+    if (actives && actives.length) {
+      Plugin.call(actives, 'hide')
+      activesData || actives.data('bs.collapse', null)
+    }
+
+    var dimension = this.dimension()
+
+    this.$element
+      .removeClass('collapse')
+      .addClass('collapsing')[dimension](0)
+      .attr('aria-expanded', true)
+
+    this.$trigger
+      .removeClass('collapsed')
+      .attr('aria-expanded', true)
+
+    this.transitioning = 1
+
+    var complete = function () {
+      this.$element
+        .removeClass('collapsing')
+        .addClass('collapse in')[dimension]('')
+      this.transitioning = 0
+      this.$element
+        .trigger('shown.bs.collapse')
+    }
+
+    if (!$.support.transition) return complete.call(this)
+
+    var scrollSize = $.camelCase(['scroll', dimension].join('-'))
+
+    this.$element
+      .one('bsTransitionEnd', $.proxy(complete, this))
+      .emulateTransitionEnd(Collapse.TRANSITION_DURATION)[dimension](this.$element[0][scrollSize])
+  }
+
+  Collapse.prototype.hide = function () {
+    if (this.transitioning || !this.$element.hasClass('in')) return
+
+    var startEvent = $.Event('hide.bs.collapse')
+    this.$element.trigger(startEvent)
+    if (startEvent.isDefaultPrevented()) return
+
+    var dimension = this.dimension()
+
+    this.$element[dimension](this.$element[dimension]())[0].offsetHeight
+
+    this.$element
+      .addClass('collapsing')
+      .removeClass('collapse in')
+      .attr('aria-expanded', false)
+
+    this.$trigger
+      .addClass('collapsed')
+      .attr('aria-expanded', false)
+
+    this.transitioning = 1
+
+    var complete = function () {
+      this.transitioning = 0
+      this.$element
+        .removeClass('collapsing')
+        .addClass('collapse')
+        .trigger('hidden.bs.collapse')
+    }
+
+    if (!$.support.transition) return complete.call(this)
+
+    this.$element
+      [dimension](0)
+      .one('bsTransitionEnd', $.proxy(complete, this))
+      .emulateTransitionEnd(Collapse.TRANSITION_DURATION)
+  }
+
+  Collapse.prototype.toggle = function () {
+    this[this.$element.hasClass('in') ? 'hide' : 'show']()
+  }
+
+  Collapse.prototype.getParent = function () {
+    return $(this.options.parent)
+      .find('[data-toggle="collapse"][data-parent="' + this.options.parent + '"]')
+      .each($.proxy(function (i, element) {
+        var $element = $(element)
+        this.addAriaAndCollapsedClass(getTargetFromTrigger($element), $element)
+      }, this))
+      .end()
+  }
+
+  Collapse.prototype.addAriaAndCollapsedClass = function ($element, $trigger) {
+    var isOpen = $element.hasClass('in')
+
+    $element.attr('aria-expanded', isOpen)
+    $trigger
+      .toggleClass('collapsed', !isOpen)
+      .attr('aria-expanded', isOpen)
+  }
+
+  function getTargetFromTrigger($trigger) {
+    var href
+    var target = $trigger.attr('data-target')
+      || (href = $trigger.attr('href')) && href.replace(/.*(?=#[^\s]+$)/, '') // strip for ie7
+
+    return $(target)
+  }
+
+
+  // COLLAPSE PLUGIN DEFINITION
+  // ==========================
+
+  function Plugin(option) {
+    return this.each(function () {
+      var $this   = $(this)
+      var data    = $this.data('bs.collapse')
+      var options = $.extend({}, Collapse.DEFAULTS, $this.data(), typeof option == 'object' && option)
+
+      if (!data && options.toggle && /show|hide/.test(option)) options.toggle = false
+      if (!data) $this.data('bs.collapse', (data = new Collapse(this, options)))
+      if (typeof option == 'string') data[option]()
+    })
+  }
+
+  var old = $.fn.collapse
+
+  $.fn.collapse             = Plugin
+  $.fn.collapse.Constructor = Collapse
+
+
+  // COLLAPSE NO CONFLICT
+  // ====================
+
+  $.fn.collapse.noConflict = function () {
+    $.fn.collapse = old
+    return this
+  }
+
+
+  // COLLAPSE DATA-API
+  // =================
+
+  $(document).on('click.bs.collapse.data-api', '[data-toggle="collapse"]', function (e) {
+    var $this   = $(this)
+
+    if (!$this.attr('data-target')) e.preventDefault()
+
+    var $target = getTargetFromTrigger($this)
+    var data    = $target.data('bs.collapse')
+    var option  = data ? 'toggle' : $this.data()
+
+    Plugin.call($target, option)
+  })
+
+}(jQuery);
+</script>
+<script>
+window.initializeCodeFolding = function(show) {
+
+  // handlers for show-all and hide all
+  $("#rmd-show-all-code").click(function() {
+    $('div.r-code-collapse').each(function() {
+      $(this).collapse('show');
+    });
+  });
+  $("#rmd-hide-all-code").click(function() {
+    $('div.r-code-collapse').each(function() {
+      $(this).collapse('hide');
+    });
+  });
+
+  // index for unique code element ids
+  var currentIndex = 1;
+
+  // select all R code blocks
+  var rCodeBlocks = $('pre.sourceCode, pre.r, pre.python, pre.bash, pre.sql, pre.cpp, pre.stan, pre.js');
+  rCodeBlocks.each(function() {
+
+    // create a collapsable div to wrap the code in
+    var div = $('<div class="collapse r-code-collapse"></div>');
+    if (show)
+      div.addClass('in');
+    var id = 'rcode-643E0F36' + currentIndex++;
+    div.attr('id', id);
+    $(this).before(div);
+    $(this).detach().appendTo(div);
+
+    // add a show code button right above
+    var showCodeText = $('<span>' + (show ? 'Hide' : 'Code') + '</span>');
+    var showCodeButton = $('<button type="button" class="btn btn-default btn-xs code-folding-btn pull-right"></button>');
+    showCodeButton.append(showCodeText);
+    showCodeButton
+        .attr('data-toggle', 'collapse')
+        .attr('data-target', '#' + id)
+        .attr('aria-expanded', show)
+        .attr('aria-controls', id);
+
+    var buttonRow = $('<div class="row"></div>');
+    var buttonCol = $('<div class="col-md-12"></div>');
+
+    buttonCol.append(showCodeButton);
+    buttonRow.append(buttonCol);
+
+    div.before(buttonRow);
+
+    // update state of button on show/hide
+    div.on('hidden.bs.collapse', function () {
+      showCodeText.text('Code');
+    });
+    div.on('show.bs.collapse', function () {
+      showCodeText.text('Hide');
+    });
+  });
+
+}
+</script>
+<script>
+/* ========================================================================
+ * Bootstrap: dropdown.js v3.3.7
+ * http://getbootstrap.com/javascript/#dropdowns
+ * ========================================================================
+ * Copyright 2011-2016 Twitter, Inc.
+ * Licensed under MIT (https://github.com/twbs/bootstrap/blob/master/LICENSE)
+ * ======================================================================== */
+
+
++function ($) {
+  'use strict';
+
+  // DROPDOWN CLASS DEFINITION
+  // =========================
+
+  var backdrop = '.dropdown-backdrop'
+  var toggle   = '[data-toggle="dropdown"]'
+  var Dropdown = function (element) {
+    $(element).on('click.bs.dropdown', this.toggle)
+  }
+
+  Dropdown.VERSION = '3.3.7'
+
+  function getParent($this) {
+    var selector = $this.attr('data-target')
+
+    if (!selector) {
+      selector = $this.attr('href')
+      selector = selector && /#[A-Za-z]/.test(selector) && selector.replace(/.*(?=#[^\s]*$)/, '') // strip for ie7
+    }
+
+    var $parent = selector && $(selector)
+
+    return $parent && $parent.length ? $parent : $this.parent()
+  }
+
+  function clearMenus(e) {
+    if (e && e.which === 3) return
+    $(backdrop).remove()
+    $(toggle).each(function () {
+      var $this         = $(this)
+      var $parent       = getParent($this)
+      var relatedTarget = { relatedTarget: this }
+
+      if (!$parent.hasClass('open')) return
+
+      if (e && e.type == 'click' && /input|textarea/i.test(e.target.tagName) && $.contains($parent[0], e.target)) return
+
+      $parent.trigger(e = $.Event('hide.bs.dropdown', relatedTarget))
+
+      if (e.isDefaultPrevented()) return
+
+      $this.attr('aria-expanded', 'false')
+      $parent.removeClass('open').trigger($.Event('hidden.bs.dropdown', relatedTarget))
+    })
+  }
+
+  Dropdown.prototype.toggle = function (e) {
+    var $this = $(this)
+
+    if ($this.is('.disabled, :disabled')) return
+
+    var $parent  = getParent($this)
+    var isActive = $parent.hasClass('open')
+
+    clearMenus()
+
+    if (!isActive) {
+      if ('ontouchstart' in document.documentElement && !$parent.closest('.navbar-nav').length) {
+        // if mobile we use a backdrop because click events don't delegate
+        $(document.createElement('div'))
+          .addClass('dropdown-backdrop')
+          .insertAfter($(this))
+          .on('click', clearMenus)
+      }
+
+      var relatedTarget = { relatedTarget: this }
+      $parent.trigger(e = $.Event('show.bs.dropdown', relatedTarget))
+
+      if (e.isDefaultPrevented()) return
+
+      $this
+        .trigger('focus')
+        .attr('aria-expanded', 'true')
+
+      $parent
+        .toggleClass('open')
+        .trigger($.Event('shown.bs.dropdown', relatedTarget))
+    }
+
+    return false
+  }
+
+  Dropdown.prototype.keydown = function (e) {
+    if (!/(38|40|27|32)/.test(e.which) || /input|textarea/i.test(e.target.tagName)) return
+
+    var $this = $(this)
+
+    e.preventDefault()
+    e.stopPropagation()
+
+    if ($this.is('.disabled, :disabled')) return
+
+    var $parent  = getParent($this)
+    var isActive = $parent.hasClass('open')
+
+    if (!isActive && e.which != 27 || isActive && e.which == 27) {
+      if (e.which == 27) $parent.find(toggle).trigger('focus')
+      return $this.trigger('click')
+    }
+
+    var desc = ' li:not(.disabled):visible a'
+    var $items = $parent.find('.dropdown-menu' + desc)
+
+    if (!$items.length) return
+
+    var index = $items.index(e.target)
+
+    if (e.which == 38 && index > 0)                 index--         // up
+    if (e.which == 40 && index < $items.length - 1) index++         // down
+    if (!~index)                                    index = 0
+
+    $items.eq(index).trigger('focus')
+  }
+
+
+  // DROPDOWN PLUGIN DEFINITION
+  // ==========================
+
+  function Plugin(option) {
+    return this.each(function () {
+      var $this = $(this)
+      var data  = $this.data('bs.dropdown')
+
+      if (!data) $this.data('bs.dropdown', (data = new Dropdown(this)))
+      if (typeof option == 'string') data[option].call($this)
+    })
+  }
+
+  var old = $.fn.dropdown
+
+  $.fn.dropdown             = Plugin
+  $.fn.dropdown.Constructor = Dropdown
+
+
+  // DROPDOWN NO CONFLICT
+  // ====================
+
+  $.fn.dropdown.noConflict = function () {
+    $.fn.dropdown = old
+    return this
+  }
+
+
+  // APPLY TO STANDARD DROPDOWN ELEMENTS
+  // ===================================
+
+  $(document)
+    .on('click.bs.dropdown.data-api', clearMenus)
+    .on('click.bs.dropdown.data-api', '.dropdown form', function (e) { e.stopPropagation() })
+    .on('click.bs.dropdown.data-api', toggle, Dropdown.prototype.toggle)
+    .on('keydown.bs.dropdown.data-api', toggle, Dropdown.prototype.keydown)
+    .on('keydown.bs.dropdown.data-api', '.dropdown-menu', Dropdown.prototype.keydown)
+
+}(jQuery);
+</script>
+<style type="text/css">
+.code-folding-btn { margin-bottom: 4px; }
+.row { display: flex; }
+.collapse { display: none; }
+.in { display:block }
+.pull-right > .dropdown-menu {
+    right: 0;
+    left: auto;
+}
+.open > .dropdown-menu {
+    display: block;
+}
+.dropdown-menu {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    z-index: 1000;
+    display: none;
+    float: left;
+    min-width: 160px;
+    padding: 5px 0;
+    margin: 2px 0 0;
+    font-size: 14px;
+    text-align: left;
+    list-style: none;
+    background-color: #fff;
+    -webkit-background-clip: padding-box;
+    background-clip: padding-box;
+    border: 1px solid #ccc;
+    border: 1px solid rgba(0,0,0,.15);
+    border-radius: 4px;
+    -webkit-box-shadow: 0 6px 12px rgba(0,0,0,.175);
+    box-shadow: 0 6px 12px rgba(0,0,0,.175);
+}
+</style>
+<script>
+$(document).ready(function () {
+  window.initializeCodeFolding("show" === "show");
+});
+</script>
+
+
+<script>
+document.write('<div class="btn-group pull-right" style="position: absolute; top: 20%; right: 2%; z-index: 200"><button type="button" class="btn btn-default btn-xs dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true" data-_extension-text-contrast=""><span>Code</span> <span class="caret"></span></button><ul class="dropdown-menu" style="min-width: 50px;"><li><a id="rmd-show-all-code" href="#">Show All Code</a></li><li><a id="rmd-hide-all-code" href="#">Hide All Code</a></li></ul></div>')
+</script>
 
 
 <style type="text/css">
@@ -182,14 +736,36 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li class="chapter" data-level="3.7" data-path="patents.html"><a href="patents.html#patent-families"><i class="fa fa-check"></i><b>3.7</b> Patent Families</a></li>
 <li class="chapter" data-level="3.8" data-path="patents.html"><a href="patents.html#forecasting-patent-activity"><i class="fa fa-check"></i><b>3.8</b> Forecasting Patent Activity</a></li>
 </ul></li>
-<li class="chapter" data-level="4" data-path="patstat.html"><a href="patstat.html"><i class="fa fa-check"></i><b>4</b> PATSTAT</a></li>
-<li class="chapter" data-level="5" data-path="indicators.html"><a href="indicators.html"><i class="fa fa-check"></i><b>5</b> Indicators</a></li>
-<li class="chapter" data-level="6" data-path="textmining.html"><a href="textmining.html"><i class="fa fa-check"></i><b>6</b> Text Mining</a></li>
-<li class="chapter" data-level="7" data-path="geocoding.html"><a href="geocoding.html"><i class="fa fa-check"></i><b>7</b> Geocoding for Patent Analytics</a></li>
-<li class="chapter" data-level="8" data-path="machinelearning.html"><a href="machinelearning.html"><i class="fa fa-check"></i><b>8</b> Machine Learning</a></li>
-<li class="chapter" data-level="9" data-path="classification.html"><a href="classification.html"><i class="fa fa-check"></i><b>9</b> Using Patent Classfication Schemes in Patent Analytics</a></li>
-<li class="chapter" data-level="10" data-path="citations.html"><a href="citations.html"><i class="fa fa-check"></i><b>10</b> Patent Citations</a></li>
-<li class="chapter" data-level="11" data-path="social.html"><a href="social.html"><i class="fa fa-check"></i><b>11</b> Social Media and Patent Analytics</a></li>
+<li class="chapter" data-level="4" data-path="patstat.html"><a href="patstat.html"><i class="fa fa-check"></i><b>4</b> PATSTAT (placeholder)</a></li>
+<li class="chapter" data-level="5" data-path="indicators.html"><a href="indicators.html"><i class="fa fa-check"></i><b>5</b> Indicators (placeholder)</a></li>
+<li class="chapter" data-level="6" data-path="textmining.html"><a href="textmining.html"><i class="fa fa-check"></i><b>6</b> Text Mining (placeholder)</a></li>
+<li class="chapter" data-level="7" data-path="geocoding.html"><a href="geocoding.html"><i class="fa fa-check"></i><b>7</b> Geocoding</a><ul>
+<li class="chapter" data-level="7.0.1" data-path="geocoding.html"><a href="geocoding.html#getting-started"><i class="fa fa-check"></i><b>7.0.1</b> Getting Started</a></li>
+<li class="chapter" data-level="7.0.2" data-path="geocoding.html"><a href="geocoding.html#getting-set-up-with-the-google-maps-api"><i class="fa fa-check"></i><b>7.0.2</b> Getting set up with the Google Maps API</a></li>
+<li class="chapter" data-level="7.0.3" data-path="geocoding.html"><a href="geocoding.html#using-the-api"><i class="fa fa-check"></i><b>7.0.3</b> Using the API</a></li>
+<li class="chapter" data-level="7.0.4" data-path="geocoding.html"><a href="geocoding.html#the-source-data"><i class="fa fa-check"></i><b>7.0.4</b> The Source Data</a></li>
+<li class="chapter" data-level="7.1" data-path="geocoding.html"><a href="geocoding.html#lookup-the-records"><i class="fa fa-check"></i><b>7.1</b> Lookup the Records</a><ul>
+<li class="chapter" data-level="7.1.1" data-path="geocoding.html"><a href="geocoding.html#using-placement"><i class="fa fa-check"></i><b>7.1.1</b> Using placement</a></li>
+<li class="chapter" data-level="7.1.2" data-path="geocoding.html"><a href="geocoding.html#using-ggmap"><i class="fa fa-check"></i><b>7.1.2</b> Using ggmap</a></li>
+<li class="chapter" data-level="7.1.3" data-path="geocoding.html"><a href="geocoding.html#using-googleway"><i class="fa fa-check"></i><b>7.1.3</b> Using Googleway</a></li>
+</ul></li>
+<li class="chapter" data-level="7.2" data-path="geocoding.html"><a href="geocoding.html#reviewing-initial-results"><i class="fa fa-check"></i><b>7.2</b> Reviewing Initial Results</a><ul>
+<li class="chapter" data-level="7.2.1" data-path="geocoding.html"><a href="geocoding.html#tackling-abbreviations"><i class="fa fa-check"></i><b>7.2.1</b> Tackling Abbreviations</a></li>
+<li class="chapter" data-level="7.2.2" data-path="geocoding.html"><a href="geocoding.html#lookup-edited-names"><i class="fa fa-check"></i><b>7.2.2</b> Lookup edited names</a></li>
+<li class="chapter" data-level="7.2.3" data-path="geocoding.html"><a href="geocoding.html#bringing-the-data-together"><i class="fa fa-check"></i><b>7.2.3</b> Bringing the data together</a></li>
+<li class="chapter" data-level="7.2.4" data-path="geocoding.html"><a href="geocoding.html#assessing-the-quality-of-geocoding"><i class="fa fa-check"></i><b>7.2.4</b> Assessing the Quality of Geocoding</a></li>
+</ul></li>
+<li class="chapter" data-level="7.3" data-path="geocoding.html"><a href="geocoding.html#preprocess-the-data-and-rerun-the-query"><i class="fa fa-check"></i><b>7.3</b> Preprocess the Data and Rerun the Query</a><ul>
+<li class="chapter" data-level="7.3.1" data-path="geocoding.html"><a href="geocoding.html#duplicated-affiliation-names"><i class="fa fa-check"></i><b>7.3.1</b> Duplicated Affiliation Names</a></li>
+<li class="chapter" data-level="7.3.2" data-path="geocoding.html"><a href="geocoding.html#quickly-mapping-the-data"><i class="fa fa-check"></i><b>7.3.2</b> Quickly Mapping the Data</a></li>
+</ul></li>
+<li class="chapter" data-level="7.4" data-path="geocoding.html"><a href="geocoding.html#round-up"><i class="fa fa-check"></i><b>7.4</b> Round Up</a></li>
+</ul></li>
+<li class="chapter" data-level="8" data-path="references.html"><a href="references.html"><i class="fa fa-check"></i><b>8</b> References</a></li>
+<li class="chapter" data-level="9" data-path="machinelearning.html"><a href="machinelearning.html"><i class="fa fa-check"></i><b>9</b> Machine Learning (placeholder)</a></li>
+<li class="chapter" data-level="10" data-path="classification.html"><a href="classification.html"><i class="fa fa-check"></i><b>10</b> Patent Classfication (placeholder)</a></li>
+<li class="chapter" data-level="11" data-path="citations.html"><a href="citations.html"><i class="fa fa-check"></i><b>11</b> Patent Citations (placeholder)</a></li>
+<li class="chapter" data-level="12" data-path="social.html"><a href="social.html"><i class="fa fa-check"></i><b>12</b> Social Media and Patent Analytics (placeholder)</a></li>
 <li class="divider"></li>
 <li><a href="https://github.com/wipo-analytics/handbook" target="blank">Published with bookdown</a></li>
 
@@ -220,10 +796,10 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <p>Chapter <a href="indicators.html#indicators">5</a> addresses the use of other patent datafields such as applicant and inventor names, classification codes and citation data in the development of innovation analysis and business intelligence indicators.</p>
 <p>Chapter <a href="textmining.html#textmining">6</a> provides an introduction to text mining as a powerful tool in the patent analysts toolbox. Building on the discussion in Chapter 1 the chapter moves through the basics of text mining with patent data and concludes with a growing emphasis on machine learning approaches such as the popular Word2Vec algorithm.</p>
 <p>Chapter <a href="geocoding.html#geocoding">7</a> geocoding of patent data to develop geographic maps of patent and related data to geographic maps. Increasingly, it is possible to link different types of data on the same map using online geolocation services and to present the results in interactive maps. This chapter will discuss the principal patent data fields that are available for mapping and provide illustrations from services such as the USPTO and the ASEAN marine patent landscape report. The strengths and weaknesses of geolocation services such as the Google Maps API will be discussed such as the noisy nature of patent names and address fields, methods for regularising address data and the challenges involved in validating the georeferenced data returned from geolocation web services.</p>
-<p>Chapter <a href="machinelearning.html#machinelearning">8</a> focuses on the opportunities presented by machine learning to advance patent analytics. Machine learning or artificial intelligence approaches are increasingly being applied to text classification and named entity recognition and image classification. The application of machine learning in patent analytics remains at an early stage with the USPTO pioneering the application of machine learning algorithms to inventor and applicant name cleaning while Clarivate Analytics has recently applied machine learning to enhance the cleaning of applicant names. In future years we are likely to see the application of machine learning across the spectrum of patent analysis tasks. However, it can be very difficult to separate the hype around machine learning and artificial intelligence from the reality of what is available and achievable now. This chapter aims to assist with navigating these exciting but at times confusing and over hyped opportunities.</p>
-<p>The patent system is supported by a range of classification schemes that are designed to assist patent examiners with identifying and retrieving patent documents. These classsfication schemes commonly take the form of alphanumeric codes organised from general to specific categories. Chapter <a href="classification.html#classification">9</a> discusses the use of the International Patent Classification (IPC) and the closely related Cooperative Patent Classification (CPC) in patent analytics.</p>
-<p>Chapter <a href="citations.html#citations">10</a> discusses the important role that patent citations play in patent analytics and the strengths and weaknesses of different approaches to patent citation analysis. The chapter begins with a description of the two types of patent citation (backwards and forward citations), the sources of patent citations and their impacts before considering different approaches to citation counts based on citations of individual documents and citations of patent families.</p>
-<p>Chapter <a href="social.html#social">11</a> considers the emerging topic of social media as part of the toolbox for patent analytics. Using data from Twitter as an example, the chapter considers the potential use of social media data in areas such as searching for prior art, understanding company activity in a technology, assessing potential markets for an invention and public debate around controversial areas of science and technology such as artificial intelligence.</p>
+<p>Chapter <a href="machinelearning.html#machinelearning">9</a> focuses on the opportunities presented by machine learning to advance patent analytics. Machine learning or artificial intelligence approaches are increasingly being applied to text classification and named entity recognition and image classification. The application of machine learning in patent analytics remains at an early stage with the USPTO pioneering the application of machine learning algorithms to inventor and applicant name cleaning while Clarivate Analytics has recently applied machine learning to enhance the cleaning of applicant names. In future years we are likely to see the application of machine learning across the spectrum of patent analysis tasks. However, it can be very difficult to separate the hype around machine learning and artificial intelligence from the reality of what is available and achievable now. This chapter aims to assist with navigating these exciting but at times confusing and over hyped opportunities.</p>
+<p>The patent system is supported by a range of classification schemes that are designed to assist patent examiners with identifying and retrieving patent documents. These classsfication schemes commonly take the form of alphanumeric codes organised from general to specific categories. Chapter <a href="classification.html#classification">10</a> discusses the use of the International Patent Classification (IPC) and the closely related Cooperative Patent Classification (CPC) in patent analytics.</p>
+<p>Chapter <a href="citations.html#citations">11</a> discusses the important role that patent citations play in patent analytics and the strengths and weaknesses of different approaches to patent citation analysis. The chapter begins with a description of the two types of patent citation (backwards and forward citations), the sources of patent citations and their impacts before considering different approaches to citation counts based on citations of individual documents and citations of patent families.</p>
+<p>Chapter <a href="social.html#social">12</a> considers the emerging topic of social media as part of the toolbox for patent analytics. Using data from Twitter as an example, the chapter considers the potential use of social media data in areas such as searching for prior art, understanding company activity in a technology, assessing potential markets for an invention and public debate around controversial areas of science and technology such as artificial intelligence.</p>
 
 </div>
             </section>

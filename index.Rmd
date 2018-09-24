@@ -9,7 +9,76 @@ biblio-style: apalike
 link-citations: yes
 description: "This is a working draft of the WIPO Patent Analytics Handbook."
 ---
+```{r echo=FALSE}
+codejs <- readr::read_lines("js/codefolding.js")
+collapsejs <- readr::read_lines("js/collapse.js")
+transitionjs <- readr::read_lines("js/transition.js")
+dropdownjs <- readr::read_lines("js/dropdown.js")
 
+htmlhead <- c(
+  paste('
+<script>',
+paste(transitionjs, collapse = "\n"),
+'</script>
+<script>',
+paste(collapsejs, collapse = "\n"),
+'</script>
+<script>',
+paste(codejs, collapse = "\n"),
+'</script>
+<script>',
+paste(dropdownjs, collapse = "\n"),
+'</script>
+<style type="text/css">
+.code-folding-btn { margin-bottom: 4px; }
+.row { display: flex; }
+.collapse { display: none; }
+.in { display:block }
+.pull-right > .dropdown-menu {
+    right: 0;
+    left: auto;
+}
+.open > .dropdown-menu {
+    display: block;
+}
+.dropdown-menu {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    z-index: 1000;
+    display: none;
+    float: left;
+    min-width: 160px;
+    padding: 5px 0;
+    margin: 2px 0 0;
+    font-size: 14px;
+    text-align: left;
+    list-style: none;
+    background-color: #fff;
+    -webkit-background-clip: padding-box;
+    background-clip: padding-box;
+    border: 1px solid #ccc;
+    border: 1px solid rgba(0,0,0,.15);
+    border-radius: 4px;
+    -webkit-box-shadow: 0 6px 12px rgba(0,0,0,.175);
+    box-shadow: 0 6px 12px rgba(0,0,0,.175);
+}
+</style>
+<script>
+$(document).ready(function () {
+  window.initializeCodeFolding("show" === "show");
+});
+</script>
+', sep = "\n"),
+  paste0('
+<script>
+document.write(\'<div class="btn-group pull-right" style="position: absolute; top: 20%; right: 2%; z-index: 200"><button type="button" class="btn btn-default btn-xs dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true" data-_extension-text-contrast=""><span>Code</span> <span class="caret"></span></button><ul class="dropdown-menu" style="min-width: 50px;"><li><a id="rmd-show-all-code" href="#">Show All Code</a></li><li><a id="rmd-hide-all-code" href="#">Hide All Code</a></li></ul></div>\')
+</script>
+')
+)
+
+readr::write_lines(htmlhead, path = "header.html")
+``` 
 # Note to Readers {-}
 
 This is the working draft of the forthcoming WIPO Patent Analytics Handbook. The Handbook is being written in the open and is presently incomplete. New chapters will be added as they become available. If you would like to correct or comment on entries in the Handbook please raise an issue on Github [here](). Alternatively please email `poldham at mac dot com` or `irene dot kitsara at wipo dot int`. Comments, corrections and suggestions for improvement are very welcome in ensuring the Handbook is a useful resources for the wider community.  
@@ -36,7 +105,7 @@ The Handbook is therefore intended to be used by researchers and professionals w
 One important challenge that has emerged in recent years with the growth of patent analytics and patent landscape analysis is the problem of reproducibility [@Smith_2017]. Patent analysts typically work with data from a number of different databases and use a number of different methods in their analysis. However, the precise details of the coverage of different sources, the methods used, and the limitations of different approaches are often not made explicit. This makes it difficult for other to reproduce the results and to assess the quality of the analysis presented. The Handbook takes the approach that patent analysis should be reproducible. The Handbook addresses this issue by using examples from standardised open access datasets created for this purpose. The online version of the Handbook is accompanied by the code used to develop the examples.
 
 # How to use the Handbook {-} 
-{#howto}
+\index{howto}
 
 This Handbook consists of self standing chapters on different topics and is intended to be used in two ways. It can be used as a reference guide to a topic with worked examples for illustration and key literature sources to guide further reading on a topic. The Handbook can also be used as practical guide by downloading the datasets and reproducing the worked examples to help you apply the methods to your own analysis. Patent analytics involves a wide range of skills across different disciplines and one aim of the Handbook is to point to important sources of further information and training for each topic.   
 
@@ -49,9 +118,7 @@ The handbook and its examples were written mainly in RStudio. RStudio is an easy
 
 This Handbook is open access and each chapter and the code used to develop the examples can be downloaded free of charge from Github at [https://github.com/wipo-analytics/handbook](https://github.com/wipo-analytics/handbook). The Handbook can be opened in RStudio using the `handbook.Rproj` file. 
 
-The Handbook makes use of a number of R packages. To install all packages used in the Handbook run the following lines in the console:
-
-```{r eval=FALSE}
+The Handbook makes use of a number of R packages. To install all packages used in the Handbook run the following lines in the console:```{r eval=FALSE}
 install.packages("tidyverse")
 install.packages("rcrossref")
 install.packages("rorcid")
@@ -92,4 +159,3 @@ When the drones package is installed review the contents of each dataset in the 
 ```{r load_drones, eval=FALSE}
 drones <- drones::drones
 ```
-

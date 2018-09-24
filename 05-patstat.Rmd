@@ -1,4 +1,4 @@
-# PATSTAT {#patstat}
+# PATSTAT (placeholder) {#patstat}
 \index{patstat}
 
 This is a placeholder, please come back later
