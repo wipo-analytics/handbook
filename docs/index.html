@@ -7,7 +7,7 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <title>The WIPO Patent Analytics Handbook</title>
   <meta name="description" content="This is a working draft of the WIPO Patent Analytics Handbook.">
-  <meta name="generator" content="bookdown 0.7 and GitBook 2.6.7">
+  <meta name="generator" content="bookdown  and GitBook 2.6.7">
 
   <meta property="og:title" content="The WIPO Patent Analytics Handbook" />
   <meta property="og:type" content="book" />
@@ -25,7 +25,7 @@
 <meta name="author" content="Paul Oldham">
 
 
-<meta name="date" content="2018-09-24">
+<meta name="date" content="2019-01-16">
 
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="apple-mobile-web-app-capable" content="yes">
@@ -36,6 +36,7 @@
 <link rel="next" href="about-the-author.html">
 <script src="libs/jquery-2.2.3/jquery.min.js"></script>
 <link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-table.css" rel="stylesheet" />
 <link href="libs/gitbook-2.6.7/css/plugin-bookdown.css" rel="stylesheet" />
 <link href="libs/gitbook-2.6.7/css/plugin-highlight.css" rel="stylesheet" />
 <link href="libs/gitbook-2.6.7/css/plugin-search.css" rel="stylesheet" />
@@ -47,8 +48,8 @@
 
 
 
-<script src="libs/htmlwidgets-1.2/htmlwidgets.js"></script>
-<script src="libs/d3-4.5.0/d3.min.js"></script>
+<script src="libs/htmlwidgets-1.3/htmlwidgets.js"></script>
+<script src="libs/d3-4.10.2/d3.min.js"></script>
 <script src="libs/sankey-1/sankey.js"></script>
 <script src="libs/sankeyNetwork-binding-0.4/sankeyNetwork.js"></script>
 <script src="libs/kePrint-0.0.1/kePrint.js"></script>
@@ -58,7 +59,9 @@
 <script src="libs/Proj4Leaflet-1.0.1/proj4-compressed.js"></script>
 <script src="libs/Proj4Leaflet-1.0.1/proj4leaflet.js"></script>
 <link href="libs/rstudio_leaflet-1.3.1/rstudio_leaflet.css" rel="stylesheet" />
-<script src="libs/leaflet-binding-2.0.1/leaflet.js"></script>
+<script src="libs/leaflet-binding-2.0.2/leaflet.js"></script>
+<link href="libs/collapsibleTree-0.1.6/collapsibleTree.css" rel="stylesheet" />
+<script src="libs/collapsibleTree-binding-0.1.7/collapsibleTree.js"></script>
 
 <script>
 /* ========================================================================
@@ -612,7 +615,7 @@ document.write('<div class="btn-group pull-right" style="position: absolute; top
 <style type="text/css">
 a.sourceLine { display: inline-block; line-height: 1.25; }
 a.sourceLine { pointer-events: none; color: inherit; text-decoration: inherit; }
-a.sourceLine:empty { height: 1.2em; position: absolute; }
+a.sourceLine:empty { height: 1.2em; }
 .sourceCode { overflow: visible; }
 code.sourceCode { white-space: pre; position: relative; }
 div.sourceCode { margin: 1em 0; }
@@ -625,13 +628,11 @@ code.sourceCode { white-space: pre-wrap; }
 a.sourceLine { text-indent: -1em; padding-left: 1em; }
 }
 pre.numberSource a.sourceLine
-  { position: relative; }
-pre.numberSource a.sourceLine:empty
-  { position: absolute; }
+  { position: relative; left: -4em; }
 pre.numberSource a.sourceLine::before
-  { content: attr(data-line-number);
-    position: absolute; left: -5em; text-align: right; vertical-align: baseline;
-    border: none; pointer-events: all;
+  { content: attr(title);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; pointer-events: all; display: inline-block;
     -webkit-touch-callout: none; -webkit-user-select: none;
     -khtml-user-select: none; -moz-user-select: none;
     -ms-user-select: none; user-select: none;
@@ -707,7 +708,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li class="chapter" data-level="2.2.3" data-path="literature.html"><a href="literature.html#proximity-operators"><i class="fa fa-check"></i><b>2.2.3</b> Proximity Operators</a></li>
 <li class="chapter" data-level="2.2.4" data-path="literature.html"><a href="literature.html#regular-expressions"><i class="fa fa-check"></i><b>2.2.4</b> Regular Expressions</a></li>
 </ul></li>
-<li class="chapter" data-level="2.3" data-path="literature.html"><a href="literature.html#precision-vs.recall"><i class="fa fa-check"></i><b>2.3</b> Precision vs. Recall</a></li>
+<li class="chapter" data-level="2.3" data-path="literature.html"><a href="literature.html#precision-vs.-recall"><i class="fa fa-check"></i><b>2.3</b> Precision vs. Recall</a></li>
 <li class="chapter" data-level="2.4" data-path="literature.html"><a href="literature.html#processing-scientific-literature"><i class="fa fa-check"></i><b>2.4</b> Processing Scientific Literature</a></li>
 <li class="chapter" data-level="2.5" data-path="literature.html"><a href="literature.html#visualizing-the-scientific-literature"><i class="fa fa-check"></i><b>2.5</b> Visualizing the Scientific Literature</a><ul>
 <li class="chapter" data-level="2.5.1" data-path="literature.html"><a href="literature.html#dashboards"><i class="fa fa-check"></i><b>2.5.1</b> Dashboards</a></li>
@@ -730,10 +731,10 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li class="chapter" data-level="3.3" data-path="patents.html"><a href="patents.html#counting-priority-or-first-filings"><i class="fa fa-check"></i><b>3.3</b> Counting Priority or First Filings</a></li>
 <li class="chapter" data-level="3.4" data-path="patents.html"><a href="patents.html#counting-priority-applications"><i class="fa fa-check"></i><b>3.4</b> Counting Priority Applications</a></li>
 <li class="chapter" data-level="3.5" data-path="patents.html"><a href="patents.html#counting-applications"><i class="fa fa-check"></i><b>3.5</b> Counting Applications</a><ul>
-<li class="chapter" data-level="3.5.1" data-path="patents.html"><a href="patents.html#mapping-publications"><i class="fa fa-check"></i><b>3.5.1</b> Mapping Publications</a></li>
+<li class="chapter" data-level="3.5.1" data-path="patents.html"><a href="patents.html#mapping-publications-family-members"><i class="fa fa-check"></i><b>3.5.1</b> Mapping Publications (Family Members)</a></li>
 </ul></li>
 <li class="chapter" data-level="3.6" data-path="patents.html"><a href="patents.html#trends-by-country-using-publication-data"><i class="fa fa-check"></i><b>3.6</b> Trends by Country using Publication Data</a></li>
-<li class="chapter" data-level="3.7" data-path="patents.html"><a href="patents.html#patent-families"><i class="fa fa-check"></i><b>3.7</b> Patent Families</a></li>
+<li class="chapter" data-level="3.7" data-path="patents.html"><a href="patents.html#families"><i class="fa fa-check"></i><b>3.7</b> Patent Families</a></li>
 <li class="chapter" data-level="3.8" data-path="patents.html"><a href="patents.html#forecasting-patent-activity"><i class="fa fa-check"></i><b>3.8</b> Forecasting Patent Activity</a></li>
 </ul></li>
 <li class="chapter" data-level="4" data-path="patstat.html"><a href="patstat.html"><i class="fa fa-check"></i><b>4</b> PATSTAT (placeholder)</a></li>
@@ -764,7 +765,16 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li class="chapter" data-level="8" data-path="references.html"><a href="references.html"><i class="fa fa-check"></i><b>8</b> References</a></li>
 <li class="chapter" data-level="9" data-path="machinelearning.html"><a href="machinelearning.html"><i class="fa fa-check"></i><b>9</b> Machine Learning (placeholder)</a></li>
 <li class="chapter" data-level="10" data-path="classification.html"><a href="classification.html"><i class="fa fa-check"></i><b>10</b> Patent Classfication (placeholder)</a></li>
-<li class="chapter" data-level="11" data-path="citations.html"><a href="citations.html"><i class="fa fa-check"></i><b>11</b> Patent Citations (placeholder)</a></li>
+<li class="chapter" data-level="11" data-path="citations.html"><a href="citations.html"><i class="fa fa-check"></i><b>11</b> Patent Citations</a><ul>
+<li class="chapter" data-level="11.0.1" data-path="citations.html"><a href="citations.html#non-patent-literature"><i class="fa fa-check"></i><b>11.0.1</b> Non Patent Literature</a></li>
+<li class="chapter" data-level="11.0.2" data-path="citations.html"><a href="citations.html#literature-and-patent-citation-data-with-the-lens"><i class="fa fa-check"></i><b>11.0.2</b> Literature and Patent Citation Data with the Lens</a></li>
+<li class="chapter" data-level="11.0.3" data-path="citations.html"><a href="citations.html#patent-citations"><i class="fa fa-check"></i><b>11.0.3</b> Patent Citations</a></li>
+<li class="chapter" data-level="11.0.4" data-path="citations.html"><a href="citations.html#navigating-patent-networks"><i class="fa fa-check"></i><b>11.0.4</b> Navigating Patent Networks</a></li>
+<li class="chapter" data-level="11.0.5" data-path="citations.html"><a href="citations.html#forward-citations"><i class="fa fa-check"></i><b>11.0.5</b> Forward Citations</a></li>
+<li class="chapter" data-level="11.0.6" data-path="citations.html"><a href="citations.html#counting-citations-by-patent-families"><i class="fa fa-check"></i><b>11.0.6</b> Counting Citations by Patent Families</a></li>
+<li class="chapter" data-level="11.0.7" data-path="citations.html"><a href="citations.html#citations-and-knowledge-spillovers"><i class="fa fa-check"></i><b>11.0.7</b> Citations and Knowledge Spillovers</a></li>
+<li class="chapter" data-level="11.1" data-path="citations.html"><a href="citations.html#conclusion-1"><i class="fa fa-check"></i><b>11.1</b> Conclusion</a></li>
+</ul></li>
 <li class="chapter" data-level="12" data-path="social.html"><a href="social.html"><i class="fa fa-check"></i><b>12</b> Social Media and Patent Analytics (placeholder)</a></li>
 <li class="divider"></li>
 <li><a href="https://github.com/wipo-analytics/handbook" target="blank">Published with bookdown</a></li>
@@ -788,8 +798,8 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
             <section class="normal" id="section-">
 <div id="header">
 <h1 class="title">The WIPO Patent Analytics Handbook</h1>
-<h4 class="author"><em>Paul Oldham</em></h4>
-<h4 class="date"><em>2018-09-24</em></h4>
+<p class="author"><em>Paul Oldham</em></p>
+<p class="date"><em>2019-01-16</em></p>
 </div>
 <div id="note-to-readers" class="section level1 unnumbered">
 <h1>Note to Readers</h1>
@@ -821,7 +831,7 @@ gitbook.start({
 "google": false,
 "linkedin": false,
 "weibo": false,
-"instapper": false,
+"instapaper": false,
 "vk": false,
 "all": ["facebook", "google", "twitter", "linkedin", "weibo", "instapaper"]
 },
@@ -831,6 +841,10 @@ gitbook.start({
 "size": 2
 },
 "edit": {
+"link": null,
+"text": null
+},
+"history": {
 "link": null,
 "text": null
 },
