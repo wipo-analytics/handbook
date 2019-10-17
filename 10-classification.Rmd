@@ -3,4 +3,35 @@
 
 This is a placeholder, please come back later
 
-Patent
+<!---Patent
+
+
+For WIPO machine learning resources including datasets for text categorisations see:
+
+https://www.wipo.int/classifications/ipc/en/ITsupport/Categorization/dataset/wipo-alpha-readme.html
+
+See the contact name for the person at the bottom patrick.fievet@wipo.int
+
+Learning Patent Speak: Investigating Domain-Specific Word Embeddings
+
+
+### Introduction
+
+Patent documents are normally awarded classification codes or symbols that describe the technical content of the document. For those unfamiliar with patent classification schemes the closest systems are library classification codes such as those used to order the items on the shelves of a university or local library. As with other library classification systems the logic of classification is that once we are familiar with its terms we would logically go to class C12 to find documents relating to Biochemistry, A01N for pesticides and A47 for kitchen equipment. However, while familiar library classification systems generally assign one classification code to a document, patent documents commonly receive multiple classification codes to describe the technical content of documents. 
+
+The original aim of patent classification was to facilitate the retrieval of patent documents as prior art and the physical ordering of patent documents in patent office libraries. As a very rough summary, as patent offices expanded, classification was used to assign work to the relevant sections of the examination corps. Initially patent documents were generally awarded one classification code. This progressively expanded to more than one code with the first in a list generally being the most important and focusing on the technical details of the _claims_. In the 2000s the focus began to shift towards awarding multiple classification codes to describe the technical content of patent _documents_. The increasing level of detail in the description of patent documents has be
+
+The focus in this chapter is on international rather than national patent classification systems. For that reason
+
+
+
+This chapter considers patent classification systems and their role in patent analytics. For those unfamiliar with patent classification schemes the closest systems are library classification codes such as those used to order the items on the shelves of a university or local library. 
+
+Patent classification schemes emerged in order to assist examiners with retrieving prior art, with allocating applications to examiners and storing physical documents. While the original primary purpose of patent classification schemes was to assist examiners, patent classifiers provide powerful tools for patent analysts. 
+
+In this chapter we explore the power of patent classification codes focusing on the International Patent Classification. We demonstrate the advance use of the patent classification in patent analytics from the WIPO Patent Landscape on Animal Genetic Resources where networks of classifiers were used to distinguish between clusters of activity involving livestock animals.  
+
+
+
+These systems commonly consist of a combination of alphanumeric characters that are organised in a classification hierarchy. Initially, classification codes (e.g. C12N) were awarded to describe the contents of the claims of patent documents. Where more than one code was awarded documents were organised with the most important appearing first. It is important to realise that both of these situations have changed. Multiple classification codes are now commonly awarded to documents, classification codes describe the technical contents of the entire document rather than the claims and the order in which codes appear is no longer material to interpretation of their content.--->
+

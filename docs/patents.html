@@ -1,13 +1,12 @@
 <!DOCTYPE html>
-<html >
-
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
 <head>
 
-  <meta charset="UTF-8">
-  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
   <title>Chapter 3 Counting Patent Data | The WIPO Patent Analytics Handbook</title>
-  <meta name="description" content="This is a working draft of the WIPO Patent Analytics Handbook.">
-  <meta name="generator" content="bookdown  and GitBook 2.6.7">
+  <meta name="description" content="This is a working draft of the WIPO Patent Analytics Handbook." />
+  <meta name="generator" content="bookdown 0.13 and GitBook 2.6.7" />
 
   <meta property="og:title" content="Chapter 3 Counting Patent Data | The WIPO Patent Analytics Handbook" />
   <meta property="og:type" content="book" />
@@ -22,18 +21,18 @@
   <meta name="twitter:description" content="This is a working draft of the WIPO Patent Analytics Handbook." />
   
 
-<meta name="author" content="Paul Oldham">
+<meta name="author" content="Paul Oldham" />
 
 
-<meta name="date" content="2019-01-16">
+<meta name="date" content="2019-10-17" />
 
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="apple-mobile-web-app-capable" content="yes">
-  <meta name="apple-mobile-web-app-status-bar-style" content="black">
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black" />
   
   
-<link rel="prev" href="literature.html">
-<link rel="next" href="patstat.html">
+<link rel="prev" href="literature.html"/>
+<link rel="next" href="patstat.html"/>
 <script src="libs/jquery-2.2.3/jquery.min.js"></script>
 <link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
 <link href="libs/gitbook-2.6.7/css/plugin-table.css" rel="stylesheet" />
@@ -618,7 +617,6 @@ a.sourceLine { pointer-events: none; color: inherit; text-decoration: inherit; }
 a.sourceLine:empty { height: 1.2em; }
 .sourceCode { overflow: visible; }
 code.sourceCode { white-space: pre; position: relative; }
-div.sourceCode { margin: 1em 0; }
 pre.sourceCode { margin: 0; }
 @media screen {
 div.sourceCode { overflow: auto; }
@@ -630,7 +628,7 @@ a.sourceLine { text-indent: -1em; padding-left: 1em; }
 pre.numberSource a.sourceLine
   { position: relative; left: -4em; }
 pre.numberSource a.sourceLine::before
-  { content: attr(title);
+  { content: attr(data-line-number);
     position: relative; left: -1em; text-align: right; vertical-align: baseline;
     border: none; pointer-events: all; display: inline-block;
     -webkit-touch-callout: none; -webkit-user-select: none;
@@ -708,7 +706,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li class="chapter" data-level="2.2.3" data-path="literature.html"><a href="literature.html#proximity-operators"><i class="fa fa-check"></i><b>2.2.3</b> Proximity Operators</a></li>
 <li class="chapter" data-level="2.2.4" data-path="literature.html"><a href="literature.html#regular-expressions"><i class="fa fa-check"></i><b>2.2.4</b> Regular Expressions</a></li>
 </ul></li>
-<li class="chapter" data-level="2.3" data-path="literature.html"><a href="literature.html#precision-vs.-recall"><i class="fa fa-check"></i><b>2.3</b> Precision vs. Recall</a></li>
+<li class="chapter" data-level="2.3" data-path="literature.html"><a href="literature.html#precision-vs.recall"><i class="fa fa-check"></i><b>2.3</b> Precision vs. Recall</a></li>
 <li class="chapter" data-level="2.4" data-path="literature.html"><a href="literature.html#processing-scientific-literature"><i class="fa fa-check"></i><b>2.4</b> Processing Scientific Literature</a></li>
 <li class="chapter" data-level="2.5" data-path="literature.html"><a href="literature.html#visualizing-the-scientific-literature"><i class="fa fa-check"></i><b>2.5</b> Visualizing the Scientific Literature</a><ul>
 <li class="chapter" data-level="2.5.1" data-path="literature.html"><a href="literature.html#dashboards"><i class="fa fa-check"></i><b>2.5.1</b> Dashboards</a></li>
@@ -737,11 +735,19 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li class="chapter" data-level="3.7" data-path="patents.html"><a href="patents.html#families"><i class="fa fa-check"></i><b>3.7</b> Patent Families</a></li>
 <li class="chapter" data-level="3.8" data-path="patents.html"><a href="patents.html#forecasting-patent-activity"><i class="fa fa-check"></i><b>3.8</b> Forecasting Patent Activity</a></li>
 </ul></li>
-<li class="chapter" data-level="4" data-path="patstat.html"><a href="patstat.html"><i class="fa fa-check"></i><b>4</b> PATSTAT (placeholder)</a></li>
+<li class="chapter" data-level="4" data-path="patstat.html"><a href="patstat.html"><i class="fa fa-check"></i><b>4</b> PATSTAT (placeholder)</a><ul>
+<li class="chapter" data-level="4.0.1" data-path="patstat.html"><a href="patstat.html#getting-started"><i class="fa fa-check"></i><b>4.0.1</b> Getting Started</a></li>
+<li class="chapter" data-level="4.0.2" data-path="patstat.html"><a href="patstat.html#recipe-1"><i class="fa fa-check"></i><b>4.0.2</b> Recipe 1</a></li>
+<li class="chapter" data-level="4.0.3" data-path="patstat.html"><a href="patstat.html#recipe-2-ipc-based-analysis"><i class="fa fa-check"></i><b>4.0.3</b> Recipe 2 IPC based analysis</a></li>
+<li class="chapter" data-level="4.0.4" data-path="patstat.html"><a href="patstat.html#recipe-3-patent-family-analysis"><i class="fa fa-check"></i><b>4.0.4</b> Recipe 3 Patent Family Analysis</a></li>
+<li class="chapter" data-level="4.0.5" data-path="patstat.html"><a href="patstat.html#recipe-4-applicants"><i class="fa fa-check"></i><b>4.0.5</b> Recipe 4 Applicants</a></li>
+<li class="chapter" data-level="4.0.6" data-path="patstat.html"><a href="patstat.html#recipe-5-inventors"><i class="fa fa-check"></i><b>4.0.6</b> Recipe 5 Inventors</a></li>
+<li class="chapter" data-level="4.0.7" data-path="patstat.html"><a href="patstat.html#recipe-6-non-patent-literature"><i class="fa fa-check"></i><b>4.0.7</b> Recipe 6 Non Patent Literature</a></li>
+</ul></li>
 <li class="chapter" data-level="5" data-path="indicators.html"><a href="indicators.html"><i class="fa fa-check"></i><b>5</b> Indicators (placeholder)</a></li>
 <li class="chapter" data-level="6" data-path="textmining.html"><a href="textmining.html"><i class="fa fa-check"></i><b>6</b> Text Mining (placeholder)</a></li>
 <li class="chapter" data-level="7" data-path="geocoding.html"><a href="geocoding.html"><i class="fa fa-check"></i><b>7</b> Geocoding</a><ul>
-<li class="chapter" data-level="7.0.1" data-path="geocoding.html"><a href="geocoding.html#getting-started"><i class="fa fa-check"></i><b>7.0.1</b> Getting Started</a></li>
+<li class="chapter" data-level="7.0.1" data-path="geocoding.html"><a href="geocoding.html#getting-started-1"><i class="fa fa-check"></i><b>7.0.1</b> Getting Started</a></li>
 <li class="chapter" data-level="7.0.2" data-path="geocoding.html"><a href="geocoding.html#getting-set-up-with-the-google-maps-api"><i class="fa fa-check"></i><b>7.0.2</b> Getting set up with the Google Maps API</a></li>
 <li class="chapter" data-level="7.0.3" data-path="geocoding.html"><a href="geocoding.html#using-the-api"><i class="fa fa-check"></i><b>7.0.3</b> Using the API</a></li>
 <li class="chapter" data-level="7.0.4" data-path="geocoding.html"><a href="geocoding.html#the-source-data"><i class="fa fa-check"></i><b>7.0.4</b> The Source Data</a></li>
@@ -763,7 +769,16 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li class="chapter" data-level="7.4" data-path="geocoding.html"><a href="geocoding.html#round-up"><i class="fa fa-check"></i><b>7.4</b> Round Up</a></li>
 </ul></li>
 <li class="chapter" data-level="8" data-path="references.html"><a href="references.html"><i class="fa fa-check"></i><b>8</b> References</a></li>
-<li class="chapter" data-level="9" data-path="machinelearning.html"><a href="machinelearning.html"><i class="fa fa-check"></i><b>9</b> Machine Learning (placeholder)</a></li>
+<li class="chapter" data-level="9" data-path="machinelearning.html"><a href="machinelearning.html"><i class="fa fa-check"></i><b>9</b> Machine Learning (placeholder)</a><ul>
+<li class="chapter" data-level="9.0.1" data-path="machinelearning.html"><a href="machinelearning.html#artificial-intelligence-machine-learning"><i class="fa fa-check"></i><b>9.0.1</b> Artificial Intelligence &amp; Machine Learning</a></li>
+<li class="chapter" data-level="9.0.2" data-path="machinelearning.html"><a href="machinelearning.html#word-vectors"><i class="fa fa-check"></i><b>9.0.2</b> Word Vectors</a></li>
+<li class="chapter" data-level="9.0.3" data-path="machinelearning.html"><a href="machinelearning.html#word-vectors-with-fastext"><i class="fa fa-check"></i><b>9.0.3</b> Word Vectors with fastext</a></li>
+<li class="chapter" data-level="9.0.4" data-path="machinelearning.html"><a href="machinelearning.html#training-word-vectors-for-drones"><i class="fa fa-check"></i><b>9.0.4</b> Training Word Vectors for Drones</a></li>
+<li class="chapter" data-level="9.0.5" data-path="machinelearning.html"><a href="machinelearning.html#using-word-vectors"><i class="fa fa-check"></i><b>9.0.5</b> Using Word Vectors</a></li>
+<li class="chapter" data-level="9.0.6" data-path="machinelearning.html"><a href="machinelearning.html#exploring-analogies"><i class="fa fa-check"></i><b>9.0.6</b> Exploring Analogies</a></li>
+<li class="chapter" data-level="9.0.7" data-path="machinelearning.html"><a href="machinelearning.html#patent-specific-word-embeddings"><i class="fa fa-check"></i><b>9.0.7</b> Patent Specific Word Embeddings</a></li>
+<li class="chapter" data-level="9.0.8" data-path="machinelearning.html"><a href="machinelearning.html#machine-learning-in-classification"><i class="fa fa-check"></i><b>9.0.8</b> Machine learning in Classification</a></li>
+</ul></li>
 <li class="chapter" data-level="10" data-path="classification.html"><a href="classification.html"><i class="fa fa-check"></i><b>10</b> Patent Classfication (placeholder)</a></li>
 <li class="chapter" data-level="11" data-path="citations.html"><a href="citations.html"><i class="fa fa-check"></i><b>11</b> Patent Citations</a><ul>
 <li class="chapter" data-level="11.0.1" data-path="citations.html"><a href="citations.html#non-patent-literature"><i class="fa fa-check"></i><b>11.0.1</b> Non Patent Literature</a></li>
@@ -798,6 +813,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
             <section class="normal" id="section-">
 <div id="patents" class="section level1">
 <h1><span class="header-section-number">Chapter 3</span> Counting Patent Data</h1>
+<p><em>Please note this is a working draft</em></p>
 <p>This chapter provides an in depth introduction to the development of descriptive patent statistics. The most important existing resource for the development of patent statistics is the OECD Patent Statistics Manual and a series of OECD working papers <span class="citation">(<em>OECD Patent Statistics Manual</em> <a href="#ref-OECD_2009">2009</a>)</span>. However, a practical step by step guide to the development of patent counts using real world data has been lacking. This chapter aims to fill this gap by working up from the analysis of the structure of patent numbers through to the creation of counts priority or first filings. This is followed by exploration of patent families and concludes by graphing patent trends.</p>
 <p>The Chapter makes extensive use of the <a href="https://wipo-analytics.github.io/drones/">drones patent dataset</a>. The drones dataset is a set of patent documents relating to the term drone or drones created as a toy or training dataset for experiments in developing patent statistics. Instructions on how to install it are provided the How to Use the Handbook section at the front of the book and on the dataset <a href="https://wipo-analytics.github.io/drones/">home page</a>.</p>
 <!--to do Readers of this chapter online will be able to access the code and functions used to create the counts by selecting the `Code` icon.-->
@@ -880,7 +896,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 </blockquote>
 <p>In connection with the publication level, the definition explains that:</p>
 <blockquote>
-<p>“a “publication level” is defined as the level corresponding to a procedural stage at which normally a document is published under a given national industrial property law or under a regional or international industrial property convention or treaty"</p>
+<p>“a “publication level” is defined as the level corresponding to a procedural stage at which normally a document is published under a given national industrial property law or under a regional or international industrial property convention or treaty&quot;</p>
 </blockquote>
 <p>So, to take a common example, a patent document may be published at the application stage. This is commonly the first procedural stage and is the first publication level. In many countries standard patent applications will receive the kind code A at this first publication level. In many countries, when a patent is granted the document enters the second publication level and it is published with kind code B. Other types of patent documents commonly receive their own kind codes denoting their type. For example Utility Models receive the kind code U while design patents received kind code S.</p>
 <p>Kind codes are often accompanied by a number that adds additional information about the type of document. Within the WIPO standard these numbers range from 1 to 7 with numbers 8 and 9 reserved for corrections to the bibliographic data (e.g. A8) or to any part of the document (e.g. A9). WIPO <a href="http://www.wipo.int/standards/en/pdf/07-03-01.pdf">Examples and Kinds of Patent Documents</a> forms part of the WIPO Handbook on Industrial Property Information and Documentation setting out common Kind Codes and is recommended reading for patent analysts. Quick reference tables are also produced by Clarivate Analytics and national patent offices and are available online.</p>
@@ -1219,23 +1235,23 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li>Graph the results.</li>
 </ol>
 <p>The methodological steps required for this task can be performed using tools such as Open Refine which can easily separate out the data or in VantagePoint. The key challenge is in grouping and ranking the priority numbers by the earliest data. This is most easily achieved using a programming language (such as an SQL GROUP BY, PARTITION BY and RANK) or in a language such as Python or R. In the case of R this can be achieved in the following lines of code. The code is commented to show the steps identified above.</p>
-<pre class="sourceCode r"><code class="sourceCode r">earliest_priority &lt;-<span class="st"> </span>numbers <span class="op">%&gt;%</span>
-<span class="st">  </span><span class="kw">select</span>(priority_number, application_number) <span class="op">%&gt;%</span><span class="st"> </span>
-<span class="st">  </span><span class="kw">drop_na</span>(priority_number) <span class="op">%&gt;%</span><span class="st"> </span><span class="co"># drop empty priority fields</span>
-<span class="st">  </span><span class="kw">separate_rows</span>(priority_number, <span class="dt">sep =</span> <span class="st">&quot;;&quot;</span>) <span class="op">%&gt;%</span><span class="st"> </span><span class="co"># separate priority numbers on &quot;;&quot;</span>
-<span class="st">  </span><span class="kw">mutate</span>(<span class="dt">priority_number =</span> <span class="kw">str_trim</span>(priority_number, <span class="dt">side =</span> <span class="st">&quot;both&quot;</span>)) <span class="op">%&gt;%</span><span class="st"> </span><span class="co"># trim whitespace</span>
-<span class="st">  </span><span class="kw">separate</span>(priority_number, <span class="dt">into =</span> <span class="kw">c</span>(<span class="st">&quot;priority&quot;</span>, <span class="st">&quot;priority_date&quot;</span>), <span class="dt">sep =</span> <span class="st">&quot; &quot;</span>, <span class="dt">remove =</span> <span class="ot">FALSE</span>) <span class="op">%&gt;%</span><span class="st"> </span><span class="co"># extract the date </span>
-<span class="st">  </span><span class="kw">mutate</span>(<span class="dt">priority_date =</span> lubridate<span class="op">::</span><span class="kw">ymd</span>(priority_date)) <span class="op">%&gt;%</span><span class="st"> </span>
-<span class="st">  </span><span class="kw">mutate</span>(<span class="dt">year =</span> lubridate<span class="op">::</span><span class="kw">year</span>(priority_date)) <span class="op">%&gt;%</span><span class="st"> </span><span class="co"># add the priority year field</span>
-<span class="st">  </span><span class="kw">mutate</span>(<span class="dt">priority_number =</span> <span class="kw">str_trim</span>(priority_number, <span class="dt">side =</span> <span class="st">&quot;both&quot;</span>)) <span class="op">%&gt;%</span><span class="st"> </span><span class="co"># trim whitespace</span>
-<span class="st">  </span><span class="kw">mutate</span>(<span class="dt">priority_country =</span> <span class="kw">str_sub</span>(.<span class="op">$</span>priority_number, <span class="dv">1</span>,<span class="dv">2</span>)) <span class="op">%&gt;%</span><span class="st"> </span><span class="co"># extract the priority country</span>
-<span class="st">  </span><span class="kw">group_by</span>(application_number) <span class="op">%&gt;%</span><span class="st">  </span><span class="co"># group by application number</span>
-<span class="st">  </span><span class="kw">mutate</span>(<span class="dt">filing_order =</span> <span class="kw">rank</span>(priority_date, <span class="dt">ties.method =</span> <span class="st">&quot;first&quot;</span>)) <span class="op">%&gt;%</span><span class="st"> </span><span class="co"># rank by priority date </span>
-<span class="st">  </span><span class="kw">ungroup</span>() <span class="op">%&gt;%</span><span class="st"> </span><span class="co"># remove grouping for later calculations</span>
-<span class="st">  </span><span class="kw">filter</span>(filing_order <span class="op">==</span><span class="st"> </span><span class="dv">1</span>) <span class="op">%&gt;%</span><span class="st"> </span><span class="co"># filter to the earliest priority at rank 1</span>
-<span class="st">  </span><span class="kw">mutate</span>(<span class="dt">duplicate_priority =</span> <span class="kw">duplicated</span>(.<span class="op">$</span>priority_number)) <span class="op">%&gt;%</span><span class="st"> </span><span class="co"># identify duplicate priority numbers</span>
-<span class="st">  </span><span class="kw">filter</span>(duplicate_priority <span class="op">==</span><span class="st"> &quot;FALSE&quot;</span>) <span class="op">%&gt;%</span><span class="st"> </span><span class="co"># remove duplicate priority numbers</span>
-<span class="st">  </span><span class="kw">select</span>(<span class="op">-</span>priority) <span class="co"># drop uneccesary field</span></code></pre>
+<div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb5-1" data-line-number="1">earliest_priority &lt;-<span class="st"> </span>numbers <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb5-2" data-line-number="2"><span class="st">  </span><span class="kw">select</span>(priority_number, application_number) <span class="op">%&gt;%</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb5-3" data-line-number="3"><span class="st">  </span><span class="kw">drop_na</span>(priority_number) <span class="op">%&gt;%</span><span class="st"> </span><span class="co"># drop empty priority fields</span></a>
+<a class="sourceLine" id="cb5-4" data-line-number="4"><span class="st">  </span><span class="kw">separate_rows</span>(priority_number, <span class="dt">sep =</span> <span class="st">&quot;;&quot;</span>) <span class="op">%&gt;%</span><span class="st"> </span><span class="co"># separate priority numbers on &quot;;&quot;</span></a>
+<a class="sourceLine" id="cb5-5" data-line-number="5"><span class="st">  </span><span class="kw">mutate</span>(<span class="dt">priority_number =</span> <span class="kw">str_trim</span>(priority_number, <span class="dt">side =</span> <span class="st">&quot;both&quot;</span>)) <span class="op">%&gt;%</span><span class="st"> </span><span class="co"># trim whitespace</span></a>
+<a class="sourceLine" id="cb5-6" data-line-number="6"><span class="st">  </span><span class="kw">separate</span>(priority_number, <span class="dt">into =</span> <span class="kw">c</span>(<span class="st">&quot;priority&quot;</span>, <span class="st">&quot;priority_date&quot;</span>), <span class="dt">sep =</span> <span class="st">&quot; &quot;</span>, <span class="dt">remove =</span> <span class="ot">FALSE</span>) <span class="op">%&gt;%</span><span class="st"> </span><span class="co"># extract the date </span></a>
+<a class="sourceLine" id="cb5-7" data-line-number="7"><span class="st">  </span><span class="kw">mutate</span>(<span class="dt">priority_date =</span> lubridate<span class="op">::</span><span class="kw">ymd</span>(priority_date)) <span class="op">%&gt;%</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb5-8" data-line-number="8"><span class="st">  </span><span class="kw">mutate</span>(<span class="dt">year =</span> lubridate<span class="op">::</span><span class="kw">year</span>(priority_date)) <span class="op">%&gt;%</span><span class="st"> </span><span class="co"># add the priority year field</span></a>
+<a class="sourceLine" id="cb5-9" data-line-number="9"><span class="st">  </span><span class="kw">mutate</span>(<span class="dt">priority_number =</span> <span class="kw">str_trim</span>(priority_number, <span class="dt">side =</span> <span class="st">&quot;both&quot;</span>)) <span class="op">%&gt;%</span><span class="st"> </span><span class="co"># trim whitespace</span></a>
+<a class="sourceLine" id="cb5-10" data-line-number="10"><span class="st">  </span><span class="kw">mutate</span>(<span class="dt">priority_country =</span> <span class="kw">str_sub</span>(.<span class="op">$</span>priority_number, <span class="dv">1</span>,<span class="dv">2</span>)) <span class="op">%&gt;%</span><span class="st"> </span><span class="co"># extract the priority country</span></a>
+<a class="sourceLine" id="cb5-11" data-line-number="11"><span class="st">  </span><span class="kw">group_by</span>(application_number) <span class="op">%&gt;%</span><span class="st">  </span><span class="co"># group by application number</span></a>
+<a class="sourceLine" id="cb5-12" data-line-number="12"><span class="st">  </span><span class="kw">mutate</span>(<span class="dt">filing_order =</span> <span class="kw">rank</span>(priority_date, <span class="dt">ties.method =</span> <span class="st">&quot;first&quot;</span>)) <span class="op">%&gt;%</span><span class="st"> </span><span class="co"># rank by priority date </span></a>
+<a class="sourceLine" id="cb5-13" data-line-number="13"><span class="st">  </span><span class="kw">ungroup</span>() <span class="op">%&gt;%</span><span class="st"> </span><span class="co"># remove grouping for later calculations</span></a>
+<a class="sourceLine" id="cb5-14" data-line-number="14"><span class="st">  </span><span class="kw">filter</span>(filing_order <span class="op">==</span><span class="st"> </span><span class="dv">1</span>) <span class="op">%&gt;%</span><span class="st"> </span><span class="co"># filter to the earliest priority at rank 1</span></a>
+<a class="sourceLine" id="cb5-15" data-line-number="15"><span class="st">  </span><span class="kw">mutate</span>(<span class="dt">duplicate_priority =</span> <span class="kw">duplicated</span>(.<span class="op">$</span>priority_number)) <span class="op">%&gt;%</span><span class="st"> </span><span class="co"># identify duplicate priority numbers</span></a>
+<a class="sourceLine" id="cb5-16" data-line-number="16"><span class="st">  </span><span class="kw">filter</span>(duplicate_priority <span class="op">==</span><span class="st"> &quot;FALSE&quot;</span>) <span class="op">%&gt;%</span><span class="st"> </span><span class="co"># remove duplicate priority numbers</span></a>
+<a class="sourceLine" id="cb5-17" data-line-number="17"><span class="st">  </span><span class="kw">select</span>(<span class="op">-</span>priority) <span class="co"># drop uneccesary field</span></a></code></pre></div>
 <p>While the above may appear initially appear complex it follows step 1 to 7 above. Because the data lacks a priority country and year field it extracts these fields from the data to use in graphing as the next step. The key steps in arriving at accurate counts in the above process is trimming the separated fields to remove any leading and trailing white space. Note that the amount of cleaning required is likely to vary when working with data from different databases.</p>
 <p>The steps above reduce the dataset from 15,776 applications containing 23,382 priority numbers (after the exclusion of Not Available results) to 9,358 earliest priority numbers.</p>
 <p>We are now in a position to graph the data. For convenience we will continue to use R and the popular <code>ggplot2</code> package. The results of a raw count are presented in Figure <a href="patents.html#fig:priorityraw">3.1</a></p>
@@ -1395,7 +1411,7 @@ Figure 3.12: Publication Trends for Top Ten Countries with Kind Code A and B
 <p>It is likely that this list of definitions of patent families is incomplete but it indicates the range of possible groupings.</p>
 <p>In practice, the most commonly encountered definitions of patent families are simple families, DOCDB families and INPADOC extended families.
 However, as we can see from the definitions above one challenge with patent families is that there appears to be an element of subjective judgement whereby examiners or database providers take decisions on the members of patent families. In addition patent database providers do not always clearly describe the process for determining patent families. This can make patent families confusing and the simple working definition provided above is designed to give clarity of focus.</p>
-<p>Research on patent families has been greatly enhanced by the creation in 2006 of the EPO World Patent Statistical Database (PATSTAT). In 2010 Catalina Martinez published an important OECD Working Paper entitled <em>Insight into Different Types of Patent Families" on the structure of patent families using PATSTAT data for the period between 1991 and 2009</em> <span class="citation">(Martinez <a href="#ref-Martinez_2010">2010</a><a href="#ref-Martinez_2010">a</a>, <a href="#ref-Martinez_2010a">2010</a><a href="#ref-Martinez_2010a">b</a>)</span>. This study made a major contribution to clarifying the impact of different definitions of patent families using PATSTAT as an international baseline and also explored the structure of patent families. We will now briefly summarise and explore the main findings from this study.</p>
+<p>Research on patent families has been greatly enhanced by the creation in 2006 of the EPO World Patent Statistical Database (PATSTAT). In 2010 Catalina Martinez published an important OECD Working Paper entitled <em>Insight into Different Types of Patent Families&quot; on the structure of patent families using PATSTAT data for the period between 1991 and 2009</em> <span class="citation">(Martinez <a href="#ref-Martinez_2010">2010</a><a href="#ref-Martinez_2010">a</a>, <a href="#ref-Martinez_2010a">2010</a><a href="#ref-Martinez_2010a">b</a>)</span>. This study made a major contribution to clarifying the impact of different definitions of patent families using PATSTAT as an international baseline and also explored the structure of patent families. We will now briefly summarise and explore the main findings from this study.</p>
 <p>Martinez focuses on the important question of how to build patent families and identifies four types of linkages that can be used to build patent families:</p>
 <ol style="list-style-type: decimal">
 <li>Paris Convention priorities</li>
@@ -1438,6 +1454,11 @@ However, as we can see from the definitions above one challenge with patent fami
 </table>
 <p>As we can see in this table, the source of information for building patent families predominantly comes from the applicant except for the technical similarities. Technical similarities are identified by examiners based on their assessment of the scope, inventor and applicant names and result in an artificial priority link. As such, the identification of technical similarities is not purely subjective.</p>
 <p>Martinez then uses the EPO World Patent Statistical Database (PATSTAT) to quantify the impact of the use of the different linkages on the size of patent families for the period 1991 to 1999. Table <a href="patents.html#tab:martinezcounts">3.9</a> reproduces Table 9 from Martinez’s research.</p>
+<pre><code>## 
+## Attaching package: &#39;kableExtra&#39;</code></pre>
+<pre><code>## The following object is masked from &#39;package:dplyr&#39;:
+## 
+##     group_rows</code></pre>
 <table class="table table-striped" style="margin-left: auto; margin-right: auto;">
 <caption>
 <span id="tab:martinezcounts">Table 3.9: </span>Counts of families and applications in them, by source of family relations 1991-1999 <span class="citation">(Martinez <a href="#ref-Martinez_2010">2010</a><a href="#ref-Martinez_2010">a</a>)</span>
@@ -1447,22 +1468,22 @@ However, as we can see from the definitions above one challenge with patent fami
 <th style="border-bottom:hidden" colspan="1">
 </th>
 <th style="border-bottom:hidden; padding-bottom:0; padding-left:3px;padding-right:3px;text-align: center; " colspan="2">
-<div style="border-bottom: 1px solid #ddd; padding-bottom: 5px;">
+<div style="border-bottom: 1px solid #ddd; padding-bottom: 5px; ">
 Source 1 Families
 </div>
 </th>
 <th style="border-bottom:hidden; padding-bottom:0; padding-left:3px;padding-right:3px;text-align: center; " colspan="2">
-<div style="border-bottom: 1px solid #ddd; padding-bottom: 5px;">
+<div style="border-bottom: 1px solid #ddd; padding-bottom: 5px; ">
 Source 2 Families
 </div>
 </th>
 <th style="border-bottom:hidden; padding-bottom:0; padding-left:3px;padding-right:3px;text-align: center; " colspan="2">
-<div style="border-bottom: 1px solid #ddd; padding-bottom: 5px;">
+<div style="border-bottom: 1px solid #ddd; padding-bottom: 5px; ">
 Source 3 Families
 </div>
 </th>
 <th style="border-bottom:hidden; padding-bottom:0; padding-left:3px;padding-right:3px;text-align: center; " colspan="2">
-<div style="border-bottom: 1px solid #ddd; padding-bottom: 5px;">
+<div style="border-bottom: 1px solid #ddd; padding-bottom: 5px; ">
 Source 4 Families
 </div>
 </th>
@@ -1471,22 +1492,22 @@ Source 4 Families
 <th style="border-bottom:hidden" colspan="1">
 </th>
 <th style="border-bottom:hidden; padding-bottom:0; padding-left:3px;padding-right:3px;text-align: center; " colspan="2">
-<div style="border-bottom: 1px solid #ddd; padding-bottom: 5px;">
+<div style="border-bottom: 1px solid #ddd; padding-bottom: 5px; ">
 Paris Convention
 </div>
 </th>
 <th style="border-bottom:hidden; padding-bottom:0; padding-left:3px;padding-right:3px;text-align: center; " colspan="2">
-<div style="border-bottom: 1px solid #ddd; padding-bottom: 5px;">
+<div style="border-bottom: 1px solid #ddd; padding-bottom: 5px; ">
 Paris Convention + Domestic Continuations
 </div>
 </th>
 <th style="border-bottom:hidden; padding-bottom:0; padding-left:3px;padding-right:3px;text-align: center; " colspan="2">
-<div style="border-bottom: 1px solid #ddd; padding-bottom: 5px;">
+<div style="border-bottom: 1px solid #ddd; padding-bottom: 5px; ">
 Paris Convention<br>+ Domestic continuations + Technical similarities)
 </div>
 </th>
 <th style="border-bottom:hidden; padding-bottom:0; padding-left:3px;padding-right:3px;text-align: center; " colspan="2">
-<div style="border-bottom: 1px solid #ddd; padding-bottom: 5px;">
+<div style="border-bottom: 1px solid #ddd; padding-bottom: 5px; ">
 Paris Convention + Domestic continuations + Technical similarities + PCT national phase entries
 </div>
 </th>
@@ -1496,28 +1517,28 @@ Paris Convention + Domestic continuations + Technical similarities + PCT nationa
 year
 </th>
 <th style="text-align:right;">
-families
+families_1
 </th>
 <th style="text-align:right;">
-members
+members_1
 </th>
 <th style="text-align:right;">
-families
+families_2
 </th>
 <th style="text-align:right;">
-members
+members_2
 </th>
 <th style="text-align:right;">
-families
+families_3
 </th>
 <th style="text-align:right;">
-members
+members_3
 </th>
 <th style="text-align:right;">
-families
+families_4
 </th>
 <th style="text-align:right;">
-members
+members_4
 </th>
 </tr>
 </thead>
@@ -1835,7 +1856,7 @@ Figure 3.14: Trends in Patent Families (priority filings) and Family Members com
 <p>In considering this graph note that while the families count range is in the hundreds of thousands, with 205,222 INPADOC families in 1999, the equivalent count for INPADOC family members was 1,106,929. Under both definitions this brings home the scale of the multiplier effects arising from the publication and republication of patent documents. We have seen a similar type of pattern in Figure <a href="patents.html#fig:combined">3.8</a> for the drones data where the number of patent family members accelerates away from the priority filings as publications multiply.</p>
 <p>Martinez also explores and quantifies the different structures of patent families in the period between 1991 and 1999 <span class="citation">(see in particular Martinez <a href="#ref-Martinez_2010">2010</a><a href="#ref-Martinez_2010">a</a>)</span>. Martinez developed an algorithm to assess the structure of the INPADOC patent families discussed above and found that:</p>
 <blockquote>
-<p>“Applying the algorithm just described to the 1 311 745 INPADOC extended patent families with earliest priorities in the 1990s, as reported in PATSTAT September 2008, and excluding families formed by one patent document only (singletons), a total of 47 437 different family structures are identified. Among them, however, only a few structures are really popular: 86% of the structures represent just one family each, whereas only 10 structures represent 73% of all families and 25 represent 81%. In addition, more than half of the top 25 structures are made up of one earliest priority followed by several direct subsequent filings, what we will call “simple structures” from now onwards."<a href="#fn11" class="footnote-ref" id="fnref11"><sup>11</sup></a></p>
+<p>“Applying the algorithm just described to the 1 311 745 INPADOC extended patent families with earliest priorities in the 1990s, as reported in PATSTAT September 2008, and excluding families formed by one patent document only (singletons), a total of 47 437 different family structures are identified. Among them, however, only a few structures are really popular: 86% of the structures represent just one family each, whereas only 10 structures represent 73% of all families and 25 represent 81%. In addition, more than half of the top 25 structures are made up of one earliest priority followed by several direct subsequent filings, what we will call “simple structures” from now onwards.&quot;<a href="#fn11" class="footnote-ref" id="fnref11"><sup>11</sup></a></p>
 </blockquote>
 <p>The important point here is that while initially the structure of patent families may appear to be extremely diverse, with 47,437 different family structures, in practice 10 structures described 73% of the families and 25 structures accounted for 81%. This is a very significant finding because it informs us that the majority of the time the structure of patent families falls within a limited set. Furthermore, of the top 25 structures, over half are made up of a simple structure consisting of a single earliest priority followed by several direct filings. Martinez goes on to conclude that “…we have found that 75% of all INPADOC extended priority patent families with earliest priorities between 1991 and 1999 have a simple structure, consisting of one single first filing and its direct subsequent filings” <span class="citation">(Martinez <a href="#ref-Martinez_2010">2010</a><a href="#ref-Martinez_2010">a</a>)</span>. The broader significance of this is because INPADOC extended families are the broadest category of common family types that 75% of other patent families will be of the single first filing and direct subsequent (child) filing type.</p>
 <p>From this we can reasonably conclude that the majority of patent families that we will ever encounter will be of the simple type (single priority followed by several direct filings). However as Martinez also notes “Complex families may favor specific technologies, countries or more valuable patents” (Martinez 2010: 17) so it is important to bear in mind that complex families while representing a much smaller proportion of the data may also be important.</p>
@@ -2198,38 +2219,38 @@ for the <code>Utilization of quantum wires in MEMS actuators</code> that claims 
 </div>
 <h3>References</h3>
 <div id="refs" class="references">
-<div id="ref-OECD_2009">
-<p><em>OECD Patent Statistics Manual</em>. 2009. OECD Publishing. <a href="https://doi.org/10.1787/9789264056442-en">https://doi.org/10.1787/9789264056442-en</a>.</p>
-</div>
-<div id="ref-Hegde_2007">
-<p>Hegde, Deepak, David Mowery, and Stuart Graham. 2007. “Pioneers, Submariners, or Thicket-Builders: Which Firms Use Continuations in Patenting?” National Bureau of Economic Research. <a href="https://doi.org/10.3386/w13153">https://doi.org/10.3386/w13153</a>.</p>
+<div id="ref-Criscuolo_2006">
+<p>Criscuolo, P. 2006. “The ’Home Advantage’ Effect and Patent Families. A Comparison of Oecd Triadic Patents, the Uspto and the Epo.” <em>Scientometrics</em> 66: 23–41.</p>
 </div>
 <div id="ref-Dechezleprêtre_2017">
-<p>Dechezleprêtre, Antoine, Yann Ménière, and Myra Mohnen. 2017. “International Patent Families: From Application Strategies to Statistical Indicators.” <em>Scientometrics</em> 111 (2): 793–828. <a href="https://doi.org/10.1007/s11192-017-2311-4">https://doi.org/10.1007/s11192-017-2311-4</a>.</p>
+<p>Dechezleprêtre, Antoine, Yann Ménière, and Myra Mohnen. 2017. “International Patent Families: From Application Strategies to Statistical Indicators.” <em>Scientometrics</em> 111 (2). Springer Nature: 793–828. <a href="https://doi.org/10.1007/s11192-017-2311-4">https://doi.org/10.1007/s11192-017-2311-4</a>.</p>
 </div>
 <div id="ref-Dernis_2007">
 <p>Dernis, Hélène. 2007. “Nowcasting Patent Indicators,” January.</p>
 </div>
-<div id="ref-Martinez_2010">
-<p>Martinez, Catalina. 2010a. “Insight into Different Types of Patent Families.” Organisation for Economic Co-Operation; Development (OECD). <a href="https://doi.org/10.1787/5kml97dr6ptl-en">https://doi.org/10.1787/5kml97dr6ptl-en</a>.</p>
-</div>
 <div id="ref-Dernis_2004">
 <p>Dernis, Hélène, and Mosahid Khan. 2004. “Triadic Patent Families Methodology.” Organisation for Economic Co-Operation; Development (OECD). <a href="https://doi.org/10.1787/443844125004">https://doi.org/10.1787/443844125004</a>.</p>
 </div>
-<div id="ref-Criscuolo_2006">
-<p>Criscuolo, P. 2006. “The ’Home Advantage’ Effect and Patent Families. A Comparison of Oecd Triadic Patents, the Uspto and the Epo.” <em>Scientometrics</em> 66: 23–41.</p>
+<div id="ref-Hall_2012">
+<p>Hall, Bronwyn H., and Dietmar Harhoff. 2012. “Recent Research on the Economics of Patents.” <em>Annual Review of Economics</em> 4 (1). Annual Reviews: 541–65. <a href="https://doi.org/10.1146/annurev-economics-080511-111008">https://doi.org/10.1146/annurev-economics-080511-111008</a>.</p>
 </div>
-<div id="ref-Sternitzke_2009">
-<p>Sternitzke, Christian. 2009. “Defining Triadic Patent Families as a Measure of Technological Strength.” <em>Scientometrics</em> 81 (1): 91–109. <a href="https://doi.org/10.1007/s11192-009-1836-6">https://doi.org/10.1007/s11192-009-1836-6</a>.</p>
-</div>
-<div id="ref-Martinez_2010a">
-<p>Martinez, Catalina. 2010b. “Patent Families: When Do Different Definitions Really Matter?” <em>Scientometrics</em> 86 (1): 39–63. <a href="https://doi.org/10.1007/s11192-010-0251-3">https://doi.org/10.1007/s11192-010-0251-3</a>.</p>
+<div id="ref-Hegde_2007">
+<p>Hegde, Deepak, David Mowery, and Stuart Graham. 2007. “Pioneers, Submariners, or Thicket-Builders: Which Firms Use Continuations in Patenting?” National Bureau of Economic Research. <a href="https://doi.org/10.3386/w13153">https://doi.org/10.3386/w13153</a>.</p>
 </div>
 <div id="ref-Lemley_2003">
-<p>Lemley, Mark A., and Kimberly A. Moore. 2003. “Ending Abuse of Patent Continuations.” <em>SSRN Electronic Journal</em>. <a href="https://doi.org/10.2139/ssrn.462404">https://doi.org/10.2139/ssrn.462404</a>.</p>
+<p>Lemley, Mark A., and Kimberly A. Moore. 2003. “Ending Abuse of Patent Continuations.” <em>SSRN Electronic Journal</em>. Elsevier BV. <a href="https://doi.org/10.2139/ssrn.462404">https://doi.org/10.2139/ssrn.462404</a>.</p>
 </div>
-<div id="ref-Hall_2012">
-<p>Hall, Bronwyn H., and Dietmar Harhoff. 2012. “Recent Research on the Economics of Patents.” <em>Annual Review of Economics</em> 4 (1): 541–65. <a href="https://doi.org/10.1146/annurev-economics-080511-111008">https://doi.org/10.1146/annurev-economics-080511-111008</a>.</p>
+<div id="ref-Martinez_2010">
+<p>Martinez, Catalina. 2010a. “Insight into Different Types of Patent Families.” Organisation for Economic Co-Operation; Development (OECD). <a href="https://doi.org/10.1787/5kml97dr6ptl-en">https://doi.org/10.1787/5kml97dr6ptl-en</a>.</p>
+</div>
+<div id="ref-Martinez_2010a">
+<p>Martinez, Catalina. 2010b. “Patent Families: When Do Different Definitions Really Matter?” <em>Scientometrics</em> 86 (1). Springer Nature: 39–63. <a href="https://doi.org/10.1007/s11192-010-0251-3">https://doi.org/10.1007/s11192-010-0251-3</a>.</p>
+</div>
+<div id="ref-OECD_2009">
+<p><em>OECD Patent Statistics Manual</em>. 2009. OECD Publishing. <a href="https://doi.org/10.1787/9789264056442-en">https://doi.org/10.1787/9789264056442-en</a>.</p>
+</div>
+<div id="ref-Sternitzke_2009">
+<p>Sternitzke, Christian. 2009. “Defining Triadic Patent Families as a Measure of Technological Strength.” <em>Scientometrics</em> 81 (1). Springer Nature: 91–109. <a href="https://doi.org/10.1007/s11192-009-1836-6">https://doi.org/10.1007/s11192-009-1836-6</a>.</p>
 </div>
 </div>
 <div class="footnotes">

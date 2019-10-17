@@ -358,9 +358,8 @@ broad_crispr_citing_22 <-
   broad_crispr_citing_22 %>% 
   mutate(first_applicant = str_to_title(first_applicant)) %>%
   mutate(first_applicant = str_replace_all(first_applicant, "The ", ""))
+
 save(broad_crispr_citing_22, file = "data/broad_crispr_citing_22.rda")
-
-
 ```
 
 ```{r citingselection, echo=FALSE, fig.align='center'}
@@ -413,7 +412,7 @@ Each of these observations merits further exploration than can be provided in th
 
 As we have seen above, one method or exploring the landscape of patent citations is to focus on individual documents. However, as we will now see, conducting analysis on a per document basis may miss the majority of patent citations associated with the wider patent family and the key document or documents within a family. As such _counts limited to individual documents may radically underestimate the impact of a claimed invention within technology space_.
 
-We can illustrate this for our reference document EP2784162B1 and its wider INPADOC patent family. At the time of writing this document forms part of a patent family with 277 members that has 369 cited patents and 717 citing patent documents. Table \@ref(tab:EP2784162B1) displays the top ranking publications based on citing patents within this family
+We can illustrate this for our reference document EP2784162B1 and its wider INPADOC patent family. At the time of writing this document forms part of a patent family with 277 members that has 369 cited patents and 717 citing patent documents <!--- do I mean documents here--->. Table \@ref(tab:EP2784162B1) displays the top ranking publications based on citing patents within this family.
 
 ```{r EP2784162B1, message=FALSE, echo=FALSE, eval=TRUE, fig.align='center', echo=FALSE, out.width='100%'}
 library(readr)
@@ -432,11 +431,11 @@ EP2784162B1 %>%
   knitr::kable(caption = "Broad Institute CRISPR Patent Family Ranked by Citing Patent Count")
 ```
 
-This data makes clear that our original reference document EP2784162B1, with 23 citing documents at the time of writing, was not reflecting the wider citation landscape for this patent family. Furthermore, as in the litigation surrounding this case discussed by @Egelie_2016 and @Ledford_2018, the most important individual document in this family is in fact US granted patent [US8697359B1](https://www.lens.org/lens/patent/014-343-086-528-757). Specifically, while, as we have seen, the Broad Institute patent family cites the Berkeley patent application, in reality the Broad Institute patent attorneys used the expedited examination procedure at the USPTO with the effect that the Broad Institute patent filing was granted before the Berkeley filing was examined. 
+This data makes clear that our original reference document EP2784162B1, with 23 citing documents at the time of writing, was not reflecting the wider citation landscape for this patent family. Furthermore, as in the litigation surrounding this case discussed by @Egelie_2016 and @Ledford_2018, the most important individual document in this family is in fact US granted patent [US8697359B1](https://www.lens.org/lens/patent/014-343-086-528-757). Specifically, while, as we have seen, the Broad Institute patent family cites the Berkeley patent application, in reality the Broad Institute patent attorneys used the expedited examination procedure at the USPTO with the effect that the Broad Institute patent filing was granted _before_ the Berkeley filing was examined [REF]. 
 
 The important insight from a patent family based perspective is that a focus on citation counts for individual documents will often miss the wider picture. As such, it is important, wherever possible, to construct citation analysis at the patent family level. This will not only assist with identifying the most important documents in a family based on citing counts but in larger datasets will allow for the identification of the most important patent families in terms of their impact upon other actors within the technology space.
 
-When working with patent citations on a family level bear in mind that the number of family members and thus of citations will depend on the family definition. Thus simple or DOCDB families will be smaller than INPADOC families as we have seen in the discussion of [Patent Families](#families). The citing landscape for those families is therefore also likely to be smaller. 
+When working with patent citations on a family level bear in mind that the number of family members and thus of citations will depend on the family definition. Thus, simple or DOCDB families will be smaller than INPADOC families as we have seen in the discussion of [Patent Families](#families). The citing landscape for those families is therefore also likely to be smaller. 
 
 In thinking about calculating the number of citing patent documents we might be tempted to simply sum the count of citing patents provided with the export of the data from the patent database. For this working example we would obtain an answer of 5,138 as the gross figure. However, that is not actually what we want. The figure that we want is the count of `distinct` or `unique` citing documents to arrive at the citing count for the patent family. 
 
@@ -446,7 +445,7 @@ The basic process for making this calculation is to:
 2. Identify any duplicate numbers.
 3. Remove or ignore the duplicates and count the distinct documents. 
 
-This procedure gives the correct figure of 718 citations directly linked to this patent family as we will see in the calculation below. This calculation can be performed in a number of different ways, depending on the tools you are using, with commands such as `DISTINCT` or `unique()` and so on. The important idea is to avoid over counting the citing documents by ensuring that any duplicates of the same document are not included in the count. The code below shows a step by step approach to this type of calculation in R. There will be more efficient routes to achieving this in R and other languages but the aim here is to show the steps in a transparent way. This basically consists of separating, trimming, filtering duplicates and counting.   
+This procedure gives the correct figure of 718 citations directly linked to this patent family as we will see in the calculation below. This calculation can be performed in a number of different ways, depending on the tools you are using, with commands such as `DISTINCT` or `unique()` and so on. The important idea is to avoid over counting the citing documents by ensuring that any duplicates of the same document are not included in the count. The code below shows a step by step approach to this type of calculation in R. There will be more efficient routes to achieving this in R and other languages. The aim here is to show the steps in a transparent way. This basically consists of separating, trimming, filtering duplicates and counting.   
 
 ```{r rawcitingcount, eval=FALSE, echo=FALSE}
 # sum the count of citing patents
@@ -471,7 +470,7 @@ If we were to work with a larger dataset containing multiple patent families we 
 
 #### Patent Citations by Generation
 
-Patent citations exist in what are often called layers or generations. Thus, a first generation forward citation is a document citing one of our reference documents such as EP2784162B1. A second generation citation is a document that cites the first generation document and so on. This is easier to appreciate where they are displayed in a tree structure. Figure \@ref(fig:citinggen) displays a tree map for PCT family members of [US8697359B1](https://www.lens.org/lens/patent/014-343-086-528-757). As the complete family set consists of 277 INPADOC family members we have restricted the set to PCT documents for ease of visibility. In the online version of this chapter the nodes can be selected and will expand or contract. 
+Patent citations exist in what are often called layers or generations [REF]. Thus, a first generation forward citation is a document citing one of our reference documents such as EP2784162B1. A second generation citation is a document that cites the first generation document and so on. This is easier to appreciate where they are displayed in a tree structure. Figure \@ref(fig:citinggen) displays a tree map for PCT family members of [US8697359B1](https://www.lens.org/lens/patent/014-343-086-528-757). As the complete family set consists of 277 INPADOC family members we have restricted the set to PCT documents for ease of visibility. In the online version of this chapter the nodes can be selected and will expand or contract. 
 
 ```{r prepciting, eval=FALSE, echo=FALSE}
 # THIS HAS BEEN DROPPED AND CAN BE DELETED AFTER CHECKS
@@ -525,7 +524,7 @@ crispr_citing %>%
                   zoomable = FALSE)
 ```
 
-The visualisation of patent citations across multiple generations draws our attention both to competitive activity in the technology space for CRISPR. However, it also draws our attention to the issue of knowledge spillovers that have been a detailed focus of analysis on the scientific literature for patent citations to which we now briefly turn. 
+The visualisation of patent citations across multiple generations draws our attention to competitive activity in the technology space for CRISPR. However, it also draws our attention to the issue of knowledge spillovers that have been a detailed focus of analysis on the scientific literature for patent citations to which we now briefly turn. 
 
 ### Citations and Knowledge Spillovers
 
@@ -550,11 +549,11 @@ crispr_citing %>%
                   collapsed = FALSE)
 ```
 
-What this leaves behind therefore is other applicants. If we were to compare this family with other patent families, the applicant with the highest score in terms of knowledge spillover would arguably be the applicant with the patent family with the largest number of other applicants within the forward citing landscape. 
+What this leaves behind therefore is other applicants. If we were to compare this family with other patent families, the applicant with the highest score in terms of knowledge spillover would _arguably_ be the applicant with the patent family with the largest number of other applicants within the forward citing landscape. 
 
 <!---issue that this addresses only first generation patent docs--->
 
-Note that this simple approach does not address the issue of direct competitors. As we can see in Figure \@ref(fig:weighting) the University of California (Berkeley) appears in the list of distinct applicants. It is arguably the case that viewed from the perspective of this applicant, they are the originators of the CRISPR technological breakthrough and therefore the sources of the knowledge spillover. Depending on ones purpose, this could of course be settled through comparison of the patent families and counting the number of affected applicants. The "winner" in this case would be the applicant with the highest score.
+Note that this simple approach does not address the issue of direct competitors. As we can see in Figure \@ref(fig:weighting) the University of California (Berkeley) appears in the list of distinct applicants. It is arguably the case that viewed from the perspective of this applicant, they are the originators of the CRISPR technological breakthrough and therefore the source of the knowledge spillover. Depending on ones purpose, this could of course be settled through comparison of the patent families and counting the number of affected applicants. The "winner" in this case would be the applicant with the highest score.
 
 An alternative, but complementary, way of thinking about how to approach knowledge spillovers would be to focus on forward citations using the International Patent Classification (IPC) or Cooperative Patent Classification (CPC). This approach would define knowledge spillovers in terms of the impacts of a claimed invention _outside_ the technology space of the invention. That is, upon other areas of the patent system.  
 
@@ -566,7 +565,7 @@ knitr::include_graphics("/Users/colinbarnes/handbook/images/citing_ipc.png")
 
 Figure \@ref(fig:citingipc) reveals that the top IPC subclass is for biotechnology and genetic engineering followed by Pharmaceuticals and Medicines. As we move from the source family into the first generation of citations (x documents) and the second generation (x documents) this pattern intensifies. As we move into the first and second generation we can see that some IPC categories actually decrease, such as new breeds of animals under A01K (for animal related biotechnology) although we would probably not want to read too much into this for the recent documents.
 
-As noted above, one feature of citations is that a citation may be awarded for a technical feature that is not central to the claimed invention or wider technology area. In the case of the Broad Institute CRISPR patent family the appearance of IPC subclasses for brushes and dentistry reflect this. These documents in the second generation actually focus on an invention encouraging children to brush their teeth and have no relationship with CRISPR or genetic engineering. As such, we should bear in mind that apparent spillovers across generations of of citations may not involve the core features of a cited invention. 
+As noted above, one feature of citations is that a citation may be awarded for a technical feature that is not central to the claimed invention or wider technology area. In the case of the Broad Institute CRISPR patent family the appearance of IPC subclasses for brushes and dentistry reflect this. These documents in the second generation actually focus on an invention encouraging children to brush their teeth and have no relationship with CRISPR or genetic engineering. As such, we should bear in mind that _apparent spillovers across generations of citations may not involve the core features of a cited invention_. 
 
 Additional factors to consider when considering citations are the sources of citations. Many analysts might privilege citations awarded by examiners with an impact on the claimed invention (marked with X or Y). This would sharpen the focus of the citing network. Other factors to consider would be that patent documents are typically awarded more than one IPC class and that IPCs therefore form clusters and networks. In addition, we have focused in this discussion on the Subclass level. While this is common, it is also somewhat crude as subclasses are commonly quite broad. Thus, a more detailed IPC based analysis would look at groups and possibly specific subgroups within biotechnology (C12N) and their clusters and networks. This issue is addressed in the chapter on classification but is not further explored here. 
 
@@ -574,15 +573,16 @@ Figure \@ref(fig:citingipc) also usefully highlights that we can detect trends o
 
 At a more advanced level, citation networks and classification codes can be used for the identification of technology paths or trajectories. The analysis of technology trajectories is often traced to the work of @Dosi_1982 following on from the work of Thomas Kuhn on the structure of scientific revolutions. Work by @Hummon_1989 focused on the analysis of a set of articles and scientific events that led to the development of DNA theory. Building on work by @Garfield_1964 they used network analysis to identify the main paths between 40 events (mainly the publications of papers) that led to the identification of the structure of DNA. Whereas earlier network analysis had focused on the analysis of the nodes within the citation network @Hummon_1989 focused on the _links_. Specifically, by dividing a citation network into a set of sub-graphs and calculating the strength of the links between the papers across the sub-graphs they were able to use three counts of the traversal links that revealed "define the main path through the citation network" leading to the characterization of the structure of DNA and its confirmation [@Hummon_1989]. Figure \@ref(fig:mainpath) reproduces the results of this analysis where numbers in the network refer to specific papers and/or events in the story of DNA.
 
+<!--- need to request copyright clearance for this. Cross check on the source--->
 ```{r mainpath, echo=FALSE, fig.align='center', out.width='100%', fig.cap="The Main Path for DNA Theory"}
 knitr::include_graphics("images/citations/mainpath.png")
 ```
 
-The starting point for the main path revealed by these calculations was the Isolation of nucleic acid by Miescher in 1869 and ends with the first identification of codons producing amino acids and the role of RNA at number 40.
+The starting point for the main path revealed by these calculations was the Isolation of nucleic acid by Miescher in 1869 [REF] and ends with the first identification of codons producing amino acids and the role of RNA at number 40 [REF].
 
 For our purposes, the essential issue here is that the calculation of the linkages between nodes in the network, rather than analysis of the nodes as such, can identify the key trajectory or main path in the citation network. As @Hummon_1989 points out this is similar to the calculation of the centrality of nodes in a network (which is based on calculating the shortest distance that needs to be traversed between nodes in a network). 
 
-Main path analysis has more recently been applied to patent citations. Here we will focus on the work of Christopher Magee at MIT and his collaborators whose recent work provides a good overview of the topic. In a review of existing work on main path analysis in areas such as Fuel Cells, Local Area Networks and the miniaturization of semi conductors, among others, Magee and collaborators observe that existing approaches run the risk of dropping important patents that contribute to the emergence of a technology field. This issue is also reflected in the problem that main path analysis typically identifies _one_ main path when in practice there may be a range of paths representing contributing domains along with sub-domains within with a main path that lead to transformations (discontinuities). 
+Main path analysis has more recently been applied to patent citations. Here we will focus on the work of Christopher Magee at MIT and his collaborators whose recent work provides a good overview of the topic. In a review of existing work on main path analysis in areas such as Fuel Cells, Local Area Networks and the miniaturization of semi conductors, among others, Magee and collaborators observe that existing approaches run the risk of dropping important patents that contribute to the emergence of a technology field [ref]. This issue is also reflected in the problem that main path analysis typically identifies _one_ main path when in practice there may be a range of paths representing contributing domains along with sub-domains within with a main path that lead to transformations (discontinuities). 
 
 The method demonstrated by Magee and collaborators consists of the following basic steps
 
@@ -603,9 +603,15 @@ knitr::include_graphics("/Users/colinbarnes/handbook/images/citations/journal.po
 ```
 
 
-When we consider the raw network of citations in the top left of Figure \@ref(fig:solar) and the two main paths revealed in the network, it becomes clear that one of the main purposes of main path analysis is to reduce the complexity of citation networks by extracting the main path(s) that involve high persistence patents in the specific technology domain. 
+When we consider the raw network of citations in the top left of Figure \@ref(fig:solar) and the two main paths revealed in the network, it becomes clear that one of the purposes of main path analysis is to reduce the complexity of citation networks by extracting the main path(s) that involve high persistence patents in the specific technology domain. 
 
-In recent work this type of analysis has also been applied to trace the history of the emergence of CRISPR as a breakthrough technology from underlying genome engineering technology [@Magee_2018]. Main path analysis led them to identify three main paths, a) for cloning and restriction endonucleases, b) for core genome editing and, c) for endonucleases and related enzymes. Figure \@ref(fig:coreediting) shows the main paths in the genome engineering data leading to genome editing. 
+In recent work this type of analysis has also been applied to trace the history of the emergence of CRISPR as a breakthrough technology from underlying genome engineering technology [@Magee_2018]. Main path analysis led them to identify three main paths, 
+
+  a) for cloning and restriction endonucleases, 
+  b) for core genome editing and, 
+  c) for endonucleases and related enzymes. 
+  
+Figure \@ref(fig:coreediting) shows the main paths in the genome engineering data leading to genome editing. 
 
 ```{r coreediting, echo=FALSE, fig.align="center", fig.cap="Core Genome Editing Path"}
 knitr::include_graphics("/Users/colinbarnes/handbook/images/citations/journalpone0198541g006.PNG")
@@ -613,9 +619,11 @@ knitr::include_graphics("/Users/colinbarnes/handbook/images/citations/journalpon
 
 In Figure \@ref(fig:coreediting) the term RE refers to Restriction Endonuclease. What this figure tells us, is that the analysis reveals that there are six clusters of activity that make up the CRISPR main path. The colours represent the technology cluster and the numbers represent the actual patent numbers. The key features of this path are that they represent advances in synthetic restriction endonucleases using zinc finger nucleases (ZFN) and transcriptor activator like effector nucleases (TALENs). These patents in relation to genome editing in the field of genome engineering are then followed, and contribute to the rise of CRISPR. @Magee_2018 use a separate set of CRISPR roots (based on CPC class xxxx) to explore the roots of the CRISPR patents and their overlap with the earlier genome engineering patent activity presented above. 
 
-Main path analysis in the case of patent citations has emerged as an area of research for technology trajectories over the last decade or so. As the work above reveals the method continues to be refined to more accurately capture paths that contribute to an emerging breakthrough and the technological sub-clusters within an emerging technology area. The particular strength of this approach is that it reduces the complexity of citation networks and makes it easier to identify the most important paths and clusters within the network. However, a possible weakness of this method is the dependence of the classification overlap method which depends on the US classification (discontinued in 2015) and the IPC/CPC. It remains to be seen whether the use of classification codes would be as robust using purely the IPC or CPC as a basis for selection.
+Main path analysis in the case of patent citations has emerged as an area of research for technology trajectories over the last decade or so. As the work above reveals the method continues to be refined to more accurately capture paths that contribute to an emerging breakthrough and the technological sub-clusters within an emerging technology area. The particular strength of this approach is that it reduces the complexity of citation networks and makes it easier to identify the most important paths and clusters within the network. However, a possible weakness of this method is the dependence of the classification overlap method which depends on the US classification (discontinued in 2015) and the IPC/CPC. It remains to be seen whether the use of classification codes would be as robust using purely IPC or CPC codes as a basis for selection.
 
-Nevertheless, in drawing attention to main path analysis our purpose is to highlight that citation analysis combined with classification and citation metrics is an important field of research that increasingly promises to make navigating citation networks significantly easier. Here it is important to recall that the task of the patent analyst is ultimately to recognise complexity but also reduce that complexity to accurate information that can be communicated to relevant audience. Main path analysis could potentially become an important feature of the analytical tool kit by identifying the main clusters and way markers influencing the trajectory of a technology area. For this reason it deserves closer critical attention.  
+Nevertheless, in drawing attention to main path analysis our purpose is to highlight that citation analysis combined with classification and citation metrics is an important field of research that increasingly promises to make navigating citation networks significantly easier. Here it is important to recall that the task of the patent analyst is ultimately to recognise complexity but also reduce that complexity to accurate information that can be communicated to the relevant audience. Main path analysis could potentially become an important feature of the analytical tool kit by identifying the main clusters and way markers influencing the trajectory of a technology area. For this reason it deserves closer critical attention.  
+
+<!--- round up with the wider literature on patent citation analysis--->
 
 ## Conclusion
 

@@ -1,5 +1,7 @@
 # Counting Patent Data {#patents}
 
+_Please note this is a working draft_
+
 This chapter provides an in depth introduction to the development of descriptive patent statistics. The most important existing resource for the development of patent statistics is the OECD Patent Statistics Manual and a series of OECD working papers [@OECD_2009]. However, a practical step by step guide to the development of patent counts using real world data has been lacking. This chapter aims to fill this gap by working up from the analysis of the structure of patent numbers through to the creation of counts priority or first filings. This is followed by exploration of patent families and concludes by graphing patent trends.
 
 The Chapter makes extensive use of the [drones patent dataset](https://wipo-analytics.github.io/drones/). The drones dataset is a set of patent documents relating to the term drone or drones created as a toy or training dataset for experiments in developing patent statistics. Instructions on how to install it are provided the How to Use the Handbook section at the front of the book and on the dataset [home page](https://wipo-analytics.github.io/drones/). 
@@ -852,8 +854,8 @@ martinez_table <- read_excel("data/martinez_table.xlsx")
 library(knitr)
 library(formattable)
 library(kableExtra)
-martinez_table <- martinez_table %>% 
-  rename(families = families__1, members = members__1, families = families__2, members = members__2, families = families__3, members = members__3)
+#martinez_table <- martinez_table %>% 
+#  rename(families = families__1, members = members__1, families = families__2, members = members__2, families = families__3, members = members__3)
 
   kable(martinez_table, caption = "Counts of families and applications in them, by source of family relations 1991-1999 [@Martinez_2010]") %>% 
   kable_styling("striped") %>% 
@@ -874,8 +876,8 @@ Using this data we can visualise the impact of different types of counts of fami
 martinez_table2 <- read_excel("data/martinez_table.xlsx")
 
 martinez_table2 <- martinez_table2 %>% filter(year != "1991-1999") %>% 
-  rename(simple = families, inpadoc = families__2) %>% 
-  rename(simple_members = members, inpadoc_members = members__2)
+  rename(simple = families_1, inpadoc = families_2) %>% 
+  rename(simple_members = members_1, inpadoc_members = members_2)
   
   ggplot(data=martinez_table2, aes(x = year))  +
     geom_line(aes(y = simple, colour = "DOCDB simple", group = 1)) +
