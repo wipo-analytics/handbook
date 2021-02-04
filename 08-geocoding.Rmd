@@ -29,7 +29,7 @@ install.packages("usethis")
 install.packages("googleway")
 ```
 
-For ggmap we will load the latest version 2.7 that includes `register_google()` for authentication and install it from github as follows.
+For ggmap we will load the latest version 2.7 that includes `register_google()` for authentication and install it from Github as follows.
 
 ```{r eval=FALSE}
 devtools::install_github("dkahle/ggmap")
@@ -65,13 +65,13 @@ To use the Google Maps API you will need to:
 This involves pressing the `Get a Key` button and creating a project (app) that you will query by following these steps. 
 
 ```{r echo=FALSE}
-knitr::include_graphics("images/getkey.png")
+knitr::include_graphics("images/geocoding/getkey.png")
 ```
 
 Create a new project and wait a short while while Google spins it up. 
 
 ```{r echo=FALSE}
-knitr::include_graphics("images/create_project.png")
+knitr::include_graphics("images/geocoding/create_project.png")
 ```
 
 You will then see your API key. Note that you will see a link to restrict access to your API. It is a good idea to follow this and use your IP address to limit access to your IP address under Application restrictions. This will prevent other people from using the account if they discover the API key. We will not go down that route right now.
@@ -199,7 +199,7 @@ ggmap1 %>%
 
 ### Using Googleway
 
-An alternative to `placement` or `ggmap` is also available using the `googleway` package. `googleway` includes access to the Google APIs for directions, distance, elevation, timezones, places, geocoding and reverse geocoding and so has a wider set of uses. However, `googleway` is expecting an address field of length 1 (meaning it takes one address at a time) whereas placement and ggmap are vectorised. The return from googleway returns a list object containing a data frame with the results and the status of the return. Here is one quick example.
+An alternative to `placement` or `ggmap` is also available using the `googleway` package. `googleway` includes access to the Google APIs for directions, distance, elevation, time zones, places, geocoding and reverse geocoding and so has a wider set of uses. However, `googleway` is expecting an address field of length 1 (meaning it takes one address at a time) whereas placement and ggmap are vectorised. The return from googleway returns a list object containing a data frame with the results and the status of the return. Here is one quick example.
 
 ```{r eval=FALSE}
 library(googleway)

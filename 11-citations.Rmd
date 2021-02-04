@@ -560,7 +560,7 @@ An alternative, but complementary, way of thinking about how to approach knowled
 Figure \@ref(fig:citingipc) displays the IPC Subclasses for the documents in the source family (origin) and the first and second generations of citations.
 
 ```{r citingipc, echo=FALSE, eval=TRUE, fig.align='center', out.width='100%', fig.cap="IPC Subclasses by Citing Generations"}
-knitr::include_graphics("/Users/colinbarnes/handbook/images/citing_ipc.png")
+knitr::include_graphics("images/citing_ipc.png")
 ```
 
 Figure \@ref(fig:citingipc) reveals that the top IPC subclass is for biotechnology and genetic engineering followed by Pharmaceuticals and Medicines. As we move from the source family into the first generation of citations (x documents) and the second generation (x documents) this pattern intensifies. As we move into the first and second generation we can see that some IPC categories actually decrease, such as new breeds of animals under A01K (for animal related biotechnology) although we would probably not want to read too much into this for the recent documents.
@@ -599,7 +599,7 @@ d) Tracing main paths from high persistence patents. This actually consists of t
 An example of the type of analysis that results from these steps is reproduced in Figure \@ref(fig:solar) for the case of Solar Photovoltaic Systems [@Park_2017].
 
 ```{r solar, echo=FALSE, fig.align="center", fig.cap="Main Patent Path Analysis Results for Solar Photovoltaic Systems"}
-knitr::include_graphics("/Users/colinbarnes/handbook/images/citations/journal.pone.0170895.g006.PNG")
+knitr::include_graphics("images/citations/journal.pone.0170895.g006.PNG")
 ```
 
 
@@ -614,7 +614,7 @@ In recent work this type of analysis has also been applied to trace the history 
 Figure \@ref(fig:coreediting) shows the main paths in the genome engineering data leading to genome editing. 
 
 ```{r coreediting, echo=FALSE, fig.align="center", fig.cap="Core Genome Editing Path"}
-knitr::include_graphics("/Users/colinbarnes/handbook/images/citations/journalpone0198541g006.PNG")
+knitr::include_graphics("images/citations/journalpone0198541g006.PNG")
 ```
 
 In Figure \@ref(fig:coreediting) the term RE refers to Restriction Endonuclease. What this figure tells us, is that the analysis reveals that there are six clusters of activity that make up the CRISPR main path. The colours represent the technology cluster and the numbers represent the actual patent numbers. The key features of this path are that they represent advances in synthetic restriction endonucleases using zinc finger nucleases (ZFN) and transcriptor activator like effector nucleases (TALENs). These patents in relation to genome editing in the field of genome engineering are then followed, and contribute to the rise of CRISPR. @Magee_2018 use a separate set of CRISPR roots (based on CPC class xxxx) to explore the roots of the CRISPR patents and their overlap with the earlier genome engineering patent activity presented above. 

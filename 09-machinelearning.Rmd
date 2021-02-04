@@ -1,4 +1,4 @@
-# Machine Learning (placeholder) {#machinelearning}
+# Machine Learning {#machinelearning}
 \index{machinelearning}
 
 ### Artificial Intelligence & Machine Learning
@@ -61,15 +61,14 @@ One straightforward way of thinking about a word vector is as a co-occurrence ma
 
 The seminal paper on word vectors by Mikolov et al 2013 neatly summarises the problem they seek to address as follows:
 
->"Many current NLP systems and techniques treat words as atomic units - there is no notion of similarity between words, as these are represented as indices in a vocabulary. [@mlens.org/104-512-929-235-758]
+>"Many current NLP systems and techniques treat words as atomic units - there is no notion of similarity between words, as these are represented as indices in a vocabulary. [@lens.org/104-512-929-235-758]
 
-The problem that Mikolov and co-authors identify is that the development of approaches such as automatic speech recognition is constrained by dependency on high quality manual transcripts of speech containing only millions of words while machine translation models are constrained by the fact that "...corpora for many languages contain only a few billions of words or less" [@mlens.org/104-512-929-235-758]. Put another way, the constraint presented by approaches at the time was that the examples available for computational modelling could not accommodate the range of human uses of language or more precisely, the meanings conveyed. Mikolov et. al. successfully demonstrated that distributed representations of words using neural network based language models outperfornmed the existing Ngram models on much larger datasets (using 1 million common tokens from the Google News corpus) [@mlens.org/104-512-929-235-758]. 
+The problem that Mikolov and co-authors identify is that the development of approaches such as automatic speech recognition is constrained by dependency on high quality manual transcripts of speech containing only millions of words while machine translation models are constrained by the fact that "...corpora for many languages contain only a few billions of words or less" [@lens.org/104-512-929-235-758]. Put another way, the constraint presented by approaches at the time was that the examples available for computational modelling could not accommodate the range of human uses of language or more precisely, the meanings conveyed. Mikolov et. al. successfully demonstrated that distributed representations of words using neural network based language models outperfornmed the existing Ngram models on much larger datasets (using 1 million common tokens from the Google News corpus) [@lens.org/104-512-929-235-758]. 
 
 >"We use recently proposed techniques for measuring the quality of the resulting vector representa- tions, with the expectation that not only will similar words tend to be close to each other, but that words can have multiple degrees of similarity [20]. This has been observed earlier in the context of inflectional languages - for example, nouns can have multiple word endings, and if we search for similar words in a subspace of the original vector space, it is possible to find words that have similar endings [13, 14].
 Somewhat surprisingly, it was found that similarity of word representations goes beyond simple syntactic regularities. Using a word offset technique where simple algebraic operations are performed on the word vectors, it was shown for example that vector(”King”) - vector(”Man”) + vector(”Woman”) results in a vector that is closest to the vector representation of the word Queen [20]."
 
 This observation has become one of the most famous in computational linguistics and is worth elaborating on. In a word vector it was found that.  
-
 King - Man + Woman = Queen
 
 In a 2016 blog post on "The amazing power of word vectors"  Adrian Coyler provides the following illustration of how this works. Note that the labels do not exist in the vectors and are added purely for explanation in this hypothetical example. [https://blog.acolyer.org/2016/04/21/the-amazing-power-of-word-vectors/](https://blog.acolyer.org/2016/04/21/the-amazing-power-of-word-vectors/) <!--- request copyright clearance to use the image--->
@@ -81,7 +80,7 @@ knitr::include_graphics("images/word2vec_coyler.png")
 
 Let us imagine that each word in each individual vector has a distributed value across hundreds of dimensions across the corpus. Words like King, Queen, Princess have a high similarity in vector space with the word Royalty. In contrast King has a strong similarity with Masculinity while Queen has a strong similarity with Femininity. Deducting Man from King and adding Woman can be readily be seen to lead to Queen in the vector space. Other well known examples from the same paper lead to the calculation that "big-bigger" = "small:larger" etc. 
 
-In follow up work Mikolov and others at Google released the word2vec tool for the creation of 
+<!---In follow up work Mikolov and others at Google released the word2vec tool for the creation of --->
 
 ### Word Vectors with fastext
 
@@ -166,14 +165,14 @@ drones_texts_vec %>%
   write_csv(., "data/fasttext/drones_texts_vec.csv")
 ```
 
-This cleaned up annonymised text is available in the data folder of this handbook and in the drones package <!--- TO DO--->.  Note that patent texts can be messy and you may want to engage in further processing. Once we have the data in a cleaned cleaned up format we can pass it to fast text in the terminal. 
+This cleaned up anonymised text is available in the data folder of this handbook and in the drones package <!--- TO DO--->.  Note that patent texts can be messy and you may want to engage in further processing. Once we have the data in a cleaned cleaned up format we can pass it to fast text in the terminal. 
 
-There are two available models for word vectors in fast text. These are
+There are two available models for word vectors in fast text. These are:
 
-a) skipgrams (predict a word from the contexts words arount it)
-b) cbow ADD DESCRIPTION
+a) skipgrams (identify a word from closely related words) <!--- check this definition--->
+b) cbow (predict a word from the contexts words around it)
 
-Next in the terminal we navitage to the fastext folder and provide our csv or simple text file as an input and specify the output.
+Next in the terminal we navigate to the fasttext folder and provide our csv or simple text file as an input and specify the output.
 
 <!--- THIS IS NOW THROWING AN ERROR AND NEEDS TO BE UPDATED--->
 
@@ -186,7 +185,7 @@ $ ./fasttext skipgram -input /Users/colinbarnes/handbook/data/fasttext/drones_ve
 $ ./fasttext skipgram -input /handbook/data/fasttext/drones_vector_texts.csv -output /handbook/data/fasttext/drones_vec
 ```
 
-There are total of 4.4 million words (tokens) in the vocabulary with xxx distinct words. It takes about 30 seconds for fasttext to process these words. These words boil down to 19,125 words in total. 
+There are total of 4.4 million words (tokens) in the vocabulary with xxx <!--- fill in---> distinct words. It takes about 30 seconds for fasttext to process these words. These words boil down to 19,125 words in total. 
 
 ```{r, eval=FALSE}
 Read 4M words
@@ -201,7 +200,7 @@ The processing creates two files in our target directory. The first is `drones_v
 device 0.21325 0.11661 -0.060266 -0.17116 0.16712 -0.03204 -0.54853 -0.30647 0.023724 -0.047807 -0.068384 -0.22845 -0.08171 0.046688 0.26321 -0.51804 -0.02021 0.099132 -0.27856 0.33479 -0.027596 -0.27679 0.31599 -0.32319 0.048407 -0.067782 -0.086028 0.070966 -0.27628 -0.43886 -0.23275 0.15364 -0.037609 0.16732 -0.55758 0.24021 -0.21904 -0.00074375 -0.2962 0.41962 0.069979 0.039564 0.31745 -0.11433 0.15294 -0.4063 0.16489 -0.17881 -0.24346 -0.17451 0.19218 -0.13081 -0.052599 0.12156 -0.023431 -0.066951 0.19624 0.11179 0.17482 0.34394 0.17303 -0.32398 0.54666 -0.30731 -0.1117 -0.017867 0.081936 -0.068579 -0.15465 0.057545 0.026571 -0.3714 0.029978 0.081706 0.017101 0.036847 -0.13174 0.24701 -0.10006 -0.11838 -0.045929 -0.13226 0.20067 0.12056 0.43343 0.052317 -0.030258 0.066875 -0.1951 0.12343 0.031962 -0.52444 0.041814 -0.64228 0.13036 0.040553 0.30254 -0.15474 -0.57587 0.29205 
 ```
 
-Note two points here. The first is that the default vector space is 100 dimensions but popular choices go up to 300. Note also that there will be common stop words (and, the, etc) in the model that we may want to remove. The second main point is that the file size of the .bin file is nearly 800Mb and may get much larger fast. 
+Note two points here. The first is that the default vector space is 100 dimensions but popular choices go up to 300. Note also that there will be common stop words (and, the, etc.) in the model that we may want to remove. The second main point is that the file size of the .bin file is nearly 800Mb and may get much larger fast. 
 
 From the terminal we can print the word vectors for specific words as follows:
 
@@ -216,7 +215,7 @@ weapon 0.20932 0.59608 0.21891 -0.42716 0.19016 -0.76555 0.23395 -0.63699 -0.120
 
 ### Using Word Vectors
 
-One common use of word vectors is to build a thesaurus. We can also check how our vectors are performing, and adjust the parameters if we are not getting what we expect. We do this by calculating the nearest neighbours (nn) in the vector space and then entering a query term, The higher the score the closer the neighout is. 
+One common use of word vectors is to build a thesaurus. We can also check how our vectors are performing, and adjust the parameters if we are not getting what we expect. We do this by calculating the nearest neighbours (nn) in the vector space and then entering a query term, The higher the score the closer the neighbour is. 
 
 ```{r, printnn, eval=FALSE}
 $ ./fasttext nn /Users/colinbarnes/handbook/data/fasttext/drones_vec.bin
@@ -250,7 +249,7 @@ uas 0.644046
 flight 0.643298
 ```
 
-This is printing some words that we would expect in both cases such as plurals (drones, uavs) along with types of drones but we need to investigate some high scoring terms, for exaample in set one we have the word `codrone` which is a specific make of drone. The word `dron` may be the word for drone in another language. In the second set we have `uavgs` which may stand for UAV Ground School along with terms such as `uad` which stands for unmanned aerial device. 
+This is printing some words that we would expect in both cases such as plurals (drones, uavs) along with types of drones but we need to investigate some high scoring terms, for example in set one we have the word `codrone` which is a specific make of drone. The word `dron` may be the word for drone in another language. In the second set we have `uavgs` which may stand for UAV Ground School along with terms such as `uad` which stands for unmanned aerial device. 
 
 So, this reveals that we are obtaining some meaningful results on single terms that can guide our construction of a search query. We could also look at this another way by identifying terms that may be sources of noise. Here we will use the word bee.
 
@@ -302,7 +301,7 @@ comb 0.626189
 colonies 0.61386
 ```
 
-what this tells us is that drone - automomous + bee = honey or larvae, or larva or brood. We can more or less reverse this calculation. 
+what this tells us is that drone - autonomous + bee = honey or larvae, or larva or brood. We can more or less reverse this calculation. 
 
 ```{r analogy2, eval=FALSE}
 Query triplet (A - B + C)? bee honey drone
@@ -322,47 +321,47 @@ What this example illustrates is that terms for bees and terms for drones as a t
 
 It is fundamentally quite difficult to conceptualise a 100 or 300 dimension vector space. However, Google has developed a [tensorflow projector](http://projector.tensorflow.org/) and a video that discusses high dimensional space in an accessible way [A.I. Experiments: Visualizing High-Dimensional Space](https://www.youtube.com/watch?v=wvsE8jm1GzE). The [Distill website](https://distill.pub/) offers good examples of the visualisation of a range of machine learning components. 
 
-We can view a simplifiled visualisation of the term drones in 200 dimension vector space (on a much larger model than we have discussed above) in Figure \@ref(fig:dronesviz).
+We can view a simplified visualisation of the term drones in 200 dimension vector space (on a much larger model than we have discussed above) in Figure \@ref(fig:dronesviz).
 
 ```{r, dronesviz, echo=FALSE}
-knitr::include_graphics("/Users/colinbarnes/handbook/images/drones1_embedding.png")
+knitr::include_graphics("images/drones1_embedding.png")
 ```
 
 Here we have selected to display 400 terms linked to the source word drones across the representation of the vector space. As with network analysis we can see that clusters of association emerge. As we zoom in to the vector space representation we start to more clearly see nearest points based in this case of Principle Components Analysis (PCA).
 
 ```{r, echo=FALSE}
-knitr::include_graphics("/Users/colinbarnes/handbook/images/dronesembedding_isolated.png")
+knitr::include_graphics("images/dronesembedding_isolated.png")
 ```
 
 The representation of terms in vector space in these images is different to those we viewed above and more clearly favours bees and music, although closer inspection reveals words such as 'winged', 'terrorized'. 'missile' and 'predator' that suggest the presence of news related terms when compared with the patent data used above. 
 
 This visualisation highlights the power of the representation of words as vectors in vector space. It also highlights that the vector space is determined by the source data. For example, many vector models are built from downloads of the [content of Wikipedia](https://en.wikipedia.org/wiki/Wikipedia:Database_download#English-language_Wikipedia) (available in a number of languages) or on a much larger scale from internet web pages through services such as [Common Crawl](https://commoncrawl.org/).
 
-For patent analytics, this can present the problem that the language in vector models lacks the specificity in termns of the use of technical language of patent documents. For that reason you may be better, as illustrated above, wherever possible it is better to use patent domain specific word embeddings. 
+For patent analytics, this can present the problem that the language in vector models lacks the specificity in terms of the use of technical language of patent documents. For that reason you may be better, as illustrated above, wherever possible it is better to use patent domain specific word embeddings. 
 
 ### Patent Specific Word Embeddings
 
 The increasing accessibility of patent data, with both the US and the EP full text collections now available free of charge, has witnessed growing efforts to develop word embedding approaches to patent classification and search. 
 
-A very good example of this type of appproach is provided by Julian Risch and Ralf Krestel at the Hasso Plattner Institute at the University of Potsdam with a focus on patent classification [@lens.org/078-034-591-343-369]. 
+A very good example of this type of approach is provided by Julian Risch and Ralf Krestel at the Hasso Plattner Institute at the University of Potsdam with a focus on patent classification [@lens.org/078-034-591-343-369]. 
 
-Risch and Krestel test word embedding approaches using three different datasets
+Risch and Krestel test word embedding approaches using three different datasets:
 
 a) the WIPO-alpha dataset of 75,000 excerpts of English language PCT applications accompanied by subclass information [@lens.org/056-971-725-855-254];
 b) A dataset of 5.4 million patent documents from the USPTO between 1976-2016 called USPTO-5M containing the full text and bibliographic data.^[[USPTO Bulk Products](https://www.uspto.gov/learning-and-resources/bulk-data-products), now more readily available from [PatentsView](http://www.patentsview.org/download/)]]
 c) A public dataset of with 2 million JSON formatted USPTO patent documents called USPTO-2M created by Jason Hoou containing titles, abstracts and IPC subclasses. ^[Available for download from Github at [https://github.com/JasonHoou/USPTO-2M](https://github.com/JasonHoou/USPTO-2M) and at [http://mleg.cse.sc.edu/DeepPatent/](http://mleg.cse.sc.edu/DeepPatent/)].
 
-These datasets are primarilly intended to assist with the automatic classification of patent documents. They used fastText on 5 million patent docunenst to train word enmeddings with 100, 200 and 300 dimensions based on lowercass words occurring 10 or more times and with a context window of 5. This involved a total of 28 billion tokens and, as they rightly point out, this is larger than the english Wikipedia corpus (16 billion) but lower than the 600 billion tokens in the Common Crawl dataset [@lens.org/078-034-591-343-369]. As part of an oopen access approach focusing on reproducibility the resulting datasets are made available free of charge^[Accessible from: [https://hpi.de/naumann/projects/web-science/deep-learning-for-text/patent-classification.html](https://hpi.de/naumann/projects/web-science/deep-learning-for-text/patent-classification.html), last accessed: 2019-09-17]
+These datasets are primarily intended to assist with the automatic classification of patent documents. They used fastText on 5 million patent documents to train word embeddings with 100, 200 and 300 dimensions based on lower-case words occurring 10 or more times and with a context window of 5. This involved a total of 28 billion tokens and, as they rightly point out, this is larger than the English Wikipedia corpus (16 billion) but lower than the 600 billion tokens in the Common Crawl dataset [@lens.org/078-034-591-343-369]. As part of an open access approach focusing on reproducibility the resulting datasets are made available free of charge^[Accessible from: [https://hpi.de/naumann/projects/web-science/deep-learning-for-text/patent-classification.html](https://hpi.de/naumann/projects/web-science/deep-learning-for-text/patent-classification.html), last accessed: 2019-09-17]
 
-The word embedding were then used to support the develpment of a deep neural network using gated recurrent units (GRU) with the aim of predicting the main subclass for the doecument using 300 words from the title and abstract of the documents. The same network arcgicetchre was used to test the WIPO set, the standard Wikipedia embeddings. the USPTO-2M set and the USPTO-5M (restriced to titles and abstracts). The specific details of the experiments performed with the word embeddings and GRU deep neural network are available in the article. The main finding of the research is to demonstrate that patent specific word embeddings outperform the Wikipedia based embeddings. This confirms the very crude intuition that we gained from the very small samples of data on the term drones compared with the exploration of wikipedia based emebeddings. 
+The word embedding were then used to support the development of a deep neural network using gated recurrent units (GRU) with the aim of predicting the main subclass for the document using 300 words from the title and abstract of the documents. The same network architecture was used to test the WIPO set, the standard Wikipedia embeddings. the USPTO-2M set and the USPTO-5M (restricted to titles and abstracts). The specific details of the experiments performed with the word embeddings and GRU deep neural network are available in the article. The main finding of the research is to demonstrate that patent specific word embeddings outperform the Wikipedia based embeddings. This confirms the very crude intuition that we gained from the very small samples of data on the term drones compared with the exploration of Wikipedia based embeddings. 
 
-One important challenge with the use of word vectors or embeddings is size. FasText has the considerable advantage that it is designed to run on CPU. That is, as we have seen it can be run on a laptop. However, the word embeddings provided by Risch and Krestel, notably the 300 dimension dataset, may present significant memory challenges to be used in practice. The word embeddings generated by the work of Risch and Krestel demonstrate some of these issues. Thus, the 100 dimension word embeddings vectors are 6 gigabytes in size, the 200 dimensions file is 12Gb and the 300 dimensions is 18Gb. In practice, these file sizes are not as initially intimidating as they appear. Thuse the 6Gb 100 dimension vectors easily run in fasttext on laptop with 16Gb of RAM. 
+One important challenge with the use of word vectors or embeddings is size. FastText has the considerable advantage that it is designed to run on CPU. That is, as we have seen it can be run on a laptop. However, the word embeddings provided by Risch and Krestel, notably the 300 dimension dataset, may present significant memory challenges to be used in practice. The word embeddings generated by the work of Risch and Krestel demonstrate some of these issues. Thus, the 100 dimension word embeddings vectors are 6 gigabytes in size, the 200 dimensions file is 12Gb and the 300 dimensions is 18Gb. In practice, these file sizes are not as initially intimidating as they appear. Thus the 6Gb 100 dimension vectors easily run in fasttext on laptop with 16Gb of RAM. 
 
-### Machine learning in Classification
+<!---### Machine learning in Classification
 
-Classification tasks essentially involve deciding if a particular document or image falls into an Yes or No or Dog or Cat category. In reality, the situation can be more complex than this because a single entity may overlap. 
+<!--- Classification tasks essentially involve deciding if a particular document or image falls into an Yes or No or Dog or Cat category. In reality, the situation can be more complex than this because a single entity may overlap. 
 
-In the case of the term `drone` in patent data we have already seen that there are basically three categories in whicvh teh term drone may fall
+In the case of the term `drone` in patent data we have already seen that there are basically three categories in which the term drone may fall
 
 a) autonomous vehicles (flying, floating, submarine, space vehicles)
 b) Bee or apiculture related activity
@@ -420,7 +419,7 @@ The vector model can be built either in
 
 ”King”) - vector(”Man”) + vec- tor(”Woman”
 
-
+--->
 
 
 

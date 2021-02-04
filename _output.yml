@@ -10,7 +10,8 @@ bookdown::gitbook:
 #bookdown::pdf_book:
   includes:
     #in_header: preamble.tex
-     in_header: header.html            
+     #in_header: header.html
+     in_header: [header.html, google_analytics.html]
   latex_engine: xelatex
   citation_package: natbib
   keep_tex: yes

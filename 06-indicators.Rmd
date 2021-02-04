@@ -1,4 +1,0 @@
-# Indicators (placeholder) {#indicators}
-\index{indicators}
-
-This is a placeholder, please come back later
