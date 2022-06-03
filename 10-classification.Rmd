@@ -64,7 +64,7 @@ In the example above we can appreciate the basics of the hierarchy in constructi
 By way of illustration consider the following under A01H in Table \@ref(tab:ipcangiosperm)
 
 ```{r, ipcangiosperm, echo=FALSE}
-ipc_angiosperm_example <- read_excel("data/ipc_angiosperm_example.xlsx")
+ipc_angiosperm_example <- readxl::read_excel("data/ipc_angiosperm_example.xlsx")
 
 ipc_angiosperm_example %>% 
   knitr::kable()
@@ -79,15 +79,14 @@ As this suggests, when approaching analysis of a particular area of the patent s
 2. Some classification codes are essentially descriptive rather than being about a technology. Thus, A01H5/00 describes parts of plants, C12R describes microorganisms and A61P describes diseases/medical conditions. In contrast, A01H4 and A01H3 describe technologies or methods.
 3. When constructing patent searches with classification codes care is required with respect to the use of A01H5 or A01H5/00 because different results may be retrieved depending on the database used. Thus, the use of A01H5 in conducting a search should capture everything that appears under A01H5. However, a search for A01H5/00 will capture only documents literally coded as "A01H5/00". Patent databases may also vary in terms of which edition of the classification they are using. 
 
-ADVANCED AND CORE LEVEL TO INCLUDE.
-
-<!---G01N  33/483 • • Physical analysis of biological material 
+<!---ADVANCED AND CORE LEVEL TO INCLUDE.
+G01N  33/483 • • Physical analysis of biological material 
       33/487 • • • of liquid biological material
       33/49 ••••blood
       33/50 • • Chemical analysis of biological material, e.g. blood--->
 
 
-# The US IPC Table
+### The US IPC Table
 
 The USPTO makes its patent data available free of charge in table format for download from the Patents View website [https://www.patentsview.org/download/](https://www.patentsview.org/download/). In this section we will explore the 2019 IPC table. 
 
@@ -303,7 +302,7 @@ In the case of companies we also observe distinctive clusters of research output
 
 One challenge with the science overlay maps is that they depend on Web of Science journal categories and these change with reasonable frequency requiring reasonably regular updates to the maps [@lens.org/152-368-728-041-436]
 
-<!--- it would be better I think to use the updated vos viewer maps if these can be located and used copyright free--->
+<!--- it would be better I think to use the updated vos viewer maps if these can be located and used copyright free≈
 
 Leydesdorfy @article{lens.org/003-564-261-756-723
 
@@ -333,3 +332,21 @@ note that this will be dealt with in the ML chapter .... or point to the literat
 ## Conclusion
 
 Cite some emerging --->
+
+
+## Real World Classification
+
+In practice when working with classification data to present analysis to users we will run into two main problems
+
+1. The labels are too general or generic
+2. The labels are too specific
+
+This means that we will need to think carefully about how to use the classification to create our own groupings that are meaningful to our specific audience. Here we need to remember that patent analytics is an exercise in communication with an audience (employers, clients etc.) rather than adherence to an the contents of a sophisticated but at times opaque or obtuse classification system. 
+
+A good illustration of this issue on a practical level is provided by the drones dataset. Figure X displays what happens when we apply the short IPC (subclass level) to the data. 
+
+INSERT IMAGE
+
+The problem here is that while we can gain some general insights from this summary of the classification it is basically too broad to be of practical use (the class or section level would be worse). We can attempt to clarify the content of each subclass by taking the end of the descriptions on the group and the subgroup level (in practice we separate the data on the last colon and semi-colon to access these labels). We now have a more informative visual representation of the technical aspects of our data.
+
+It is here that the problem starts to emerge, what can we actually do with this?
