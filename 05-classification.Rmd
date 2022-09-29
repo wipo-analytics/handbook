@@ -1,0 +1,510 @@
+# Patent Classfication {#classification}
+\index{classification}
+<!--- last spell checked 2022-09-28--->
+
+This chapter focuses on the use of patent classification codes in patent analytics. Patent documents are normally awarded classification codes or symbols that describe the technical content of the document. For those unfamiliar with patent classification schemes the closest systems are library classification codes such as those used to order the items on the shelves of a university or local library. 
+
+Classification systems are important because once we are familiar with them we can navigate to the right part of the library with ease to retrieve the relevant item. For example, in the international patent system documents relating to genetic engineering are commonly found under Subclass C12N while those that relate to plants in agriculture are under A01H and animals are found under A01K. In contrast we would find kitchen equipment under Class A47. As we will see in this chapter, in contrast with simple library classification codes, patent documents are normally assigned more than one code to more fully describe the technical content of a document. So, if we wanted to identify those patent documents that involve biochemistry and plant agriculture we could search for those documents that share Subclass C12N (genetic engineering) and plant agriculture (A01H) to identify those documents that are about both subjects. Patent classification systems are also hierarchical meaning that we can navigate to greater and greater levels of detail. 
+
+The original purpose of patent classification systems was to facilitate the retrieval of patent documents as prior art through the physical ordering of patent documents in patent office libraries. As patent offices expanded classification was also used to assign work to relevant sections of examining teams (e.g. Chemistry, Electrical Engineering etc.). As such, patent classification is important to the organisation of the work of patent offices. Increasingly, in the context of the rise of machine learning and artificial intelligence, patent offices are exploring the possibility of automating at least part of the time consuming task of patent classification as part of the organisation of their work.  
+
+For patent analytics it is important to recognise that the use of classification codes has changed over time and continues to be dynamic. Thus, initially patent documents were awarded one classification code focusing on description of the contents of the claims. The number of codes assigned to a documents was gradually expanded with the first in the list generally being the most important with respect to the contents of the _claims_. In the early 2000s this began to change with the focus shifting towards the use of multiple classification codes to describe the technical content of patent _documents_. Patent classification is also dynamic as specialist bodies responsible for classification respond to changes in technology and issue revised editions of classification schedules and take advantage of databases to retrospectively reclassify entire collections. This means that old assumptions that the first classification code on a document was the most important is no longer true and that analysts must pay attention to revisions to classification schemes. 
+
+For patent analysts understanding patent classification systems is fundamentally important for four main reasons:
+
+a) When combined with keywords it provides powerful tools for narrowing patent searches and dataset generation;
+a) It allows for trends in particular areas of science and technology to be identified for statistical purposes;
+c) It allows for networks of co-occurrences of classification codes to be mapped to allow the components of landscapes to be identified and explored;
+d) combined with citation analysis patent classification may allow the identification of the main paths or trajectories of emerging areas of science and technology.
+
+There are a number of patent classification systems that are in use. In some cases, such as the patent office of Japan, a national classification system will be used. These national systems can help analysts to navigate the particularities of individual systems. However, for international patent research the two most important classification systems are:
+
+a) The International Patent Classification (IPC) administered by WIPO and established by the 1971 Strasbourg Agreement.^[[https://www.wipo.int/classifications/ipc/en/](https://www.wipo.int/classifications/ipc/en/)]. The IPC consists of over 74,000 classification codes.^[[https://www.wipo.int/classifications/ipc/en/general/statistics.html](https://www.wipo.int/classifications/ipc/en/general/statistics.html)]
+b) The Cooperative Patent Classification (CPC) operated by the European Patent Office and USPTO. The CPC is based on the earlier ECLA system and can be considered to be a more detailed version of the IPC using just over 260,000 classification codes ^[Source: [https://www.cooperativepatentclassification.org/cpcSchemeAndDefinitions.html](https://www.cooperativepatentclassification.org/cpcSchemeAndDefinitions.html)]. The CPC is also used by a number of EPO national offices, the Chinese State Intellectual Property Office (SIPO), the Korean Intellectual Property Office (KIPO), the Russian Federal Service for Intellectual Property (Rospatent) and the Mexican Institute of Industrial Property (IMPI).^[Source: [https://en.wikipedia.org/wiki/Cooperative_Patent_Classification](https://en.wikipedia.org/wiki/Cooperative_Patent_Classification)] 
+
+One challenge for patent analysts who have not received training in patent examination is that there are limited resources available for training in the use of the patent classification schemes. Essential resources for the IPC include the [WIPO Guide to the International Patent Classification (2022)](https://www.wipo.int/publications/en/details.jsp?id=4593&plang=EN) available in English, French and Spanish and regularly updated. For the CPC it is important to familiarise oneself with the [CPC website](https://www.cooperativepatentclassification.org/home) and its section with free [training resources](https://www.cooperativepatentclassification.org/Training). esp@cenet also provides a very valuable [Cooperative Patent Classification search tool](https://worldwide.espacenet.com/classification?locale=en_EP). 
+
+The purpose of this chapter is to introduce the reader to the most important features of patent classification for the purpose of patent analytics. We will use the US PatentsView `ipcr` table that is available free of charge from the following link [http://data.patentsview.org/20190820/download/ipcr.tsv.zip](http://data.patentsview.org/20190820/download/ipcr.tsv.zip) to explore the uses of the classification. We will then examine the use of co-occurrence network analysis using the [WIPO Patent Landscape Report on Animal Genetic Resources](https://www.wipo.int/publications/en/details.jsp?id=3394) to illustrate how an understanding of the relationships between classification codes can be used to make sense of very noisy data. Finally we will consider recent developments focusing on the use of vector space models to assist with patent classification based on a [dynamic Lens public collection of articles on patent classification](https://www.lens.org/lens/scholar/search/results?collectionId=177082).
+
+### Exploring the International Patent Classification
+
+The International Patent Classification in 2019 consisted of over 74,000 classification codes consisting of alphanumeric codes. The IPC is hierarchical in nature moving from the most general level (Section) to the most detailed level (Subgroup). The IPC is ordered in the sections displayed in Table \@ref(tab:ipcsections).
+
+```{r ipcsections, echo=FALSE, fig.align='center', fig.cap="The Sections of the IPC", message=FALSE, warning=FALSE}
+library(readxl)
+library(tidyverse)
+# read in the table containing the headings
+
+ipc_sections <- readxl::read_excel("data/ipc/ipc_sections.xlsx")
+
+ipc_sections %>% 
+  knitr::kable(caption = "The Sections of the IPC")
+```
+
+Each Section of the IPC contains a set of codes on the Class, Subclass, Group and (where relevant) the Subgroup level. An illustration of a full classification code is `A01H5/10` which is built from the following hierarchy. 
+
+- > A - Section = Human Necessities
+-  > 01 - Class = 	AGRICULTURE; FORESTRY; ANIMAL HUSBANDRY; HUNTING; TRAPPING; FISHING
+-   > H - Subclass = NEW PLANTS OR PROCESSES FOR OBTAINING THEM; PLANT REPRODUCTION BY TISSUE CULTURE TECHNIQUES 
+-    > 5/00 - Group = Angiosperms, i.e. flowering plants, characterised by their plant parts; Angiosperms characterised otherwise than by their botanic taxonomy
+-     5/10 = Subgroup = Seeds
+          
+In the example above we can appreciate the basics of the hierarchy in constructing the classification code `A01H5/10`. The first point to note is that the classification can be difficult to read in a normal human way. In approaching this task it is generally best to start at the lowest possible level to construct a human understandable summary description such as `the use of seeds from angiosperms to create new plants`. The second point to note is that it is important when seeking to interpret these codes to review the relevant entries in the [online classification tool](https://www.wipo.int/classifications/ipc/ipcpub/?notion=scheme&version=20190101&symbol=none&menulang=en&lang=en&viewmode=f&fipcpc=no&showdeleted=yes&indexes=no&headings=yes&notes=yes&direction=o2n&initial=A&cwid=none&tree=no&searchmode=smart) <!--- check link---> to understand what is nearby in the classification and the relevant notes. Notes in the IPC provide guidance to examiners on the appropriate place to classify a document. 
+
+By way of illustration consider the following under A01H in Table \@ref(tab:ipcangiosperm).
+
+```{r, ipcangiosperm, echo=FALSE, fig.cap="New Plants in the IPC"}
+ipc_angiosperm_example <- readxl::read_excel("data/ipc_angiosperm_example.xlsx")
+
+ipc_angiosperm_example %>% 
+  knitr::kable(caption = "New Plants in the IPC")
+
+```
+
+When viewed from the fuller IPC we can make a number of observations. The first of these is that A01H5/10 describes the part of a plant used in the claimed invention. Second, we can see instructions to examiners to the effect that code A01H4/00 takes precedence (priority) over the use of either A01H1/00 or A01H3/00 with respect to modifications of genotypes and phenotypes respectively. In our human readable summary of this data we can describe this as `the use of seeds from angiosperms to create new plants` because A01H4 refers specifically to plant reproduction by tissue culture techniques and should be present on documents where tissue culture techniques are used. 
+
+As this suggests, when approaching analysis of a particular area of the patent system it is useful to begin by consulting the IPC and the codes around a potential area of interest to work out which codes might need to be included in the construction of a search to capture the universe of activity. Three additional observations are important here. 
+
+1. As we can see above the year and IPC edition appear in brackets after the code entry. For items under A01H5/00 note we can see that this is a _2018_ addition to the classification and, depending on the year the updated IPC was released (e.g. 2022), may not yet be fully reflected in patent databases as a result. Increasingly, patent documents in major databases are reclassified shortly after the adoption of new editions of the IPC. However, it is worth bearing a potential lag time in mind.  
+2. Some classification codes are essentially descriptive rather than being about a technology. Thus, A01H5/00 describes parts of plants, C12R describes microorganisms and A61P describes diseases/medical conditions. In contrast, A01H4 and A01H3 describe technologies or methods.
+3. When constructing patent searches with classification codes care is required with respect to the use of five character (e.g. A01H5) or eight character strings (e.g. A01H5/00) because different results may be retrieved depending on the database used. Thus, the use of A01H5 in conducting a search should capture everything that appears under A01H5. However, a search for A01H5/00 will capture only documents literally coded as "A01H5/00". As noted above, patent databases may also vary in terms of which edition of the classification they are using at a given time. 
+
+<!---ADVANCED AND CORE LEVEL TO INCLUDE.
+G01N  33/483 • • Physical analysis of biological material 
+      33/487 • • • of liquid biological material
+      33/49 ••••blood
+      33/50 • • Chemical analysis of biological material, e.g. blood--->
+
+
+### The US IPC Table
+
+The USPTO makes its patent data available free of charge in table format for download from the Patents View website [https://www.patentsview.org/download/](https://www.patentsview.org/download/). This is an excellent service and it is recommended that anyone interested in patent analytics should engage with this fundamental resource. In this section we will explore the 2019 IPC table for granted patents and you should expect that numbers will change if you use the latest edition. 
+
+The first observation to make is that the 2019 IPC table consists of 15,190,916 rows and 6,625,659 unique patent documents.^[The raw ipcr table contains a number of entries outside the A:H IPC section section scheme. These are low frequency and have been filtered out in the presentation of the data] As these numbers suggest on average each document receives 2.2 classification codes. A single patent document may also appear in more than one area of the classification (e.g. Agriculture and Biochemistry). We will explore this in more detail below.  
+
+<!--- the script for importing and preparing the full IPC table is found in R/ipc_script--->
+
+Table \@ref(tab:dococcipccount) displays the number of occurrences of codes in each section (the same code may appear multiple times) and a count of the number of documents in each section. Note here that a single document may appear in more than one section (e.g. A and C) but is counted only once in each section. 
+
+We can readily see that the most frequently occurring classification codes across all years of the US data are in Electricity (H) and Physics (G) followed by Performing Operations and Transporting (B). As we will see below some areas of the classification (notably Physics and B for Performing Operations and Transporting) may commonly co-occur with documents in other areas of the classification. 
+
+```{r dococcipccount, echo=FALSE}
+# load summary table
+load("data/ipc/doc_ipc_count.rda")
+
+doc_ipc_count %>% 
+  knitr::kable(., caption =  "The International Patent Classification Sections")
+```
+
+This data helps to demonstrate that multiple classification codes will be applied to a more limited set of documents. One way to think about this is as a cloud of classification codes that surround documents in order to describe their contents. Those codes will form create clusters depending on the number of documents that share a code.
+
+One challenge with the IPC is how to visualise it at scale. Here we can use more recent visualisation techniques that will allow us to understand structure and to visualise relationships between elements within the structure. 
+
+Figure \@ref(fig:sunburstclass) displays the USPTO IPC data in a static sunburst diagram. The purpose of this static image is to familiarise you with what you are looking at before going dynamic. To read this diagram, start in the centre which contains the entire IPC and its occurrence count for US granted patents. The next circle from the centre is the section level followed by the class level. While this image is static, we will switch to interactive versions below. The code used to generate this graph is drawn from the `sunburstR` package developed by Mike Bostock and collaborators. The `sunburstR` package implements the original D3 code developed by Mike Bostock and uses the sunburst code example developed by Kerry Roden [https://bl.ocks.org/kerryrodden/7090426](https://bl.ocks.org/kerryrodden/7090426). 
+
+<!--- increase the size--->
+```{r sunburstclass, echo=FALSE, fig.align='center', fig.cap="Visualising the IPC Hierarchy in a Sunburst Diagram"}
+knitr::include_graphics("images/ipc/sunburst_group.png")
+```
+
+
+The sunburst graph displays the IPC in the central blue circle with 14,744,152 occurrences of classification codes from the US collection. The next circle is the section level beginning with A at 12 o'clock and proceeding clockwise to H (electricity). The third circle is the class level with the size of each class reflecting the number of occurrences. The fourth circle moves to the subclass level (e.g. A61) and the outer circle is the group level (e.g. A61K31). 
+
+This type of visualization is useful for understanding the proportion of patent activity in terms of the use of classification codes. Thus, moving clockwise we can see that A, B and C are roughly proportional at the Section level. However, D (textiles and paper) and E (fixed constructions) are striking in how small they are relative to the rest of the classification. In contrast Sections G (Physics) and Section H (Electricity) are roughly proportionate and larger than sections A to C.
+
+<!----What are the counts of, classification codes or documents--->
+<!--- increase the size--->
+```{r sunburstA61, echo=FALSE, fig.align='center', fig.cap="Navigating Section A to the Group Level"}
+knitr::include_graphics("images/ipc/sunburst_group1.png")
+```
+
+Figure \@ref(fig:sunburstA61) reveals that we can navigate across the hierarchy down to the group level. In this case from Figure \@ref(fig:sunburstclass) we observe a high proportion of activity in section A just after 12 o'clock that falls under group A61K31. We have now oriented ourselves in using this type of visual. 
+
+The growing power of interactive visualisation tools such as the [D3 JavaScript library](https://d3js.org/) also allows us to navigate into individual sections to explore activity. Figure \@ref(fig:sectiona) zooms in to subclass A01H down to the subgroup level discussed above. This version is interactive and allows the main subclass for plant agriculture (A01H) to be explored down to the subgroup level. Thus, we can readily observe that A01H5 for angiosperms (flowering plants) dominates activity in this subclass. The dominant subgroup is A01H5/00 which in reality is a reference to the group with the main subgroup being A01H5/10 for Seeds followed by the group A01H1 referring to processes for modifying genotypes. Observe here that the use of A01H1 and A01H1/00 both refer to the group level which is confusing. As noted above, for this reason it makes sense when conducting IPC searches to use A01H1 to ensure that all relevant results under this group are captured.  
+
+```{r sectiona, echo=FALSE, message=FALSE, warning=FALSE, fig.align='center', fig.cap="Exploring Agriculture in the Patent Classification"}
+library(sunburstR)
+load("data/ipc/sunburst_subgroup.rda")
+
+sunsubgroup <- sunburst_subgroup %>% 
+  separate(name, c("section", "class", "subclass"), sep = "-", remove = FALSE) %>% 
+  filter(subclass == "A01H") %>% 
+  select(-section, -class, -subclass) %>% 
+  select(name, subgroup_count) %>% 
+  unname() %>% 
+  sund2b(., width="100%")
+sunsubgroup
+```
+
+<!--- subgroup level example--->
+
+This type of 30,000 foot overview provides a better understanding of the proportion of activity in different areas of the United States Patent system than can be gained from a simple stacked bar chart. This also usefully illustrates the fundamental point that a great deal of time can be saved in patent analytics by engaging with the classification. That is, it makes sense when working on _established technologies_ to start by using knowledge of the classification to navigate to relevant documents rather than conducting unrestricted searches. As we will discuss in further detail below, _emerging technologies_ can prove more challenging. However, a great deal of effort can be saved by using the classification as a starting point.  
+
+Thus, taking the example that we have used so far from plant agriculture and sequencing technology we might want to use this knowledge to conduct a classification based search that combines the two classifiers A01H and C12Q and as necessary to move to more detailed levels using A01H5 and A61Q1 or into relevant subgroups such as C12Q1/68 for nucleic acids (sequences). One factor to take into account when using the classification in a search strategy or the development of indicators, particularly where working with international patent activity, is that patent offices may classify to different levels of detail. For this reason it is often necessary to move up one level (or more) from the target and to test and refine the data as needed.  
+
+As this suggests, rather than focusing on the IPC hierarchy in practice we will often want to focus on the _linkages between_ areas of the classification. The increasing use of more than one classification code to describe the content of patent documents introduced under IPC8 represented a major step forward in this regard. 
+
+### Assessing Relationships Between Technology Areas
+
+To assess relationships or linkages between different areas of the classification we need to cast the IPC data into a matrix that shows co-occurrences between areas of the classification. Co-occurrence is based on counts of the number of documents where one or more classification code or symbol occur together. 
+
+It is a straightforward matter to create a co-occurrence matrix in Excel using a pivot table. VantagePoint makes it very easy to create matrices with the touch of a button in order to refine analysis while R and Python offer easy means to create such matrices with a small amount of programming knowledge. Table \@ref(tab:simplecoccur) shows a matrix of the cooccurrences of IPC sections (A to H) for USPTO patent grants across all years until 2021. In preparing this matrix, the data is first filtered so that only one IPC code is represented per section on each document. So, if an individual document has three codes from Section A and two Codes from Section B, only one section A and one section B code will be counted. We adopt this approach because our interest is in examining the relationships _between_ sections rather than within them.
+
+In approaching Table \@ref(tab:simplecoccur) note that in creating the cooccurrence matrix we also remove self-references (that is, where section A occurs with section A) by converting the diagonal values to 0. For most purposes when constructing and visualizing a co-occurrence matrix or network you will want to remove these self references (known as removing the diagonal) for a clearer view. For example, in R this can be achieved with the following simple code `diag(mymatrix) <- 0`.
+
+```{r, readin2021ipc, echo=FALSE, eval=FALSE}
+# this chunk uses the 2021 patentsview ipc table
+library(tidyverse)
+
+ipc <- readRDS("~/Documents/patentsview2021/data/ipc.rds")
+ 
+ipc_section <- ipc %>% 
+  mutate(nchar_section = nchar(.$section)) %>% 
+  filter(nchar_section == 1) %>% 
+  mutate(upper = str_detect(section, "[[:upper:]]")) %>% 
+  filter(upper == TRUE) %>% 
+  filter(section == "A" | section == "B" | section == "C" | section == "D" 
+         | section == "E" | section == "F" |  section == "G" | section == "H") %>% 
+  select(patent_id, section) %>% 
+  group_by(patent_id) %>% 
+  mutate(duplicated = duplicated(section)) %>% 
+  filter(duplicated == FALSE) %>% 
+  select(-duplicated) %>% 
+  ungroup() %>% 
+  mutate(n = 1)
+
+ipc_section_ed <- crossprod(table(ipc_section[1:2]))
+diag(ipc_section_ed) <- 0
+ipc_section_ed
+
+saveRDS(ipc_section_ed, "data/ipc_section_cooccur.rds")
+ipc_section_ed <- readRDS("data/ipc_section_cooccur.rds")
+
+heatmap(ipc_section_ed, Rowv = NA, Colv = NA, scale = "row") # saved to images
+
+#ComplexHeatmap::Heatmap(ipc_section_ed, row_order = sort(rownames(ipc_section_ed)), column_order = sort(colnames(ipc_section_ed)), show_heatmap_legend = FALSE)
+```
+
+```{r simplecoccur, echo=FALSE, message=FALSE, warning=FALSE, fig.align='center', fig.cap="IPC Cooccurrence Matrix on the Section Level, USPTO Patent Grants"}
+library(printr) 
+ipc_section_ed <- readRDS("data/ipc_section_cooccur.rds")
+
+ipc_section_ed %>% 
+knitr::kable(caption = "IPC Cooccurrence Matrix on the Section Level, USPTO Patent Grants")
+```
+
+Table \@ref(tab:simplecoccur) reveals that if we read the values across the rows on the left, the top section shared with Section A is Section C for Chemistry and Biochemistry. Moving down the rows, one of the smaller areas of  patent activity is Section F for Mechanical Engineering, Lighting, Heating and so on. The strongest connection from Section F is Section B for Performing Operations and Transporting. 
+
+Rows and columns and numbers can be difficult to read and interpret. For this reason a common approach in data science for visualising a matrix is to use a heatmap. A heatmap transforms the values in the matrix into colours, where lighter colours normally represent lower values and darker colours higher values, or intensity, of connections or activity. Figure \@ref(fig:heatmap) displays a heatmap view of the data presented in Table \@ref(tab:simplecoccur). 
+
+<!--- increase the size--->
+```{r, heatmap, echo=FALSE, fig.align='center', fig.cap="Co-Occurrence Heatmap for USPTO patent grants by IPC section"}
+knitr::include_graphics("images/ipc/ipc_section_cooccur.png")
+```
+
+Reading this heatmap column wise from A to H we can almost immediately see that the highest area of activity for Section A is Section C (for Chemistry and Biochemistry), for Section B it is split between Section D and Section F and for C it is section A followed by D (for Textiles and Paper). 
+
+There are multiple ways in which heat maps can be constructed for different purposes to display relationships with Figure \@ref(fig:heatmap) is one of the simplest. For patent analysts heat maps can be particularly useful as _exploratory devices_ for identifying the intensity of activity rather than as _explanatory devices_ when communicating with a general audience. Network visualisations are typically a more effective device for visual communication with an audience as we will now see. 
+
+### Visualising Relationships with Chord Diagrams
+
+We can visualize this co-occurrence network using a Chord Diagram or a network. Figure \@ref(fig:sectionraw) displays the raw connections between US patent documents classified in more than one section of the IPC. The chord diagram was generated using the easy to use `circlize` package in R. Similar options available in the `bokeh` and `plotly` packages in Python and R. The `circilize` package and software programmes such as `circos` are widely used in bioinformatics and genomics for visualising relationships.^[To explore open source Circos software see [http://circos.ca/](http://circos.ca/).]
+
+<!--- increase the size--->
+```{r, sectionraw, echo=FALSE, fig.align='center', fig.cap="Visualising an IPC Co-Occurrence Network in A Chord Diagram"}
+knitr::include_graphics("images/ipc/section_raw.png")
+```
+
+In considering this raw chord diagram we will begin at 12 noon with Section H and proceed in a clockwise direction. The most immediately striking aspect of this visualisation is that Section H (Electricity) is very strongly connected with Physics (Section G) but more weakly with other areas of activity. Section A (Human necessities) covers a broad spectrum from Agriculture to Baking and Foodstuffs, Clothing, Medicines and Games. Section A displays multiple but relatively weak links with Physics but strong links with Chemistry (a section including biochemistry and genetic engineering). Section B (Performing Operations; Transporting) encompasses a wide variety of technologies concerned with the separation and processing of materials (such as plastics), shaping of materials, printing and vehicles. This section also covers microstructural and nanotechnology. Perhaps as a reflection of this diversity and the importance of separation processes in many fields, Section B appears to display a more even distribution of linkages with other areas of patent activity. 
+
+As we move past Section C (chemistry) we observe that two smaller areas of activity in terms of links with other areas of the system. These are Section E for Fixed Constructions covering Building, Road construction and Mining followed by Section F covering Engines, general engineering, weapons and blasting. 
+
+When we compare the chord diagram in Figure \@ref(fig:sectionraw) with our simple heatmap in Figure \@ref(fig:heatmap) we can observe that the chord diagram is more informative because it more clearly displays the proportions of the relationships between the different sections of the classification. However, note that the reader will need to be guided in interpreting each of these visualisations.
+
+When presenting these kinds of data visualisations the data can be presented as is or calculations can be applied. Figure \@ref(fig:sectionchord) scales the data to show the fraction of activity in a section that is shared with other sections.  
+
+<!--- increase the size--->
+```{r, sectionchord, echo=FALSE, fig.align='center', fig.cap="IPC Co-Occurrence Network with Fractionated Counts"}
+knitr::include_graphics("images/ipc/section_fraction.png")
+```
+
+We will read Figure \@ref(fig:sectionchord) from 12 noon in a clockwise direction. The first point we observe at 12 o'clock is the inverted mountain of links between G (Physics) and H (Electricity) as we proceed along the axis of H a second string of linkage emerges to section G. Note however, that only limited connections are visible between H and other areas of the classification. Moving into Section A we initially observe a link to Section H before major links begin to appear to D (Textiles and Paper) and a separate major stream of links to C for Chemistry. 
+
+It is possible to draw chord diagrams of this type at variety of different levels from classes down to sub-groups. Figure \@ref(fig:classsubclass) shows a chord diagram on the subclass levels in order to illustrate two points. 
+
+```{r, classsubclass, echo=FALSE, fig.align='center', fig.cap="IPC Co-Occurrence Network on the Sub Class Level"}
+knitr::include_graphics("images/ipc/subclass_10000_scaled.png")
+```
+
+The first point is that when dealing with the relationships between tens of thousands of entities it will always be necessary to filter the data. In this case to codes with 10,000 or more occurrences on the class or the subclass level respectively. The second point follows from the first. That is, visualisation is an exercise in communication with an audience. Interpretation of the codes used as labels requires an intense interest in the symbols in the classification. While it is reasonable to expect that a patent analyst will be interested in these symbols it does not follow that the reader of a patent analysis will be interested. 
+
+The issue here is not the type of visualisation. Chord diagrams are effective means for visualising relationships between categories within data. Rather the issue is with _labelling_. This is not confined to patent analysis but is a more general observation on visualisation, the challenge of labelling. 
+
+In the case of the IPC one challenge is that code descriptions are generally long multi-phrase statements. In practice these descriptions were not created with visualisation in mind. One solution to this problem is to edit the IPC to short one word or two word phrases that seek to capture the dominant meaning of a particular code. This exercise will never be perfect but it provides a means of visually communicating data while at the same time providing opportunities to provide narrative explanations of the nuances to the reader.
+
+### The Short IPC
+
+The short IPC was developed by Paul Oldham and Stephen Hall to overcome the challenge of visualising IPC data in dashboard displays such as Tableau, notably labelled vertical bar charts. The short IPC was created by manually editing the complete classification in Vantage Point from Search Technology Inc in order to produce human readable labels on the section, class and subclass levels. An extended version of the short ipc includes ipc descriptions on the group level. Table \@ref(tab:ipcshort) displays a sample of the short IPC.
+
+```{r ipcshort, echo=FALSE, fig.align='center', fig.cap="The Short IPC"}
+load("~/Documents/handbook/data/ipc/ipc_short.rda")
+
+head(ipc_short, 15) %>% 
+  knitr::kable(caption = "The Short IPC")
+```
+
+
+```{r ipc2021, echo=FALSE, eval=FALSE}
+# 2021 ipc table for US granted patents
+ipc <- readRDS("~/Documents/patentsview2021/data/ipc.rds")
+
+ipc_subclass_count <- ipc %>% 
+  unite(ipc_subclass, c(section, ipc_class, subclass), sep = "") %>% 
+  count(ipc_subclass, sort = TRUE) %>% 
+  head(20)
+
+save(ipc_subclass_count, file = "data/ipc/ipc_subclass_count.rda", compress = "xz", version = 2)
+```
+
+We can join the short IPC to existing tables using straightforward SQL joins. In R with the `dplyr` package that looks like this. In this case we use an inner join so that only those records that match on the shared field (ipc_subclass and code in this case) are retained. We can also drop any columns that we don't want and rename others (such as n). 
+
+```{r, ipcjoin, echo=FALSE, eval=FALSE, message=FALSE, warning=FALSE}
+library(tidyverse)
+
+load("data/ipc/ipc_subclass_count.rda")
+load("data/ipc/ipc_short.rda")
+
+ipc_subclass_count <- ipc_subclass_count %>% 
+  inner_join(ipc_short, by = c("ipc_subclass" = "code")) %>% 
+  rename(total = n) %>% 
+  select(-level, ipc_subclass, description, total)
+
+write_csv(ipc_subclass_count, "data/ipc/ipc_subclass_count.csv")
+save(ipc_subclass_count, file = "data/ipc/ipc_subclass_count.rda")
+```
+
+That code gives us a human readable version of the data as we see in Table \@ref(tab:displaysubclasscount).
+
+```{r displaysubclasscount, echo=FALSE, eval=TRUE, message=FALSE, warning=FALSE, fig.align='center', fig.cap="Top Subclasses for USPTO Patent Grants"}
+load("data/ipc/ipc_subclass_count.rda")
+
+ipc_subclass_count %>% 
+  knitr::kable(caption="Top Subclasses for USPTO Patent Grants")
+```
+
+We will normally want to drop or rearrange columns but we are now in a position to visualise the data in a tool such as Tableau. Figure \@ref(fig:tableausubclasscount) displays a stacked bar chart in Tableau. Note that in some cases it may be necessary to edit longer labels manually, such as "Analysing materials by their chemical or physical properties" that becomes simply "Analysing Materials" in Figure \@ref(fig:tableausubclasscount) below.
+
+```{r tableausubclasscount, echo=FALSE, fig.align='center', fig.cap="A Stacked Vertical Bar Chart using Short Subclass Labels"}
+
+knitr::include_graphics("images/ipc/ipc_subclass_count.png")
+```
+
+The use of labels also allows for experiments with visualisation of the same data in other ways. Figure \@ref(fig:tableausubclasscount) displays the same data in the form of a bubble graph. 
+
+```{r tableaububble, echo=FALSE, fig.align='center', fig.cap="A Bubble Graph using IPC Subclass data"}
+knitr::include_graphics("images/ipc/ipc_subclass_count_bubbles.png")
+```
+
+As this discussion reveals, there are a variety of ways of visualising IPC data. Some of these are best used for exploratory purposes for example using the IPC codes as labels while communication with an audience will normally involve the use of short text labels. In considering the stacked bar chart and bubble chart representations of the date presented above, or the raw and fractionated circle graphs presented earlier, it is always important to bear in mind what forms of visual communication will be effective for the audience in terms of accurate representation of the data. 
+
+In closing this chapter on the use of the International Patent Classification in patent analytics we will illustrate how an in depth knowledge of the IPC combined with network visualisation techniques allowed the author of this handbook to identify and visualise a needle in a haystack. 
+
+#### Case Study: Finding A Needle in A Haystack
+
+In 2013 WIPO was invited by the Food and Agriculture Organisation (FAO) to develop a patent landscape analysis on animal genetic resources for food and agriculture. This landscape analysis covered all the major species of livestock such as cattle, pigs, goats, deer, horses, buffalo etc. as well as birds such as chickens, geese, ducks and so on. 
+
+At first sight the solution to developing this landscape appeared relatively straightforward. The IPC has a long standing subclass AO1K for New Breeds of Animals that focuses on genetically engineered animals. This seemed like a reasonable starting point. For example, in the 2021 USPTO data on the IPC used above there were 31,712 patent grants across all years that fall under subclass A01K. However, during planning of the landscape study we were also conscious that this new breeds of genetically engineered animals is a fairly narrow category. Based on previous work on biodiversity in the patent system, we thought that other references to animals could be identified by using the Latin names of animals (e.g. _Bos taurus_ for cattle). This was based on the observation that applicants with inventions that directly involve an animal will typically use the Latin name as part of the disclosure. 
+
+This approach involved starting from a clearly relevant area of the patent classification (AO1K) and Latin terms and expanding outwards with a defined strategy to explore the wider landscape. However, one significant problem with this approach emerged in the course of exploring the data. This was that detailed analysis of the claims, performed in Vantage Point, revealed that for common livestock applicants often used common names. In addition the common names generally appeared in the claims as parts of lists that reflected the way in which claims are framed to maximise the scope of protection. Thus, cattle and other animals would appear in claims as part of lists encompassing mice, rats, humans and other mammals. Additional terms that expanded the landscape still further included grouped names such as bovines, ungulates and ruminants. Patent claims involving humans often involved references to higher order mammals. 
+
+The practical consequence of this was a requirement to use common names to develop the landscape to be sure that the universe of relevant activity had been captured. Text mining of the US, European and PCT full texts revealed a raw set of 55,595 first filings of patent applications, 98,368 patent publications and 510,595 patent family members that involved the terms. Figure \@ref(fig:animalsranked) displays the rankings for patent activity worldwide based on common and Latin terms for each of the major groups.   
+
+<!--- INSERT Figure 2.1 page 44---->
+```{r animalsranked, echo=FALSE, fig.align='center', fig.cap="Animals in the Patent System by Terms"}
+knitr::include_graphics("images/ipc/animals_p44.png")
+```
+
+The scale of this data presented the conundrum of how to proceed considering that the use of animal names appears across the system in diverse areas of technology such as kitchen equipment, games, toys and clothing? In some cases, such as pigs and horses, the use of an animal name may be used in areas of technology that have nothing to do with the animal itself such as pipeline pigs and clothes horses.
+
+The answer to this question was found by combining the IPC and CPC for the 55,595 priority records and creating a co-occurrence matrix containing 41,167 codes consisting of 17,953 IPC codes and 34,472 CPC codes. The matrix was created in Vantage Point from Search Technology Inc and then exported to Gephi where it was laid out using the well known Fruchterman Reingold algorithm. Because the data formed dense clusters we then forced the network to expand to more clearly reveal clusters. <!--- must have been filtered subsequently as 5257 in the nodes table. Ah yes.... in an early version a lot were pushed to the margins as isolates --->
+A common method for identifying structure in raw data is to use approaches such as factor analysis on one or more data fields in an effort to identify clusters. This is built into tools such as Vantage Point. <!---In machine learning unsupervised clustering (k-means) CHECK is also used and forms part of a range of techniques [REFS]. ---> Clustering methods are important but one known issue with factor analysis and other methods such as k-means clustering is the extent to which the resulting clusters can be readily interpreted by humans. However, in this case the authors were able to rely on a large number of classification codes describing the content of the documents. 
+
+In this case the authors were able to apply the _modularity class community detection algorithm_ that comes built in to Gephi to identify communities or clusters of activity [@lens.org/103-268-627-372-687]. In straightforward terms, this involves iteratively calculating the strength of the links between nodes in the network and allocating nodes to a community (cluster) based on the strongest links until no further allocations can be made. Modularity class is used to partition the network by colouring the different clusters as communities. 
+
+In common with other areas of patent analysis, network visualisation is an iterative process. Figure \@ref(fig:animalraw) shows details of the emerging network with the colours representing communities of closely related activity and the IPC codes overlaid to help interpret clusters of activity. 
+
+```{r, animalraw, echo=FALSE, fig.align='center', fig.cap="The Emerging Animal Genetics IPC Network in Gephi"}
+knitr::include_graphics("images/animals_images/wipo_agr_overview.png")
+```
+
+Figure \@ref(fig:animaluniverse) shows the results of forcing the clusters to separate out to provide a clearer understanding of network structure. 
+
+```{r, animaluniverse, echo=FALSE, fig.align='center', fig.cap="The Universe of Patent Activity for Animal Genetics"}
+knitr::include_graphics("images/animals_images/UNIVERSE_NETWORK_CLUSTER.png")
+```
+
+In reading Figure \@ref(fig:animaluniverse) note that clusters that are less closely related to other clusters, such as **567 Cooking Equipment**, are forced to the outside of the network while those with stronger links are more central. 
+
+Modularity classes within a network created with Gephi are awarded a number (as shown above) that appears in the underlying data table as we can see below in what became the biotechnology cluster in the Gephi data laboratory (showing node and edges tables). Table \@ref(tab:biotech) displays the top ten members of class 0. 
+
+```{r, biotech, echo=FALSE, message=FALSE, warning=FALSE, fig.align='center', fig.cap="Modularity Classes in Gephi"}
+library(readr)
+animals_latest_universe_nodes <- read_csv("data/animals/animals_latest_universe_nodes.csv")
+
+animals_latest_universe_nodes %>% 
+  head() %>% 
+  knitr::kable(caption = "Modularity Classes in Gephi")
+```
+
+Each of the clusters in the network were manually reviewed to determine the appropriate labels in Figure \@ref(fig:animaluniverse) based on the frequency of the occurrences of IPC/CPC codes (node weight is a count) <!--- clarify of what, occurrences I think--->.
+
+As Figure \@ref(fig:animaluniverse) makes clear the landscape for animal genetic resources was considerably larger than would have been suggested by a focus on activity under A01K. Co-occurrence analysis combined with community detection allowed the structure of activity to be revealed. This provided a basis for the detailed exploration of individual clusters to a high level of detail through successive rounds of community detection within each cluster. This can be illustrated through two examples. Figure \@ref(fig:animalbreeding) shows the communities detected within the Animal Breeding cluster dominated by subclass A01K (genetically engineered animals). Figure \@ref(fig:biotechsubcluster) focuses in on a subcluster within the biotechnology cluster focused on growth hormones and blood coagulation factors. 
+
+```{r, animalbreeding, echo=FALSE, fig.align='center', fig.cap="Animal Breeding Cluster"}
+knitr::include_graphics("images/animals_images/wipo_animal_breeding_rev.png")
+```
+
+```{r, biotechsubcluster, echo=FALSE, fig.align='center', fig.cap="Animal Biotechnology Cluster"}
+knitr::include_graphics("images/animals_images/biotech_mc_class3.png")
+```
+
+The important point about this approach is that the use of the classification to create a co-occurrence network when combined with a community detection algorithm allowed the main structural components of activity across 55,000 documents to be structured and explored in detail. 
+
+As this example suggests, network analysis at the level of the classification is a powerful tool for exploratory data analysis when working with noisy search terms that may be used in multiple areas of the patent system. This is particularly relevant when seeking to navigate the noise involved in full text analysis of patent data.
+
+An important insight from this example when planning patent or wider literature analysis is to investigate whether a classification system is available _before_ jumping towards k-means clustering, factor analysis or other methods. In the case of the patent system this is particularly important because the International Patent Classification system is a global human expert curated classification. Ignoring the IPC and the CPC is a mistake. Familiarity with the structure of the IPC combined with network visualisation allows the analyst to map and reveal the structure of patent activity in a way that makes it possible to organise communication on what are often complex topics. This does not mean that a patent analyst should slavishly adhere to the IPC, this would be a mistake in the case of emerging technologies that may be spread across multiple areas of the classification (as was originally the case for nanotechnology). Rather, the IPC is best seen as a starting point for data exploration and mapping before applying other methods. In the case study presented above, having identified the key elements of the structure of activity the authors were able to text mine in to specific clusters to explore the main features of patent activity in an organised way. 
+
+<!--- We began this exploration of the International Patent Classification by focusing on ... Add EMERGING TECHNOLOGIES LITERATURE--->
+
+#### Classification and Patent Overlay Mapping
+
+In the preceding discussion we focused on the use of the classification to identify and explore specific areas of patent activity. However, a second area of research of relevance to patent analytics is efforts to map the wider structure of science and patent activity.
+
+The single most accessible resource for engaging with the literature on science mapping is the 2010 book by Katy Borner _Atlas of Science: Visualizing What We Know_ that was linked to an exhibition entitled [Places & Spaces](https://scimaps.org/home) demonstrating different forms of science mapping for the general public [@lens.org/172-016-003-187-100]. Other important work on science mapping is represented by work by Ismael Rafols, Alan Porter and Loet Leydesdorff to identify the structure of scientific research using a combination of Web of Science subject area labels, factor mapping at the journal level and co-citation mapping [@Rafols_2010; @lens.org/038-759-615-680-894]. In particular, this research has revealed an emerging consensus on the structure of scientific research as reflected in the network of relations exposed by citations. This analysis reveals a torus like structure to the scientific publications. Figure \@ref(fig:basemap) displays the original basemap developed by Rafols, Porter and Leydesdorff based on 221 Web of Science Categories and 18 Factors [@Rafols_2010]. 
+
+```{r basemap, echo=FALSE, fig.align='center', fig.cap="The Structure of Scientific Research"}
+knitr::include_graphics("images/ipc/basemap.png")
+```
+
+As the authors explain, the structure of the map resembles a torus or donut like structure with Economics, Politics & Geography at one side of the neck of the torus and Computer Science, Physics and Engineering on the opposite side. The lines (edges) in the structure represent the strength of connections between the different underlying subject categories with the labels in Figure \@ref(fig:basemap) representing broad macro disciplines identified by the authors as aggregations from the factor mapping. 
+
+What is important about overlay mapping is that it becomes possible to examine the distribution of publications by different organisations or funded by different research agencies in the map of science. Figure \@ref(fig:universitiesmap) displays the distribution of publications from four different universities overlaid on the map of science [@Rafols_2010].
+
+```{r universitiesmap, echo=FALSE, fig.align='center', fig.cap="Four Universities situated in the Map of Science"}
+knitr::include_graphics("images/ipc/basemaps_universities.png")
+```
+
+In comparing these university maps we can clearly see distinct clusters of research effort across the four institutions reflected in the subject categories of publications. This, the University of Amsterdam clusters in Clinical Medicine while the European Molecular Biology Laboratory (EMBL) clusters strongly on biomedical science. On contrast, Georgia Tech cluster onto Computer Science, Physics, Engineering and Maths, while the London School of Economics and Political Science (LSE) as a dedicated social science school logically clusters on Economics, Politics, Geography and other social sciences and humanities (e.g. Law) in the underlying map [@Rafols_2010]. 
+
+This type of analysis can also be extended to companies as we see in Figure \@ref(fig:companiesmap) [@Rafols_2010].
+
+```{r companiesmap, echo=FALSE, fig.align='center', fig.cap="Company Positions in the Map of Science"}
+knitr::include_graphics("images/ipc/basemaps_companies.png")
+```
+
+In the case of companies we also observe distinctive clusters of research outputs supported by companies. The power of this form of representation is reflected in the way that it readily confirms some of our underlying expectations. That is we would broadly expect Pfizer to display concentrations in biomedical sciences and clinical medicine while both Nestle and Unilever are more general food and personal goods manufacturers with diverse portfolios. Finally, Shell as an oil and gas company could be expected to display concentration of activity in the Geosciences and closely related fields. 
+
+One challenge with the science overlay maps is that they depend on Web of Science journal categories and these change with reasonable frequency requiring reasonably regular updates to the maps [@lens.org/152-368-728-041-436]. Alternative approach to science mapping include recording user clicks on scientific database websites rather than co-citation analysis. Research by Bollen et al 2009 used click stream data from nearly 1 billion user interactions to map the structure of scientific research as we see in Figure \@ref(fig:clickstream) [@lens.org/012-541-098-811-124].
+
+```{r clickstream, echo=FALSE, fig.align='center', fig.cap="Map of Science based on Click Stream Data"}
+knitr::include_graphics("images/ipc/pone.0004803.g005.png")
+```
+
+The map in Figure \@ref(fig:clickstream) uses an entirely different methodology to that used in previous work to map the structure of science. However, despite important differences, note that the torus structure (in this case inverted) is strikingly familiar while the distribution of subject areas also includes some striking similarities. 
+
+An important feature of the development of science overlay maps is the use of open source software such as Pajek, Vos Viewer and Gephi and forms part of an increasing drive to transparent and reproducible methods. Researchers have also sought to extend science mapping into the patent system using patent classification systems. 
+
+### The Structure of Patent Activity
+
+The increasing availability of patent data at scale such as the EPO World Patent Statistical Database and more recently the entire USPTO patent collection, has made large scale analysis of the structure of patent activity increasingly possible and reproducible by others. 
+
+In 2012 Luciano Kay and collaborators including Nils Newman, Jan Youtie, Alan Porter and Ismael Rafols examined the cited to citing relationship between 760,000 EPO patent documents published between 2000 and 2006 involving 466 IPC codes [@lens.org/019-075-812-828-660]. 
+
+The focus of this research was on mapping technological distance. 
+
+> "Technological distance, or the extent to which a set of patents reflects different types of technologies, is a key characteristic in being able to visualize innovative opportunities" (Kay et al 2012 paraphrasing Breschi, Lissoni, & Malerba, 2003). 
+
+The argument in the literature here is that patents that cite others in the same or similar technology areas are likely to offer opportunities for incremental innovation while those that cite a variety of different technology areas are more likely to involve radical innovation (Kay et al 2012 citing Olson 2004). The IPC and other patent classifications are typically used to provide the proxy for technology categories where the citations between categories can be used as distance measures (applying various weighting techniques). 
+
+The novelty of the approach to patent mapping deployed by Kay et al 2012 was to visualise the structure of patent activity using citing-to-cited relationships. The research focused on the use of IPC categories with 1000 or more records and involved a strategy of folding up groups and sub-groups with less than 1000 records to overcome the sparsity of the population of documents in some areas of the system and resulted in a total of 466 categories spanning different areas of the IPC down to the Subgroup level. This was followed by the extraction of the citing patent records for the set and the use of factor analysis (as in the science overlay mapping). The outcome of this exercise was the IPC based 'base map' displayed in Figure \@ref(fig:clickstream).
+
+```{r patentbasemap, echo=FALSE, fig.align='center', fig.cap="Full patent map of 466 technology categories and 35 technological areas"}
+knitr::include_graphics("images/ipc/basemaps/KaySupplementary2.png")
+```
+
+As we can clearly appreciate from Figure \@ref(fig:clickstream) the structure of the patent landscape revealed by citing-to-cited analysis with the IPC is very different to the scientific literature. However, as with the science overlay maps it is possible to compare and contrast the position of different companies within the map.
+
+Using the Georgia Tech Global Nanotechnology dataset Kay et al 2012 present two maps involving nanotechnology activity by Samsung and DuPont in Figure \@ref(fig:samsung) and Figure \@ref(fig:dupont) below.
+
+```{r samsung, echo=FALSE, fig.align='center', fig.cap="Position of Samsung in the Patent Overlay Map"}
+knitr::include_graphics("images/ipc/basemaps/samsung.png")
+```
+
+```{r dupont, echo=FALSE, fig.align='center', fig.cap="Position of DuPont in the Patent Overlay Map"}
+knitr::include_graphics("images/ipc/basemaps/dupont.png")
+```
+
+The utility of this type of analysis and visualisation is that we can immediately detect the very different positions of specific companies in the structure of the landscape of patent activity for nanotechnology. 
+
+The emergence of nanotechnology in the patent system was initially dominated by the apparently scattered emergence of a new technology across multiple areas of the system. Put simply, nanotechnology did not fit inside existing categories. Patent offices later responded to the emergence of nanotechnology through the creation of a new IPC code (B82) following the development by the EPO of a classification tag Y01N. However, the challenges presented by the emergence of nanotechnology in the patent system raises wider questions of how to identify technological emergence or new and emerging technologies in the patent system (a list that could include graphene, synthetic biology, gene editing and other technologies). Developing indicators of technological emergence would be an important potential tool for informing investments and policy decision-making, particularly where this could be linked to technological forecasting. Figure graphene and biosensors are overlaid on the base map using data from the Georgia Tech Global Nanotechnology dataset. 
+
+```{r nanobiosensors, echo=FALSE, fig.align='center', fig.cap="Nano Biosensors on the Overlap Map"}
+knitr::include_graphics("images/ipc/basemaps/nanobiosensors.png")
+```
+
+```{r graphene, echo=FALSE, fig.align='center', fig.cap="Graphene on the Overlap Map"}
+knitr::include_graphics("images/ipc/basemaps/graphene.png")
+```
+
+In comparing these two visual displays for sub-areas of nanotechnology we can immediately observe the presence of medical devices and pharmaceutical drugs is much more prominent bionanotechnology while Catalysis and Separation, Optics and Electric Power are more prominent for graphene related activity. 
+
+The development of these types of maps raise many methodological questions that are being explored in the growing literature on science mapping. However, one of the most interesting findings of this 2012 study was that the areas of technology that are closest to each other when mapped using citation analysis do not necessarily appear in the same part of the hierarchy of the IPC. This leads Kay et al 2012 to conclude that:
+
+> "The finding suggests that technological distance is not always well proxied by relying on the IPC administrative structure, for example, by assuming that a set of patents represents substantial technological distance because the set references different IPC sections".
+
+As such, and as we have sought to highlight above, rather than seeing the IPC as involving a strict separation between areas of technology it is important to focus on the relationships between technology areas. Patent mapping of this type provides a way of visualising these relationships and allowing new and novel observations to emerge. We have focused here on one example of patent mapping with other research in the same period involving the use of inventor data and US patent data and the IPC [@lens.org/069-552-924-118-80X; @lens.org/003-564-261-756-723; @Schoen2012TheNS].
+
+More recent work has demonstrated the utility of overlay maps in predicting likely trends in development in specific technology fields. For example, Song et al 2016 used the entire US patent data for 1976 to 2016 to construct a map using IPC classes that was then used to attempt to predict likely directions of growth for Hybrid Electric Vehicles (HEVs) [@lens.org/080-983-107-876-953]. Figure \@ref(fig:hev) reproduces a figure from this more recent work displaying the total technology space for Hybrid Electric Vehicles and its predicted areas of growth. 
+
+```{r hev, echo=FALSE, fig.align='center', fig.cap="Song et al 2017 Hybrid Electric Vehicle Technology Space"}
+knitr::include_graphics("images/ipc/basemaps/hevexample.png")
+```
+
+These developments in the use of the IPC at scale are being accompanied by debates within the scientific literature on the appropriate statistical techniques to more accurately map and predict technological developments (see for example, @lens.org/024-806-011-424-241). At the same time, the increasing availability of patent data at scale is opening up new research questions such as measuring innovation at the city level using the IPC and US patent data [@lens.org/055-799-422-004-518].
+
+### Conclusion
+
+This chapter has provided a detailed account of the use of the International Patent Classification in patent analytics. Starting with an introduction to the structure of the IPC we have then moved through a range of methods for visualising IPC data in order to communicate IPC based analysis to a wider audience. An important limitation of the IPC in terms of communication is that it consists of hard to decipher codes or long descriptive strings. In this chapter we presented the informal "short IPC" as a solution to this problem. 
+
+Using the WIPO patent landscape report on animal genetic resources we demonstrated that visualisation of IPC data can be a key step in understanding, navigating, partitioning and communicating complex patent landscapes. Network visualisations of IPC data are particularly powerful tools for the analyst seeking to understand an area of technology and for communication with audiences. For this reason, and commonly using open source tools such as Pajek, Vos Viewer or Gephi, network visualisations are an increasing feature of many patent landscape reports. Readers interested in getting started with network visualisation can work through a practical demonstration using Gephi in the [WIPO Manual on Open Source Patent Analytics](https://wipo-analytics.github.io/manual/gephi-1.html).
+
+In the final section of this chapter we moved up in scale to consider the growth of science and patent mapping in order to inform investment, management and policy decision making. The increasing use of network and mapping techniques using the International Patent Classification forms part of a broader trend towards the use of multiple methods for patent landscape analysis at multiple scales. This convergence involves the use of multiple patent and non-patent literature data fields, the application or further development of a range of statistical measures, techniques from advanced natural language processing such as topic modelling and word or document embeddings, and other techniques. The combination falls within the description, and is a further development of technology mining or tech mining as originally defined by Alan Porter and Scott Cunningham in 2004 [@lens.org/023-481-161-675-434].
+
+In Chapter \@ref(textmining) we will focus on combining the use of the patent classification with text mining techniques.
+
+
+
+
+
+<!--- ### Indicators of Emerge
+
+Porter and Cunningham 2004 is @book{lens.org/023-481-161-675-434
+
+
+ it would be better I think to use the updated vos viewer maps if these can be located and used copyright free≈
+
+Leydesdorfy @article{lens.org/003-564-261-756-723
+
+Newman @article{lens.org/019-075-812-828-660
+
+
+<!---See KeySupplementary2 for the maps in powerpoint
+
+
+The key link to make here is to Indicators of Technological Emergence
+
+See Leydesdorfs A Review of Theory and Practice in Scientometrics 2015 for an update on scientometrics
+
+Look at the most recent citations to this article for applications in other areas using the classification. 
+
+
