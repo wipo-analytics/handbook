@@ -1,0 +1,1080 @@
+<!DOCTYPE html>
+<html lang="" xml:lang="">
+<head>
+
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <title>Chapter 8 Machine Learning | The WIPO Patent Analytics Handbook</title>
+  <meta name="description" content="Chapter 8 Machine Learning | The WIPO Patent Analytics Handbook." />
+  <meta name="generator" content="bookdown 0.28.1 and GitBook 2.6.7" />
+
+  <meta property="og:title" content="Chapter 8 Machine Learning | The WIPO Patent Analytics Handbook" />
+  <meta property="og:type" content="book" />
+  
+  <meta property="og:description" content="Chapter 8 Machine Learning | The WIPO Patent Analytics Handbook." />
+  
+
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:title" content="Chapter 8 Machine Learning | The WIPO Patent Analytics Handbook" />
+  
+  <meta name="twitter:description" content="Chapter 8 Machine Learning | The WIPO Patent Analytics Handbook." />
+  
+
+<meta name="author" content="Paul Oldham" />
+
+
+<meta name="date" content="2022-01-01" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black" />
+  
+  
+<link rel="prev" href="textmining.html"/>
+<link rel="next" href="conclusion.html"/>
+<script src="libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/fuse.js@6.4.6/dist/fuse.min.js"></script>
+<link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-table.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-bookdown.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-highlight.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-search.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-fontsettings.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-clipboard.css" rel="stylesheet" />
+
+
+
+
+
+
+
+
+<link href="libs/anchor-sections-1.1.0/anchor-sections.css" rel="stylesheet" />
+<link href="libs/anchor-sections-1.1.0/anchor-sections-hash.css" rel="stylesheet" />
+<script src="libs/anchor-sections-1.1.0/anchor-sections.js"></script>
+<script src="libs/htmlwidgets-1.5.4/htmlwidgets.js"></script>
+<script src="libs/d3-4.13.0/d3.min.js"></script>
+<script src="libs/sankey-1/sankey.js"></script>
+<script src="libs/sankeyNetwork-binding-0.4/sankeyNetwork.js"></script>
+<link href="libs/leaflet-1.3.1/leaflet.css" rel="stylesheet" />
+<script src="libs/leaflet-1.3.1/leaflet.js"></script>
+<link href="libs/leafletfix-1.0.0/leafletfix.css" rel="stylesheet" />
+<script src="libs/proj4-2.6.2/proj4.min.js"></script>
+<script src="libs/Proj4Leaflet-1.0.1/proj4leaflet.js"></script>
+<link href="libs/rstudio_leaflet-1.3.1/rstudio_leaflet.css" rel="stylesheet" />
+<script src="libs/leaflet-binding-2.1.1/leaflet.js"></script>
+<script src="libs/kePrint-0.0.1/kePrint.js"></script>
+<link href="libs/lightable-0.0.1/lightable.css" rel="stylesheet" />
+<script src="libs/sund2b-binding-2.1.6/sund2b.js"></script>
+<link href="libs/d2b-1.0.9/d2b_custom.css" rel="stylesheet" />
+<script src="libs/d2b-1.0.9/d2b.min.js"></script>
+<link href="libs/collapsibleTree-0.1.6/collapsibleTree.css" rel="stylesheet" />
+<script src="libs/collapsibleTree-binding-0.1.7/collapsibleTree.js"></script>
+
+
+<style type="text/css">
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #7d9029; } /* Attribute */
+code span.bn { color: #40a070; } /* BaseN */
+code span.bu { } /* BuiltIn */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4070a0; } /* Char */
+code span.cn { color: #880000; } /* Constant */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code span.dt { color: #902000; } /* DataType */
+code span.dv { color: #40a070; } /* DecVal */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #40a070; } /* Float */
+code span.fu { color: #06287e; } /* Function */
+code span.im { } /* Import */
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.op { color: #666666; } /* Operator */
+code span.ot { color: #007020; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #4070a0; } /* String */
+code span.va { color: #19177c; } /* Variable */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+</style>
+
+<style type="text/css">
+/* Used with Pandoc 2.11+ new --citeproc when CSL is used */
+div.csl-bib-body { }
+div.csl-entry {
+  clear: both;
+}
+.hanging div.csl-entry {
+  margin-left:2em;
+  text-indent:-2em;
+}
+div.csl-left-margin {
+  min-width:2em;
+  float:left;
+}
+div.csl-right-inline {
+  margin-left:2em;
+  padding-left:1em;
+}
+div.csl-indent {
+  margin-left: 2em;
+}
+</style>
+
+<link rel="stylesheet" href="style.css" type="text/css" />
+</head>
+
+<body>
+
+
+
+  <div class="book without-animation with-summary font-size-2 font-family-1" data-basepath=".">
+
+    <div class="book-summary">
+      <nav role="navigation">
+
+<ul class="summary">
+<li><a href="./">The WIPO Patent Analytics Handbook</a></li>
+
+<li class="divider"></li>
+<li class="chapter" data-level="" data-path="index.html"><a href="index.html"><i class="fa fa-check"></i>Preface</a></li>
+<li class="chapter" data-level="" data-path="about-the-author.html"><a href="about-the-author.html"><i class="fa fa-check"></i>About the Author</a></li>
+<li class="chapter" data-level="" data-path="acknowlegements.html"><a href="acknowlegements.html"><i class="fa fa-check"></i>Acknowlegements</a></li>
+<li class="chapter" data-level="" data-path="how-to-use-the-handbook.html"><a href="how-to-use-the-handbook.html"><i class="fa fa-check"></i>How to use the Handbook</a></li>
+<li class="chapter" data-level="" data-path="note-to-readers.html"><a href="note-to-readers.html"><i class="fa fa-check"></i>Note to Readers</a></li>
+<li class="chapter" data-level="" data-path="datasets.html"><a href="datasets.html"><i class="fa fa-check"></i>Datasets</a></li>
+<li class="chapter" data-level="1" data-path="introduction.html"><a href="introduction.html"><i class="fa fa-check"></i><b>1</b> Introduction</a></li>
+<li class="chapter" data-level="2" data-path="literature.html"><a href="literature.html"><i class="fa fa-check"></i><b>2</b> Scientific Literature</a>
+<ul>
+<li class="chapter" data-level="2.1" data-path="literature.html"><a href="literature.html#accessing-the-scientific-literature"><i class="fa fa-check"></i><b>2.1</b> Accessing the Scientific Literature</a></li>
+<li class="chapter" data-level="2.2" data-path="literature.html"><a href="literature.html#searching-literature-databases"><i class="fa fa-check"></i><b>2.2</b> Searching Literature Databases</a>
+<ul>
+<li class="chapter" data-level="2.2.1" data-path="literature.html"><a href="literature.html#stemming"><i class="fa fa-check"></i><b>2.2.1</b> Stemming</a></li>
+<li class="chapter" data-level="2.2.2" data-path="literature.html"><a href="literature.html#using-search-operators"><i class="fa fa-check"></i><b>2.2.2</b> Using Search Operators</a></li>
+<li class="chapter" data-level="2.2.3" data-path="literature.html"><a href="literature.html#proximity-operators"><i class="fa fa-check"></i><b>2.2.3</b> Proximity Operators</a></li>
+<li class="chapter" data-level="2.2.4" data-path="literature.html"><a href="literature.html#regular-expressions"><i class="fa fa-check"></i><b>2.2.4</b> Regular Expressions</a></li>
+</ul></li>
+<li class="chapter" data-level="2.3" data-path="literature.html"><a href="literature.html#precision-vs.-recall"><i class="fa fa-check"></i><b>2.3</b> Precision vs. Recall</a></li>
+<li class="chapter" data-level="2.4" data-path="literature.html"><a href="literature.html#processing-scientific-literature"><i class="fa fa-check"></i><b>2.4</b> Processing Scientific Literature</a></li>
+<li class="chapter" data-level="2.5" data-path="literature.html"><a href="literature.html#visualizing-the-scientific-literature"><i class="fa fa-check"></i><b>2.5</b> Visualizing the Scientific Literature</a>
+<ul>
+<li class="chapter" data-level="2.5.1" data-path="literature.html"><a href="literature.html#dashboards"><i class="fa fa-check"></i><b>2.5.1</b> Dashboards</a></li>
+<li class="chapter" data-level="2.5.2" data-path="literature.html"><a href="literature.html#network-visualisation"><i class="fa fa-check"></i><b>2.5.2</b> Network Visualisation</a></li>
+<li class="chapter" data-level="2.5.3" data-path="literature.html"><a href="literature.html#other-forms-of-visualisation"><i class="fa fa-check"></i><b>2.5.3</b> Other forms of visualisation</a></li>
+</ul></li>
+<li class="chapter" data-level="2.6" data-path="literature.html"><a href="literature.html#linking-the-scientific-literature-with-patent-analysis"><i class="fa fa-check"></i><b>2.6</b> Linking the Scientific Literature with Patent Analysis</a>
+<ul>
+<li class="chapter" data-level="2.6.1" data-path="literature.html"><a href="literature.html#mapping-authors-to-inventors"><i class="fa fa-check"></i><b>2.6.1</b> Mapping Authors to Inventors</a></li>
+</ul></li>
+<li class="chapter" data-level="2.7" data-path="literature.html"><a href="literature.html#linking-citations-with-patent-literature"><i class="fa fa-check"></i><b>2.7</b> Linking Citations with Patent Literature</a></li>
+<li class="chapter" data-level="2.8" data-path="literature.html"><a href="literature.html#conclusion"><i class="fa fa-check"></i><b>2.8</b> Conclusion</a></li>
+</ul></li>
+<li class="chapter" data-level="3" data-path="geocoding.html"><a href="geocoding.html"><i class="fa fa-check"></i><b>3</b> Geocoding</a>
+<ul>
+<li class="chapter" data-level="3.1" data-path="geocoding.html"><a href="geocoding.html#getting-started"><i class="fa fa-check"></i><b>3.1</b> Getting Started</a></li>
+<li class="chapter" data-level="3.2" data-path="geocoding.html"><a href="geocoding.html#getting-set-up-with-the-google-maps-api"><i class="fa fa-check"></i><b>3.2</b> Getting set up with the Google Maps API</a></li>
+<li class="chapter" data-level="3.3" data-path="geocoding.html"><a href="geocoding.html#using-the-api"><i class="fa fa-check"></i><b>3.3</b> Using the API</a></li>
+<li class="chapter" data-level="3.4" data-path="geocoding.html"><a href="geocoding.html#the-source-data"><i class="fa fa-check"></i><b>3.4</b> The Source Data</a></li>
+<li class="chapter" data-level="3.5" data-path="geocoding.html"><a href="geocoding.html#lookup-the-records"><i class="fa fa-check"></i><b>3.5</b> Lookup the Records</a></li>
+<li class="chapter" data-level="3.6" data-path="geocoding.html"><a href="geocoding.html#using-placement"><i class="fa fa-check"></i><b>3.6</b> Using placement</a></li>
+<li class="chapter" data-level="3.7" data-path="geocoding.html"><a href="geocoding.html#using-ggmap"><i class="fa fa-check"></i><b>3.7</b> Using ggmap</a></li>
+<li class="chapter" data-level="3.8" data-path="geocoding.html"><a href="geocoding.html#using-googleway"><i class="fa fa-check"></i><b>3.8</b> Using Googleway</a></li>
+<li class="chapter" data-level="3.9" data-path="geocoding.html"><a href="geocoding.html#reviewing-initial-results"><i class="fa fa-check"></i><b>3.9</b> Reviewing Initial Results</a></li>
+<li class="chapter" data-level="3.10" data-path="geocoding.html"><a href="geocoding.html#tackling-abbreviations"><i class="fa fa-check"></i><b>3.10</b> Tackling Abbreviations</a></li>
+<li class="chapter" data-level="3.11" data-path="geocoding.html"><a href="geocoding.html#lookup-edited-names"><i class="fa fa-check"></i><b>3.11</b> Lookup edited names</a></li>
+<li class="chapter" data-level="3.12" data-path="geocoding.html"><a href="geocoding.html#bringing-the-data-together"><i class="fa fa-check"></i><b>3.12</b> Bringing the data together</a></li>
+<li class="chapter" data-level="3.13" data-path="geocoding.html"><a href="geocoding.html#assessing-the-quality-of-geocoding"><i class="fa fa-check"></i><b>3.13</b> Assessing the Quality of Geocoding</a></li>
+<li class="chapter" data-level="3.14" data-path="geocoding.html"><a href="geocoding.html#preprocess-the-data-and-rerun-the-query"><i class="fa fa-check"></i><b>3.14</b> Preprocess the Data and Rerun the Query</a></li>
+<li class="chapter" data-level="3.15" data-path="geocoding.html"><a href="geocoding.html#duplicated-affiliation-names"><i class="fa fa-check"></i><b>3.15</b> Duplicated Affiliation Names</a></li>
+<li class="chapter" data-level="3.16" data-path="geocoding.html"><a href="geocoding.html#mapping-the-data"><i class="fa fa-check"></i><b>3.16</b> Mapping the Data</a></li>
+<li class="chapter" data-level="3.17" data-path="geocoding.html"><a href="geocoding.html#round-up"><i class="fa fa-check"></i><b>3.17</b> Round Up</a></li>
+</ul></li>
+<li class="chapter" data-level="4" data-path="patents.html"><a href="patents.html"><i class="fa fa-check"></i><b>4</b> Counting Patent Data</a>
+<ul>
+<li class="chapter" data-level="4.1" data-path="patents.html"><a href="patents.html#the-structure-of-patent-numbers"><i class="fa fa-check"></i><b>4.1</b> The structure of patent numbers</a>
+<ul>
+<li class="chapter" data-level="4.1.1" data-path="patents.html"><a href="patents.html#the-country-code"><i class="fa fa-check"></i><b>4.1.1</b> The country code</a></li>
+<li class="chapter" data-level="4.1.2" data-path="patents.html"><a href="patents.html#the-numeric-identifier"><i class="fa fa-check"></i><b>4.1.2</b> The numeric identifier</a></li>
+<li class="chapter" data-level="4.1.3" data-path="patents.html"><a href="patents.html#kind-codes"><i class="fa fa-check"></i><b>4.1.3</b> Kind Codes</a></li>
+</ul></li>
+<li class="chapter" data-level="4.2" data-path="patents.html"><a href="patents.html#preparing-to-count-patent-data"><i class="fa fa-check"></i><b>4.2</b> Preparing to Count Patent Data</a></li>
+<li class="chapter" data-level="4.3" data-path="patents.html"><a href="patents.html#understanding-priority-numbers"><i class="fa fa-check"></i><b>4.3</b> Understanding Priority Numbers</a></li>
+<li class="chapter" data-level="4.4" data-path="patents.html"><a href="patents.html#counting-priority-applications"><i class="fa fa-check"></i><b>4.4</b> Counting Priority Applications</a></li>
+<li class="chapter" data-level="4.5" data-path="patents.html"><a href="patents.html#counting-applications"><i class="fa fa-check"></i><b>4.5</b> Counting Applications</a>
+<ul>
+<li class="chapter" data-level="4.5.1" data-path="patents.html"><a href="patents.html#mapping-publications-family-members"><i class="fa fa-check"></i><b>4.5.1</b> Mapping Publications (Family Members)</a></li>
+</ul></li>
+<li class="chapter" data-level="4.6" data-path="patents.html"><a href="patents.html#trends-by-country-using-publication-data"><i class="fa fa-check"></i><b>4.6</b> Trends by Country using Publication Data</a></li>
+<li class="chapter" data-level="4.7" data-path="patents.html"><a href="patents.html#families"><i class="fa fa-check"></i><b>4.7</b> Patent Families</a></li>
+<li class="chapter" data-level="4.8" data-path="patents.html"><a href="patents.html#modelling-data"><i class="fa fa-check"></i><b>4.8</b> Modelling Data</a>
+<ul>
+<li class="chapter" data-level="4.8.1" data-path="patents.html"><a href="patents.html#the-data"><i class="fa fa-check"></i><b>4.8.1</b> The Data</a></li>
+<li class="chapter" data-level="4.8.2" data-path="patents.html"><a href="patents.html#loess-smoothing"><i class="fa fa-check"></i><b>4.8.2</b> Loess Smoothing</a></li>
+</ul></li>
+<li class="chapter" data-level="4.9" data-path="patents.html"><a href="patents.html#forecasting"><i class="fa fa-check"></i><b>4.9</b> Forecasting</a>
+<ul>
+<li class="chapter" data-level="4.9.1" data-path="patents.html"><a href="patents.html#day-of-days"><i class="fa fa-check"></i><b>4.9.1</b> Day of Days</a></li>
+<li class="chapter" data-level="4.9.2" data-path="patents.html"><a href="patents.html#the-data-1"><i class="fa fa-check"></i><b>4.9.2</b> The Data</a></li>
+</ul></li>
+<li class="chapter" data-level="4.10" data-path="patents.html"><a href="patents.html#conclusion-1"><i class="fa fa-check"></i><b>4.10</b> Conclusion</a></li>
+</ul></li>
+<li class="chapter" data-level="5" data-path="classification.html"><a href="classification.html"><i class="fa fa-check"></i><b>5</b> Patent Classfication</a>
+<ul>
+<li class="chapter" data-level="5.1" data-path="classification.html"><a href="classification.html#exploring-the-international-patent-classification"><i class="fa fa-check"></i><b>5.1</b> Exploring the International Patent Classification</a></li>
+<li class="chapter" data-level="5.2" data-path="classification.html"><a href="classification.html#the-us-ipc-table"><i class="fa fa-check"></i><b>5.2</b> The US IPC Table</a></li>
+<li class="chapter" data-level="5.3" data-path="classification.html"><a href="classification.html#assessing-relationships-between-technology-areas"><i class="fa fa-check"></i><b>5.3</b> Assessing Relationships Between Technology Areas</a></li>
+<li class="chapter" data-level="5.4" data-path="classification.html"><a href="classification.html#visualising-relationships-with-chord-diagrams"><i class="fa fa-check"></i><b>5.4</b> Visualising Relationships with Chord Diagrams</a></li>
+<li class="chapter" data-level="5.5" data-path="classification.html"><a href="classification.html#the-short-ipc"><i class="fa fa-check"></i><b>5.5</b> The Short IPC</a>
+<ul>
+<li class="chapter" data-level="5.5.1" data-path="classification.html"><a href="classification.html#case-study-finding-a-needle-in-a-haystack"><i class="fa fa-check"></i><b>5.5.1</b> Case Study: Finding A Needle in A Haystack</a></li>
+</ul></li>
+<li class="chapter" data-level="5.6" data-path="classification.html"><a href="classification.html#classification-and-patent-overlay-mapping"><i class="fa fa-check"></i><b>5.6</b> Classification and Patent Overlay Mapping</a></li>
+<li class="chapter" data-level="5.7" data-path="classification.html"><a href="classification.html#the-structure-of-patent-activity"><i class="fa fa-check"></i><b>5.7</b> The Structure of Patent Activity</a></li>
+<li class="chapter" data-level="5.8" data-path="classification.html"><a href="classification.html#conclusion-2"><i class="fa fa-check"></i><b>5.8</b> Conclusion</a></li>
+</ul></li>
+<li class="chapter" data-level="6" data-path="citations.html"><a href="citations.html"><i class="fa fa-check"></i><b>6</b> Patent Citations</a>
+<ul>
+<li class="chapter" data-level="6.1" data-path="citations.html"><a href="citations.html#non-patent-literature"><i class="fa fa-check"></i><b>6.1</b> Non Patent Literature</a></li>
+<li class="chapter" data-level="6.2" data-path="citations.html"><a href="citations.html#literature-and-patent-citation-data-with-the-lens"><i class="fa fa-check"></i><b>6.2</b> Literature and Patent Citation Data with the Lens</a></li>
+<li class="chapter" data-level="6.3" data-path="citations.html"><a href="citations.html#retrieving-citations-at-scale-with-patcite"><i class="fa fa-check"></i><b>6.3</b> Retrieving Citations at Scale with PATCITE</a></li>
+<li class="chapter" data-level="6.4" data-path="citations.html"><a href="citations.html#the-us-patentsview-non-patent-literature-table"><i class="fa fa-check"></i><b>6.4</b> The US PatentsView Non-Patent Literature Table</a></li>
+<li class="chapter" data-level="6.5" data-path="citations.html"><a href="citations.html#patent-citations"><i class="fa fa-check"></i><b>6.5</b> Patent Citations</a></li>
+<li class="chapter" data-level="6.6" data-path="citations.html"><a href="citations.html#navigating-patent-networks"><i class="fa fa-check"></i><b>6.6</b> Navigating Patent Networks</a>
+<ul>
+<li class="chapter" data-level="6.6.1" data-path="citations.html"><a href="citations.html#back-citations"><i class="fa fa-check"></i><b>6.6.1</b> Back citations</a></li>
+<li class="chapter" data-level="6.6.2" data-path="citations.html"><a href="citations.html#forward-citations"><i class="fa fa-check"></i><b>6.6.2</b> Forward Citations</a></li>
+</ul></li>
+<li class="chapter" data-level="6.7" data-path="citations.html"><a href="citations.html#counting-citations-by-patent-families"><i class="fa fa-check"></i><b>6.7</b> Counting Citations by Patent Families</a></li>
+<li class="chapter" data-level="6.8" data-path="citations.html"><a href="citations.html#patent-citations-by-generation"><i class="fa fa-check"></i><b>6.8</b> Patent Citations by Generation</a></li>
+<li class="chapter" data-level="6.9" data-path="citations.html"><a href="citations.html#citations-and-knowledge-spillovers"><i class="fa fa-check"></i><b>6.9</b> Citations and Knowledge Spillovers</a></li>
+</ul></li>
+<li class="chapter" data-level="7" data-path="textmining.html"><a href="textmining.html"><i class="fa fa-check"></i><b>7</b> Text Mining</a>
+<ul>
+<li class="chapter" data-level="7.1" data-path="textmining.html"><a href="textmining.html#the-uspto-patent-granted-data"><i class="fa fa-check"></i><b>7.1</b> The USPTO Patent Granted Data</a></li>
+<li class="chapter" data-level="7.2" data-path="textmining.html"><a href="textmining.html#words"><i class="fa fa-check"></i><b>7.2</b> Words</a></li>
+<li class="chapter" data-level="7.3" data-path="textmining.html"><a href="textmining.html#removing-stop-words"><i class="fa fa-check"></i><b>7.3</b> Removing Stop Words</a></li>
+<li class="chapter" data-level="7.4" data-path="textmining.html"><a href="textmining.html#lemmatizing-words"><i class="fa fa-check"></i><b>7.4</b> Lemmatizing words</a></li>
+<li class="chapter" data-level="7.5" data-path="textmining.html"><a href="textmining.html#terms-by-technology"><i class="fa fa-check"></i><b>7.5</b> Terms by Technology</a></li>
+<li class="chapter" data-level="7.6" data-path="textmining.html"><a href="textmining.html#combining-text-mining-with-patent-classification"><i class="fa fa-check"></i><b>7.6</b> Combining Text Mining with Patent Classification</a></li>
+<li class="chapter" data-level="7.7" data-path="textmining.html"><a href="textmining.html#from-words-to-phrases-ngrams"><i class="fa fa-check"></i><b>7.7</b> From words to phrases (ngrams)</a></li>
+<li class="chapter" data-level="7.8" data-path="textmining.html"><a href="textmining.html#terms-over-time"><i class="fa fa-check"></i><b>7.8</b> Terms over time</a></li>
+<li class="chapter" data-level="7.9" data-path="textmining.html"><a href="textmining.html#correlation-measures"><i class="fa fa-check"></i><b>7.9</b> Correlation Measures</a></li>
+<li class="chapter" data-level="7.10" data-path="textmining.html"><a href="textmining.html#conclusion-3"><i class="fa fa-check"></i><b>7.10</b> Conclusion</a></li>
+</ul></li>
+<li class="chapter" data-level="8" data-path="machinelearning.html"><a href="machinelearning.html"><i class="fa fa-check"></i><b>8</b> Machine Learning</a>
+<ul>
+<li class="chapter" data-level="8.1" data-path="machinelearning.html"><a href="machinelearning.html#from-dictionaries-to-word-vectors"><i class="fa fa-check"></i><b>8.1</b> From Dictionaries to Word Vectors</a></li>
+<li class="chapter" data-level="8.2" data-path="machinelearning.html"><a href="machinelearning.html#word-vectors-with-fasttext"><i class="fa fa-check"></i><b>8.2</b> Word Vectors with fastText</a></li>
+<li class="chapter" data-level="8.3" data-path="machinelearning.html"><a href="machinelearning.html#training-word-vectors-for-drones"><i class="fa fa-check"></i><b>8.3</b> Training Word Vectors for Drones</a></li>
+<li class="chapter" data-level="8.4" data-path="machinelearning.html"><a href="machinelearning.html#using-word-vectors"><i class="fa fa-check"></i><b>8.4</b> Using Word Vectors</a></li>
+<li class="chapter" data-level="8.5" data-path="machinelearning.html"><a href="machinelearning.html#exploring-analogies"><i class="fa fa-check"></i><b>8.5</b> Exploring Analogies</a></li>
+<li class="chapter" data-level="8.6" data-path="machinelearning.html"><a href="machinelearning.html#patent-specific-word-embeddings"><i class="fa fa-check"></i><b>8.6</b> Patent Specific Word Embeddings</a></li>
+<li class="chapter" data-level="8.7" data-path="machinelearning.html"><a href="machinelearning.html#machine-learning-in-classification"><i class="fa fa-check"></i><b>8.7</b> Machine learning in Classification</a></li>
+<li class="chapter" data-level="8.8" data-path="machinelearning.html"><a href="machinelearning.html#machine-learning-for-text-classification"><i class="fa fa-check"></i><b>8.8</b> Machine Learning for Text Classification</a>
+<ul>
+<li class="chapter" data-level="8.8.1" data-path="machinelearning.html"><a href="machinelearning.html#step-1-binary-text-classification"><i class="fa fa-check"></i><b>8.8.1</b> Step 1: Binary Text Classification</a></li>
+<li class="chapter" data-level="8.8.2" data-path="machinelearning.html"><a href="machinelearning.html#step-2-multilabel-text-classification"><i class="fa fa-check"></i><b>8.8.2</b> Step 2: Multilabel Text Classification</a></li>
+<li class="chapter" data-level="8.8.3" data-path="machinelearning.html"><a href="machinelearning.html#step-3-named-entity-recognition"><i class="fa fa-check"></i><b>8.8.3</b> Step 3: Named Entity Recognition</a></li>
+</ul></li>
+<li class="chapter" data-level="8.9" data-path="machinelearning.html"><a href="machinelearning.html#from-vector-based-models-to-transformers"><i class="fa fa-check"></i><b>8.9</b> From Vector Based Models to Transformers</a></li>
+<li class="chapter" data-level="8.10" data-path="machinelearning.html"><a href="machinelearning.html#conclusion-4"><i class="fa fa-check"></i><b>8.10</b> Conclusion</a></li>
+</ul></li>
+<li class="chapter" data-level="9" data-path="literature.html"><a href="literature.html#conclusion"><i class="fa fa-check"></i><b>9</b> Conclusion</a></li>
+<li class="divider"></li>
+<li><a href="https://github.com/wipo-analytics/handbook" target="blank">Published with bookdown</a></li>
+
+</ul>
+
+      </nav>
+    </div>
+
+    <div class="book-body">
+      <div class="body-inner">
+        <div class="book-header" role="navigation">
+          <h1>
+            <i class="fa fa-circle-o-notch fa-spin"></i><a href="./">The WIPO Patent Analytics Handbook</a>
+          </h1>
+        </div>
+
+        <div class="page-wrapper" tabindex="-1" role="main">
+          <div class="page-inner">
+
+            <section class="normal" id="section-">
+<div id="machinelearning" class="section level1 hasAnchor" number="8">
+<h1><span class="header-section-number">Chapter 8</span> Machine Learning<a href="machinelearning.html#machinelearning" class="anchor-section" aria-label="Anchor link to header"></a></h1>
+<p>
+<!--- last spell checked 2022-09-28--->
+In recent years Artificial Intelligence has become a focus of discussion for its potentially transformative and disruptive effects on economy and society. The recent rise of artificial intelligence in the patent system is the focus of a landmark <a href="https://www.wipo.int/publications/en/details.jsp?id=4386">2019 WIPO Technology Trends Report “Artificial Intelligence”</a>. The in depth review of patent activity revealed that it is one of the fastest growing areas of patent activity with inventions that are applicable across diverse fields such as telecommunications, transportation, life and medical sciences, personal devices and human-computer interactions. Sectors identified in the WIPO report include banking, entertainment, security, industry and manufacturing, agriculture and networks. Perhaps the best known “flagship” initiative for artificial intelligence is the pursuit of self-driving cars by Tesla and Google among others. However, many companies, including those that work in the domain of patent analytics, are increasingly claiming that they apply artificial intelligence as part of their products.</p>
+<p>When approaching artificial intelligence it is important to look beyond the hype and marketing strategies to the underlying technology. In practical terms this can be described as computer based approaches to classification with respect to images and texts. The dominant approach to classification involves a range of computational machine learning approaches that have been undergoing rapid development in recent years.</p>
+<p>Examples of the use of machine learning approaches to classification tasks include predictive text entry on mobile phones, a technology anticipated in the 1940s by researchers in China <a href="https://en.wikipedia.org/wiki/Predictive_text#History">See Wikipedia</a>. A patent for an assistive device for deaf people involving predictive text was awarded in 1988 (<a href="https://patents.google.com/patent/US4754474A/en">US4754474A</a>). The rise of mobile phones witnessed an explosion in the development and use of predictive text applications. Predictive text is also widely used in search engines to suggest phrases that a user may wish to use in their search. Other applications include spam filtering for emails or suggesting similar items that a customer might be interested in on online shops.</p>
+<p>While text classification is perhaps the main everyday area where machine learning is encountered in practice image classification has been the major focus of development and is reflected in the prominence of image classification challenges on Kaggle. The implementation of image classification approaches is reflected in everyday terms in image searches in online databases which suggest relevant images and suggestions for tagging of images and persons in social media applications. Image classification is also an important area of innovation in areas such as medical diagnostics, robotics, self-driving cars or facial recognition for security systems. A separate but less visible area of development is control systems. The online data science platform <a href="https://www.kaggle.com/competitions">Kaggle</a> serves as a host for competitions and challenges in machine learning such as image classification and can provide an insight into the nature of machine learning developments.</p>
+<p>A 2017 report by the UK Royal Society “Machine learning: the power and promise of computers that learn by example” provides a valuable overview of machine learning approaches.<a href="#fn25" class="footnote-ref" id="fnref25"><sup>25</sup></a>. For our purposes, the Royal Society report highlights the key underlying feature of machine learning: learning by example.</p>
+<p>As we will see in this chapter machine learning approaches commonly involve training a statistical model to make <em>predictions</em> about <em>patterns</em> (in texts or in images). Training of machine learning models is normally based on the use of examples. The quality of the predictions that are produced by a model is heavily dependent on the quality and the number of examples that it is trained on.</p>
+<p>The development of machine learning models proceeds in a cycle from the collection and pre-processing of training data, to the development of the model with the training data followed by evaluation of the performance of the model against previously unseen data (known as the evaluation or test set). Based on the results more training data may be added and the parameters of the model adjusted or tuned to optimise performance. When a robust model has been developed it can then be used in production to automate the classification tasks.</p>
+<p>Machine learning involves a range of different algorithms (that may at times be used in combination), examples include the well known Principal Component Analysis (PCA), linear regression, logistic regression (for classification), decision-trees, K-means clustering, least squares and polynomial fitting, and neural networks of a variety of types (e.g convolutional, recurrent and feed forward). Some of the algorithms used in machine learning predate the rise in popularity of the term machine learning and would not be accepted as machine learning (e.g. PCA and regression models). Readers interested in learning more about the algorithms involved in machine learning will discover a wide range of often free online machine learning courses such as from popular platforms such as Coursera, Udemy, Edx and Data Camp to name but a few. For text classification the Stanford Course “Stanford CS224N: NLP with Deep Learning” provides 20 hours of video lectures that provides a detailed insight into many of the topics addressed in this chapter.<a href="#fn26" class="footnote-ref" id="fnref26"><sup>26</sup></a></p>
+<p>However, while it is important to engage with the background to machine learning algorithms, in reality machine learning is becoming increasingly accessible for a range of classification tasks in two ways.</p>
+<ol style="list-style-type: lower-alpha">
+<li>through fee based online cloud services offered by Google, Amazon, Microsoft Azure and others that will perform specific classification tasks at scale such as image classification without a requirement for advanced training;</li>
+<li>the availability of free open source packages such as scikit learn, fastText (Facebook), keras and spaCy (Explosion AI)</li>
+</ol>
+<p>One of the challenges writing about machine learning is making the processes involved visible. To make it easier to engage with machine learning we will use the free Python Natural Language Processing library <code>spaCy</code> and the associated fee based <code>Prodigy</code> annotation and model training tool from Explosion AI in Germany. While scikit learn, fasttext and keras are also major tools, spaCy and Prodigy have the considerable advantage of allowing end to end transparency in writing about the steps involved in developing and applying machine learning models.</p>
+<p>This chapter focuses on a basic machine learning workflow involving the following steps:</p>
+<ol style="list-style-type: decimal">
+<li>Creating seed terms from word vectors to build a text classification model, training the model and testing it.</li>
+<li>Named Entity Recognition. Training a model to recognise entities of interest within the texts identified by the true or false model.</li>
+<li>Using a model to classify and identify named entities in a text</li>
+</ol>
+<div id="from-dictionaries-to-word-vectors" class="section level2 hasAnchor" number="8.1">
+<h2><span class="header-section-number">8.1</span> From Dictionaries to Word Vectors<a href="machinelearning.html#from-dictionaries-to-word-vectors" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<blockquote>
+<p>“You shall know a word by the company it keeps (Firth, J. R. 1957:11)”</p>
+</blockquote>
+<p>In the last chapter we explored approaches to text mining that do not involve the use of machine learning models. This involved text mining to identify terms for a dictionary that would allow for the identification of texts that contain one or more terms using ngrams.</p>
+<p>Dictionary based methods provide powerful tools for analysis. However, they suffer from two main issues.</p>
+<ol style="list-style-type: lower-alpha">
+<li>they will only ever return exactly the same terms that are in the dictionary. That is, they cannot identify nearby or closely related terms.</li>
+<li>dictionary based methods can be very memory intensive particularly if the dictionaries involved are very large.</li>
+</ol>
+<p>To overcome the first of these issues it is now common practice to combine dictionary approaches with a statistical model to more accurately classify texts at various levels of detail. That is to add a statistical learning component to improve classification.</p>
+<p>In the case of the second issue it is important to bear in mind that machine learning models can be more demanding on memory and computational resources than dictionary based methods. However, as we will discuss below, the availability of machine learning models allows for the development of strategies to minimise demands on memory and computational power such as initially training a model with a very large dictionary and then deploying a purely statistical based model without the dictionary. Much however will depend on the precise task at hand and the available memory and compute power available. In this chapter we assume that you will be using a laptop with a modest 16Gb of Ram.</p>
+<p>In the last chapter we used Vantage Point to create a co-occurrence matrix to build search terms and to refine analysis of a dataset. A co-occurrence matrix can be built in Vantage Point either as a count of the number of times that words or phrases in a dataset co-occur with each or using measures such as cosine similarity.</p>
+<p>One straightforward way of thinking about a word vector is as a co-occurrence matrix where words are transformed into numeric values and the vocabulary is cast into a multidimensional vector space. Within that space words with the same or similar meanings will be closer (in terms of scores or weights). More precisely, words that <em>share similar contexts</em> will have the same or similar meanings while words with dissimilar meanings will be further away. This observation is an important departure point for word vectors compared with a straightforward co-occurrence matrix that counts the number of times that words occur together in a given set. The reason for this is that the focus is on the context, or the company that a word is keeping. As we will see in a moment, word vectors are <em>learned representations</em> of the relationships between words based on minimization of the loss (error) of a predictive model.<a href="#fn27" class="footnote-ref" id="fnref27"><sup>27</sup></a></p>
+<p>The seminal paper on word vectors by Mikolov et al 2013 neatly summarises the problem they seek to address as follows:</p>
+<blockquote>
+<p>“Many current NLP systems and techniques treat words as atomic units - there is no notion of similarity between words, as these are represented as indices in a vocabulary. <span class="citation">(<a href="#ref-lens.org/104-512-929-235-758" role="doc-biblioref">Mikolov et al. 2013</a>)</span></p>
+</blockquote>
+<p>The problem that Mikolov and co-authors identify is that the development of approaches such as automatic speech recognition is constrained by dependency on high quality manual transcripts of speech containing only millions of words while machine translation models are constrained by the fact that “…corpora for many languages contain only a few billions of words or less” <span class="citation">(<a href="#ref-lens.org/104-512-929-235-758" role="doc-biblioref">Mikolov et al. 2013</a>)</span>. Put another way, the constraint presented by approaches at the time was that the examples available for computational modelling could not accommodate the range of human uses of language or more precisely, the meanings conveyed. Mikolov et. al. successfully demonstrated that distributed representations of words using neural network based language models outperformed the existing Ngram (words and phrases) models on much larger datasets (using 1 million common tokens from the Google News corpus) <span class="citation">(<a href="#ref-lens.org/104-512-929-235-758" role="doc-biblioref">Mikolov et al. 2013</a>)</span>.</p>
+<blockquote>
+<p>“We use recently proposed techniques for measuring the quality of the resulting vector representations, with the expectation that not only will similar words tend to be close to each other, but that words can have multiple degrees of similarity [20]. This has been observed earlier in the context of inflectional languages - for example, nouns can have multiple word endings, and if we search for similar words in a subspace of the original vector space, it is possible to find words that have similar endings [13, 14].
+Somewhat surprisingly, it was found that similarity of word representations goes beyond simple syntactic regularities. Using a word offset technique where simple algebraic operations are performed on the word vectors, it was shown for example that vector(”King”) - vector(”Man”) + vector(”Woman”) results in a vector that is closest to the vector representation of the word Queen [20].”</p>
+</blockquote>
+<p>This observation has become one of the most famous in computational linguistics and is worth elaborating on. In a word vector it was found that.</p>
+<blockquote>
+<p>King - Man + Woman = Queen</p>
+</blockquote>
+<p>In a 2016 blog post on “The amazing power of word vectors” Adrian Coyler provides the following illustration of how this works. Note that the labels do not exist in the vectors and are added purely for explanation in this hypothetical example.<a href="#fn28" class="footnote-ref" id="fnref28"><sup>28</sup></a>(<a href="https://blog.acolyer.org/2016/04/21/the-amazing-power-of-word-vectors/" class="uri">https://blog.acolyer.org/2016/04/21/the-amazing-power-of-word-vectors/</a>)</p>
+<div class="figure" style="text-align: center">
+<img src="images/word2vec_coyler.png" alt="Word Vector Example (Coyler 2016)" width="328" />
+<p class="caption">
+(#fig:coyler_vectors)Word Vector Example (Coyler 2016)
+</p>
+</div>
+<p>Let us imagine that each word in each individual vector has a distributed value across hundreds of dimensions across the corpus. Words like King, Queen, Princess have a high similarity in vector space with the word Royalty. In contrast, King has a strong similarity with Masculinity while Queen has a strong similarity with Femininity. Deducting Man from King and adding Woman can readily be seen to lead to Queen in the vector space. Other well known examples from the same paper lead to the calculation that “big-bigger” = “small:larger” etc.</p>
+</div>
+<div id="word-vectors-with-fasttext" class="section level2 hasAnchor" number="8.2">
+<h2><span class="header-section-number">8.2</span> Word Vectors with fastText<a href="machinelearning.html#word-vectors-with-fasttext" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p>To illustrate the use of word vectors we will use the fastText machine learning package developed by Facebook.</p>
+<p>FastText is a free text classification and representation package produced by Facebook that provides downloadable multi-language models for use in machine learning. At present vector models are available for 157 languages.</p>
+<p>FastText can be used from the command line or in Python (fasttext) or in R with the <a href="https://github.com/pommedeterresautee/fastrtext">fastrtext package</a>. FastText is a good way to get started with word vectors and machine learning because it is very easy to install and use. Fasttext is under active development with the latest updates posted on the <a href="https://fasttext.cc/">fasttext website</a>.</p>
+<p>FastText was developed by researchers including Tomas Mikolov as an alternative to the increasingly popular deep learning models for text classification at scale. It is a lightweight tool that emphasizes speed in classification <span class="citation">(<a href="#ref-bojanowski2016enriching" role="doc-biblioref">Bojanowski et al. 2016</a>; <a href="#ref-joulin2016bag" role="doc-biblioref">Joulin, Grave, Bojanowski, and Mikolov 2016</a>; <a href="#ref-joulin2016fasttext" role="doc-biblioref">Joulin, Grave, Bojanowski, Douze, et al. 2016</a>)</span> and arguably outperforms deep learning models.</p>
+<p>To get started follow <a href="https://fasttext.cc/docs/en/support.html">the fastText instructions</a> to install fasttext from the command line or in Python. We will demonstrate fasttext in Python but it is easy, if not easier, to run from the command line.</p>
+<div class="sourceCode" id="cb125"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb125-1"><a href="machinelearning.html#cb125-1" aria-hidden="true" tabindex="-1"></a>git clone https:<span class="op">//</span>github.com<span class="op">/</span>facebookresearch<span class="op">/</span>fastText.git</span>
+<span id="cb125-2"><a href="machinelearning.html#cb125-2" aria-hidden="true" tabindex="-1"></a>cd fastText</span>
+<span id="cb125-3"><a href="machinelearning.html#cb125-3" aria-hidden="true" tabindex="-1"></a>sudo pip install .</span>
+<span id="cb125-4"><a href="machinelearning.html#cb125-4" aria-hidden="true" tabindex="-1"></a><span class="co"># or</span></span>
+<span id="cb125-5"><a href="machinelearning.html#cb125-5" aria-hidden="true" tabindex="-1"></a>sudo python setup.py install</span></code></pre></div>
+<p>Verify the installation</p>
+<div class="sourceCode" id="cb126"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb126-1"><a href="machinelearning.html#cb126-1" aria-hidden="true" tabindex="-1"></a>python</span>
+<span id="cb126-2"><a href="machinelearning.html#cb126-2" aria-hidden="true" tabindex="-1"></a><span class="op">&gt;&gt;&gt;</span> <span class="im">import</span> fasttext</span>
+<span id="cb126-3"><a href="machinelearning.html#cb126-3" aria-hidden="true" tabindex="-1"></a><span class="op">&gt;&gt;&gt;</span></span></code></pre></div>
+<p>If this has worked correctly you should not see anything after <code>import fasttext</code>.</p>
+<p>In the Terminal we now need some data to train. The fastText example uses Wikipedia pages in English that take up 15Gb. In the terminal download the smaller version as follows.</p>
+<div class="sourceCode" id="cb127"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb127-1"><a href="machinelearning.html#cb127-1" aria-hidden="true" tabindex="-1"></a><span class="sc">$</span> mkdir data</span>
+<span id="cb127-2"><a href="machinelearning.html#cb127-2" aria-hidden="true" tabindex="-1"></a><span class="sc">$</span> wget <span class="sc">-</span>c http<span class="sc">:</span><span class="er">//</span>mattmahoney.net<span class="sc">/</span>dc<span class="sc">/</span>enwik9.zip <span class="sc">-</span>P data</span>
+<span id="cb127-3"><a href="machinelearning.html#cb127-3" aria-hidden="true" tabindex="-1"></a><span class="sc">$</span> unzip data<span class="sc">/</span>enwik9.zip <span class="sc">-</span>d data</span></code></pre></div>
+<p>As this is an XML file it needs to be parsed. The file for parsing is bundled with fastText as wikifil.pl and you will need to get the path right for your installation. If in doubt download fasttext from the command line, make and then cd into the directory for this step. Record the path to the file that you will need in the next step in Python.</p>
+<div class="sourceCode" id="cb128"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb128-1"><a href="machinelearning.html#cb128-1" aria-hidden="true" tabindex="-1"></a>perl wikifil.pl data<span class="sc">/</span>enwik9 <span class="sc">&gt;</span> data<span class="sc">/</span>fil9</span></code></pre></div>
+<p>Check that the file has parsed on the command line.</p>
+<div class="sourceCode" id="cb129"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb129-1"><a href="machinelearning.html#cb129-1" aria-hidden="true" tabindex="-1"></a>head <span class="sc">-</span>c <span class="dv">80</span> data<span class="sc">/</span>fil9</span></code></pre></div>
+<p>Train word vectors</p>
+<div class="sourceCode" id="cb130"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb130-1"><a href="machinelearning.html#cb130-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> fasttext</span>
+<span id="cb130-2"><a href="machinelearning.html#cb130-2" aria-hidden="true" tabindex="-1"></a>model <span class="op">=</span> fasttext.train_unsupervised(<span class="st">&#39;/Users/colinbarnes/fastText/data/fil9&#39;</span>)</span></code></pre></div>
+</div>
+<div id="training-word-vectors-for-drones" class="section level2 hasAnchor" number="8.3">
+<h2><span class="header-section-number">8.3</span> Training Word Vectors for Drones<a href="machinelearning.html#training-word-vectors-for-drones" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p>We will use a small set of patent texts on drones from the drones package for illustration. Ideally use the largest possible set. However, for better results use texts in a single language and regularise the texts so that everything is lower case. You may also improve results by removing all punctuation.</p>
+<p>If we wished to do that in R by way of example we access the title, abstract and claims table (tac) in the drones training package. We would then combine the the fields, convert to lowercase and then replace all the punctuation with a space. We might tidy up by removing any double spaces created by removing the punctuation</p>
+<!--- to do: provide a pre processed file in the drones package-->
+<div class="sourceCode" id="cb131"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb131-1"><a href="machinelearning.html#cb131-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tidyverse)</span>
+<span id="cb131-2"><a href="machinelearning.html#cb131-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(drones)</span>
+<span id="cb131-3"><a href="machinelearning.html#cb131-3" aria-hidden="true" tabindex="-1"></a> drones_texts_vec <span class="ot">&lt;-</span> drones<span class="sc">::</span>tac <span class="sc">%&gt;%</span></span>
+<span id="cb131-4"><a href="machinelearning.html#cb131-4" aria-hidden="true" tabindex="-1"></a>   <span class="fu">unite</span>(text, <span class="fu">c</span>(<span class="st">&quot;title_english&quot;</span>, <span class="st">&quot;abstract_english&quot;</span>, <span class="st">&quot;first_claim&quot;</span>), <span class="at">sep =</span> <span class="st">&quot; &quot;</span>) <span class="sc">%&gt;%</span> </span>
+<span id="cb131-5"><a href="machinelearning.html#cb131-5" aria-hidden="true" tabindex="-1"></a>   <span class="fu">mutate</span>(<span class="at">text =</span> <span class="fu">str_to_lower</span>(text)) <span class="sc">%&gt;%</span></span>
+<span id="cb131-6"><a href="machinelearning.html#cb131-6" aria-hidden="true" tabindex="-1"></a>   <span class="fu">mutate</span>(<span class="at">text =</span> <span class="fu">str_replace_all</span>(text, <span class="st">&quot;[[:punct:]]&quot;</span>, <span class="st">&quot; &quot;</span>)) <span class="sc">%&gt;%</span> </span>
+<span id="cb131-7"><a href="machinelearning.html#cb131-7" aria-hidden="true" tabindex="-1"></a>   <span class="fu">mutate</span>(<span class="at">text =</span> <span class="fu">str_replace_all</span>(text, <span class="st">&quot;  &quot;</span>, <span class="st">&quot; &quot;</span>)) <span class="sc">%&gt;%</span> </span>
+<span id="cb131-8"><a href="machinelearning.html#cb131-8" aria-hidden="true" tabindex="-1"></a>   <span class="fu">select</span>(text)</span>
+<span id="cb131-9"><a href="machinelearning.html#cb131-9" aria-hidden="true" tabindex="-1"></a> </span>
+<span id="cb131-10"><a href="machinelearning.html#cb131-10" aria-hidden="true" tabindex="-1"></a> <span class="fu">head</span>(drones_texts_vec)</span></code></pre></div>
+<p>This cleaned up anonymised text is available in the data folder of this handbook and in the drones package <!--- TO DO--->. Note that patent texts can be messy and you may want to engage in further processing. Once we have the data in a cleaned cleaned up format we can pass it to fast text in the terminal.</p>
+<p>There are two available models for word vectors in fast text. These are:</p>
+<ol style="list-style-type: lower-alpha">
+<li>skipgrams (identify a word from closely related words) <!--- check this definition---></li>
+<li>cbow (predict a word from the context words around it)</li>
+</ol>
+<p>Next in the terminal we navigate to the fasttext folder and provide our csv or simple text file as an input and specify the output.</p>
+<!--- THIS IS NOW THROWING AN ERROR AND NEEDS TO BE UPDATED--->
+<div class="sourceCode" id="cb132"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb132-1"><a href="machinelearning.html#cb132-1" aria-hidden="true" tabindex="-1"></a><span class="sc">$</span> .<span class="sc">/</span>fasttext skipgram <span class="sc">-</span>input <span class="sc">/</span>handbook<span class="sc">/</span>data<span class="sc">/</span>fasttext<span class="sc">/</span>drones_vector_texts.csv <span class="sc">-</span>output <span class="sc">/</span>handbook<span class="sc">/</span>data<span class="sc">/</span>fasttext<span class="sc">/</span>drones_vec</span></code></pre></div>
+<p>There are total of 4.4 million words (tokens) in the vocabulary with xxx <!--- fill in---> distinct words. It takes about 30 seconds for fasttext to process these words. These words boil down to 19,125 words in total.</p>
+<div class="sourceCode" id="cb133"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb133-1"><a href="machinelearning.html#cb133-1" aria-hidden="true" tabindex="-1"></a>Read 4M words</span>
+<span id="cb133-2"><a href="machinelearning.html#cb133-2" aria-hidden="true" tabindex="-1"></a>Number of words<span class="sc">:</span>  <span class="dv">19125</span></span>
+<span id="cb133-3"><a href="machinelearning.html#cb133-3" aria-hidden="true" tabindex="-1"></a>Number of labels<span class="sc">:</span> <span class="dv">0</span></span>
+<span id="cb133-4"><a href="machinelearning.html#cb133-4" aria-hidden="true" tabindex="-1"></a>Progress<span class="sc">:</span> <span class="fl">100.0</span>% words<span class="sc">/</span>sec<span class="sc">/</span>thread<span class="sc">:</span>   <span class="dv">50624</span> lr<span class="sc">:</span>  <span class="fl">0.000000</span> avg.loss<span class="sc">:</span>  <span class="fl">1.790453</span> ETA<span class="sc">:</span>   0h 0m 0s</span></code></pre></div>
+<p>The processing creates two files in our target directory. The first is <code>drones_vec.bin</code> containing the model and the second is <code>drones_vec.vec</code>. The second file is actually a simple text file that contains the weights for each individual terms in the vector. Here is a glimpse of that file for the word <code>device</code>.</p>
+<div class="sourceCode" id="cb134"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb134-1"><a href="machinelearning.html#cb134-1" aria-hidden="true" tabindex="-1"></a>device <span class="fl">0.21325</span> <span class="fl">0.11661</span> <span class="sc">-</span><span class="fl">0.060266</span> <span class="sc">-</span><span class="fl">0.17116</span> <span class="fl">0.16712</span> <span class="sc">-</span><span class="fl">0.03204</span> <span class="sc">-</span><span class="fl">0.54853</span> <span class="sc">-</span><span class="fl">0.30647</span> <span class="fl">0.023724</span> <span class="sc">-</span><span class="fl">0.047807</span> <span class="sc">-</span><span class="fl">0.068384</span> <span class="sc">-</span><span class="fl">0.22845</span> <span class="sc">-</span><span class="fl">0.08171</span> <span class="fl">0.046688</span> <span class="fl">0.26321</span> <span class="sc">-</span><span class="fl">0.51804</span> <span class="sc">-</span><span class="fl">0.02021</span> <span class="fl">0.099132</span> <span class="sc">-</span><span class="fl">0.27856</span> <span class="fl">0.33479</span> <span class="sc">-</span><span class="fl">0.027596</span> <span class="sc">-</span><span class="fl">0.27679</span> <span class="fl">0.31599</span> <span class="sc">-</span><span class="fl">0.32319</span> <span class="fl">0.048407</span> <span class="sc">-</span><span class="fl">0.067782</span> <span class="sc">-</span><span class="fl">0.086028</span> <span class="fl">0.070966</span> <span class="sc">-</span><span class="fl">0.27628</span> <span class="sc">-</span><span class="fl">0.43886</span> <span class="sc">-</span><span class="fl">0.23275</span> <span class="fl">0.15364</span> <span class="sc">-</span><span class="fl">0.037609</span> <span class="fl">0.16732</span> <span class="sc">-</span><span class="fl">0.55758</span> <span class="fl">0.24021</span> <span class="sc">-</span><span class="fl">0.21904</span> <span class="sc">-</span><span class="fl">0.00074375</span> <span class="sc">-</span><span class="fl">0.2962</span> <span class="fl">0.41962</span> <span class="fl">0.069979</span> <span class="fl">0.039564</span> <span class="fl">0.31745</span> <span class="sc">-</span><span class="fl">0.11433</span> <span class="fl">0.15294</span> <span class="sc">-</span><span class="fl">0.4063</span> <span class="fl">0.16489</span> <span class="sc">-</span><span class="fl">0.17881</span> <span class="sc">-</span><span class="fl">0.24346</span> <span class="sc">-</span><span class="fl">0.17451</span> <span class="fl">0.19218</span> <span class="sc">-</span><span class="fl">0.13081</span> <span class="sc">-</span><span class="fl">0.052599</span> <span class="fl">0.12156</span> <span class="sc">-</span><span class="fl">0.023431</span> <span class="sc">-</span><span class="fl">0.066951</span> <span class="fl">0.19624</span> <span class="fl">0.11179</span> <span class="fl">0.17482</span> <span class="fl">0.34394</span> <span class="fl">0.17303</span> <span class="sc">-</span><span class="fl">0.32398</span> <span class="fl">0.54666</span> <span class="sc">-</span><span class="fl">0.30731</span> <span class="sc">-</span><span class="fl">0.1117</span> <span class="sc">-</span><span class="fl">0.017867</span> <span class="fl">0.081936</span> <span class="sc">-</span><span class="fl">0.068579</span> <span class="sc">-</span><span class="fl">0.15465</span> <span class="fl">0.057545</span> <span class="fl">0.026571</span> <span class="sc">-</span><span class="fl">0.3714</span> <span class="fl">0.029978</span> <span class="fl">0.081706</span> <span class="fl">0.017101</span> <span class="fl">0.036847</span> <span class="sc">-</span><span class="fl">0.13174</span> <span class="fl">0.24701</span> <span class="sc">-</span><span class="fl">0.10006</span> <span class="sc">-</span><span class="fl">0.11838</span> <span class="sc">-</span><span class="fl">0.045929</span> <span class="sc">-</span><span class="fl">0.13226</span> <span class="fl">0.20067</span> <span class="fl">0.12056</span> <span class="fl">0.43343</span> <span class="fl">0.052317</span> <span class="sc">-</span><span class="fl">0.030258</span> <span class="fl">0.066875</span> <span class="sc">-</span><span class="fl">0.1951</span> <span class="fl">0.12343</span> <span class="fl">0.031962</span> <span class="sc">-</span><span class="fl">0.52444</span> <span class="fl">0.041814</span> <span class="sc">-</span><span class="fl">0.64228</span> <span class="fl">0.13036</span> <span class="fl">0.040553</span> <span class="fl">0.30254</span> <span class="sc">-</span><span class="fl">0.15474</span> <span class="sc">-</span><span class="fl">0.57587</span> <span class="fl">0.29205</span> </span></code></pre></div>
+<p>Note two points here. The first is that the default vector space is 100 dimensions but popular choices go up to 300. Note also that there will be common stop words (and, the, etc.) in the model that we may want to remove. The second main point is that the file size of the .bin file is nearly 800Mb and may get much larger fast.</p>
+<p>From the terminal we can print the word vectors for specific words as follows:</p>
+<div class="sourceCode" id="cb135"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb135-1"><a href="machinelearning.html#cb135-1" aria-hidden="true" tabindex="-1"></a><span class="sc">$</span> echo <span class="st">&quot;drone autonomous weapon&quot;</span> <span class="sc">|</span> .<span class="sc">/</span>fasttext print<span class="sc">-</span>word<span class="sc">-</span>vectors <span class="sc">/</span>Users<span class="sc">/</span>colinbarnes<span class="sc">/</span>handbook<span class="sc">/</span>data<span class="sc">/</span>fasttext<span class="sc">/</span>drones_vec.bin</span>
+<span id="cb135-2"><a href="machinelearning.html#cb135-2" aria-hidden="true" tabindex="-1"></a>drone <span class="fl">0.38326</span> <span class="fl">0.4115</span> <span class="fl">0.28873</span> <span class="sc">-</span><span class="fl">0.35648</span> <span class="sc">-</span><span class="fl">0.24769</span> <span class="sc">-</span><span class="fl">0.22507</span> <span class="fl">0.18887</span> <span class="fl">0.012016</span> <span class="dv">0</span>.<span class="dv">51823</span>...</span>
+<span id="cb135-3"><a href="machinelearning.html#cb135-3" aria-hidden="true" tabindex="-1"></a>autonomous <span class="fl">0.41683</span> <span class="fl">0.39242</span> <span class="fl">0.16987</span> <span class="sc">-</span><span class="fl">0.028905</span> <span class="fl">0.38609</span> <span class="sc">-</span><span class="fl">0.57572</span> <span class="sc">-</span><span class="fl">0.44157</span> <span class="sc">-</span><span class="dv">0</span>.<span class="dv">51236</span>...</span>
+<span id="cb135-4"><a href="machinelearning.html#cb135-4" aria-hidden="true" tabindex="-1"></a>weapon <span class="fl">0.20932</span> <span class="fl">0.59608</span> <span class="fl">0.21891</span> <span class="sc">-</span><span class="fl">0.42716</span> <span class="fl">0.19016</span> <span class="sc">-</span><span class="fl">0.76555</span> <span class="fl">0.23395</span> <span class="sc">-</span><span class="fl">0.63699</span> <span class="sc">-</span><span class="dv">0</span>.<span class="dv">12079</span>...</span></code></pre></div>
+</div>
+<div id="using-word-vectors" class="section level2 hasAnchor" number="8.4">
+<h2><span class="header-section-number">8.4</span> Using Word Vectors<a href="machinelearning.html#using-word-vectors" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p>One common use of word vectors is to build a thesaurus. We can also check how our vectors are performing, and adjust the parameters if we are not getting what we expect. We do this by calculating the nearest neighbours (nn) in the vector space and then entering a query term, The higher the score the closer the neighbour is.</p>
+<div class="sourceCode" id="cb136"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb136-1"><a href="machinelearning.html#cb136-1" aria-hidden="true" tabindex="-1"></a><span class="sc">$</span> .<span class="sc">/</span>fasttext nn <span class="sc">/</span>Users<span class="sc">/</span>colinbarnes<span class="sc">/</span>handbook<span class="sc">/</span>data<span class="sc">/</span>fasttext<span class="sc">/</span>drones_vec.bin</span>
+<span id="cb136-2"><a href="machinelearning.html#cb136-2" aria-hidden="true" tabindex="-1"></a>Query word? drone</span>
+<span id="cb136-3"><a href="machinelearning.html#cb136-3" aria-hidden="true" tabindex="-1"></a>codrone <span class="fl">0.69161</span></span>
+<span id="cb136-4"><a href="machinelearning.html#cb136-4" aria-hidden="true" tabindex="-1"></a>drones <span class="fl">0.66626</span></span>
+<span id="cb136-5"><a href="machinelearning.html#cb136-5" aria-hidden="true" tabindex="-1"></a>dron <span class="fl">0.627708</span></span>
+<span id="cb136-6"><a href="machinelearning.html#cb136-6" aria-hidden="true" tabindex="-1"></a>microdrone <span class="fl">0.603919</span></span>
+<span id="cb136-7"><a href="machinelearning.html#cb136-7" aria-hidden="true" tabindex="-1"></a>quadrone <span class="fl">0.603164</span></span>
+<span id="cb136-8"><a href="machinelearning.html#cb136-8" aria-hidden="true" tabindex="-1"></a>stabilisation <span class="fl">0.594831</span></span>
+<span id="cb136-9"><a href="machinelearning.html#cb136-9" aria-hidden="true" tabindex="-1"></a>stabilised <span class="fl">0.579854</span></span>
+<span id="cb136-10"><a href="machinelearning.html#cb136-10" aria-hidden="true" tabindex="-1"></a>naval <span class="fl">0.572352</span></span>
+<span id="cb136-11"><a href="machinelearning.html#cb136-11" aria-hidden="true" tabindex="-1"></a>piloted <span class="fl">0.571288</span></span>
+<span id="cb136-12"><a href="machinelearning.html#cb136-12" aria-hidden="true" tabindex="-1"></a>stabilise <span class="fl">0.564452</span></span></code></pre></div>
+<p>Hmmm, OK but maybe we should try UAV</p>
+<div class="sourceCode" id="cb137"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb137-1"><a href="machinelearning.html#cb137-1" aria-hidden="true" tabindex="-1"></a>Query word? uav</span>
+<span id="cb137-2"><a href="machinelearning.html#cb137-2" aria-hidden="true" tabindex="-1"></a>uavgs <span class="fl">0.768899</span></span>
+<span id="cb137-3"><a href="machinelearning.html#cb137-3" aria-hidden="true" tabindex="-1"></a>aerial <span class="fl">0.742971</span></span>
+<span id="cb137-4"><a href="machinelearning.html#cb137-4" aria-hidden="true" tabindex="-1"></a>uavs <span class="fl">0.710861</span></span>
+<span id="cb137-5"><a href="machinelearning.html#cb137-5" aria-hidden="true" tabindex="-1"></a>unmanned <span class="fl">0.692975</span></span>
+<span id="cb137-6"><a href="machinelearning.html#cb137-6" aria-hidden="true" tabindex="-1"></a>uad <span class="fl">0.684599</span></span>
+<span id="cb137-7"><a href="machinelearning.html#cb137-7" aria-hidden="true" tabindex="-1"></a>ua <span class="fl">0.667772</span></span>
+<span id="cb137-8"><a href="machinelearning.html#cb137-8" aria-hidden="true" tabindex="-1"></a>copter <span class="fl">0.666946</span></span>
+<span id="cb137-9"><a href="machinelearning.html#cb137-9" aria-hidden="true" tabindex="-1"></a>usv <span class="fl">0.652238</span></span>
+<span id="cb137-10"><a href="machinelearning.html#cb137-10" aria-hidden="true" tabindex="-1"></a>uas <span class="fl">0.644046</span></span>
+<span id="cb137-11"><a href="machinelearning.html#cb137-11" aria-hidden="true" tabindex="-1"></a>flight <span class="fl">0.643298</span></span></code></pre></div>
+<p>This is printing some words that we would expect in both cases such as plurals (drones, uavs) along with types of drones but we need to investigate some high scoring terms, for example in set one we have the word <code>codrone</code> which is a specific make of drone. The word <code>dron</code> may be the word for drone in another language. In the second set we have <code>uavgs</code> which may stand for UAV Ground School along with terms such as <code>uad</code> which stands for unmanned aerial device.</p>
+<p>So, this reveals that we are obtaining some meaningful results on single terms that can guide our construction of a search query. We could also look at this another way by identifying terms that may be sources of noise. Here we will use the word bee.</p>
+<div class="sourceCode" id="cb138"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb138-1"><a href="machinelearning.html#cb138-1" aria-hidden="true" tabindex="-1"></a>Query word? bee</span>
+<span id="cb138-2"><a href="machinelearning.html#cb138-2" aria-hidden="true" tabindex="-1"></a>honey <span class="fl">0.861416</span></span>
+<span id="cb138-3"><a href="machinelearning.html#cb138-3" aria-hidden="true" tabindex="-1"></a>hive <span class="fl">0.830507</span></span>
+<span id="cb138-4"><a href="machinelearning.html#cb138-4" aria-hidden="true" tabindex="-1"></a>bees <span class="fl">0.826173</span></span>
+<span id="cb138-5"><a href="machinelearning.html#cb138-5" aria-hidden="true" tabindex="-1"></a>hives <span class="fl">0.81909</span></span>
+<span id="cb138-6"><a href="machinelearning.html#cb138-6" aria-hidden="true" tabindex="-1"></a>honeybee <span class="fl">0.81183</span></span>
+<span id="cb138-7"><a href="machinelearning.html#cb138-7" aria-hidden="true" tabindex="-1"></a>queen <span class="fl">0.806328</span></span>
+<span id="cb138-8"><a href="machinelearning.html#cb138-8" aria-hidden="true" tabindex="-1"></a>honeycombs <span class="fl">0.803329</span></span>
+<span id="cb138-9"><a href="machinelearning.html#cb138-9" aria-hidden="true" tabindex="-1"></a>honeybees <span class="fl">0.784235</span></span>
+<span id="cb138-10"><a href="machinelearning.html#cb138-10" aria-hidden="true" tabindex="-1"></a>honeycomb <span class="fl">0.783923</span></span>
+<span id="cb138-11"><a href="machinelearning.html#cb138-11" aria-hidden="true" tabindex="-1"></a>beehives <span class="fl">0.783663</span></span></code></pre></div>
+<p>This is yielding decent results. We could for example use this to build a term exclusion list and we might try something similar with the word music (to exclude words like musician, musical, melodic, melody) where it is clear they cannot be linked to drones. For example, there may be drones that play music… but the words musician, melodic and melody are unlikely to be associated with musical drones.</p>
+<!---Another way of generating word vectors is using the Continuous Bag of Words (CBOW) methods. 
+
+A Continuous Bag of Words approach attempts to predict the target word from the context words that surround it . <!--- Make sure clear about the distinction with this--->
+<!---The word drone is another name for an unmanned aerial vehicle or UAV. --->
+</div>
+<div id="exploring-analogies" class="section level2 hasAnchor" number="8.5">
+<h2><span class="header-section-number">8.5</span> Exploring Analogies<a href="machinelearning.html#exploring-analogies" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p>Word vectors are famous for being able to predict relationships of the type</p>
+<p>”King” - ”Man” + ”Woman” = “Queen”</p>
+<p>We can experiment with this with the drones vector we created earlier using the <code>analogies</code> function in fasttext. In the <em>terminal</em> run:</p>
+<div class="sourceCode" id="cb139"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb139-1"><a href="machinelearning.html#cb139-1" aria-hidden="true" tabindex="-1"></a><span class="sc">$</span> .<span class="sc">/</span>fasttext analogies <span class="sc">/</span>Users<span class="sc">/</span>colinbarnes<span class="sc">/</span>handbook<span class="sc">/</span>data<span class="sc">/</span>fasttext<span class="sc">/</span>drones_vec.bin</span></code></pre></div>
+<div class="sourceCode" id="cb140"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb140-1"><a href="machinelearning.html#cb140-1" aria-hidden="true" tabindex="-1"></a>Query <span class="fu">triplet</span> (A <span class="sc">-</span> B <span class="sc">+</span> C)? drone autonomous bee</span>
+<span id="cb140-2"><a href="machinelearning.html#cb140-2" aria-hidden="true" tabindex="-1"></a>honey <span class="fl">0.687067</span></span>
+<span id="cb140-3"><a href="machinelearning.html#cb140-3" aria-hidden="true" tabindex="-1"></a>larvae <span class="fl">0.668081</span></span>
+<span id="cb140-4"><a href="machinelearning.html#cb140-4" aria-hidden="true" tabindex="-1"></a>larva <span class="fl">0.668004</span></span>
+<span id="cb140-5"><a href="machinelearning.html#cb140-5" aria-hidden="true" tabindex="-1"></a>brood <span class="fl">0.664371</span></span>
+<span id="cb140-6"><a href="machinelearning.html#cb140-6" aria-hidden="true" tabindex="-1"></a>honeycombs <span class="fl">0.655226</span></span>
+<span id="cb140-7"><a href="machinelearning.html#cb140-7" aria-hidden="true" tabindex="-1"></a>hive <span class="fl">0.653633</span></span>
+<span id="cb140-8"><a href="machinelearning.html#cb140-8" aria-hidden="true" tabindex="-1"></a>honeycomb <span class="fl">0.651272</span></span>
+<span id="cb140-9"><a href="machinelearning.html#cb140-9" aria-hidden="true" tabindex="-1"></a>bees <span class="fl">0.632742</span></span>
+<span id="cb140-10"><a href="machinelearning.html#cb140-10" aria-hidden="true" tabindex="-1"></a>comb <span class="fl">0.626189</span></span>
+<span id="cb140-11"><a href="machinelearning.html#cb140-11" aria-hidden="true" tabindex="-1"></a>colonies <span class="fl">0.61386</span></span></code></pre></div>
+<p>what this tells us is that drone - autonomous + bee = honey or larvae, or larva or brood. We can more or less reverse this calculation.</p>
+<div class="sourceCode" id="cb141"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb141-1"><a href="machinelearning.html#cb141-1" aria-hidden="true" tabindex="-1"></a>Query <span class="fu">triplet</span> (A <span class="sc">-</span> B <span class="sc">+</span> C)? bee honey drone</span>
+<span id="cb141-2"><a href="machinelearning.html#cb141-2" aria-hidden="true" tabindex="-1"></a>drones <span class="fl">0.651486</span></span>
+<span id="cb141-3"><a href="machinelearning.html#cb141-3" aria-hidden="true" tabindex="-1"></a>codrone <span class="fl">0.63545</span></span>
+<span id="cb141-4"><a href="machinelearning.html#cb141-4" aria-hidden="true" tabindex="-1"></a>stabilisation <span class="fl">0.592739</span></span>
+<span id="cb141-5"><a href="machinelearning.html#cb141-5" aria-hidden="true" tabindex="-1"></a>dron <span class="fl">0.582929</span></span>
+<span id="cb141-6"><a href="machinelearning.html#cb141-6" aria-hidden="true" tabindex="-1"></a>na <span class="fl">0.572516</span> <span class="co"># drop NA from the underlying set</span></span>
+<span id="cb141-7"><a href="machinelearning.html#cb141-7" aria-hidden="true" tabindex="-1"></a>microdrone <span class="fl">0.571889</span></span>
+<span id="cb141-8"><a href="machinelearning.html#cb141-8" aria-hidden="true" tabindex="-1"></a>naval <span class="fl">0.541626</span></span>
+<span id="cb141-9"><a href="machinelearning.html#cb141-9" aria-hidden="true" tabindex="-1"></a>continuation <span class="fl">0.54127</span></span>
+<span id="cb141-10"><a href="machinelearning.html#cb141-10" aria-hidden="true" tabindex="-1"></a>proposition <span class="fl">0.540825</span></span>
+<span id="cb141-11"><a href="machinelearning.html#cb141-11" aria-hidden="true" tabindex="-1"></a>déstabilisation <span class="fl">0.536781</span></span></code></pre></div>
+<p>What this example illustrates is that, as we might expect, terms for bees and terms for drones as a technology occupy different parts of the vector space.</p>
+<p>It is fundamentally quite difficult to conceptualise a 100 or 300 dimension vector space. However, Google has developed a <a href="http://projector.tensorflow.org/">tensorflow projector</a> and a video that discusses high dimensional space in an accessible way <a href="https://www.youtube.com/watch?v=wvsE8jm1GzE">A.I. Experiments: Visualizing High-Dimensional Space</a>. The <a href="https://distill.pub/">Distill website</a> offers good examples of the visualisation of a range of machine learning components.</p>
+<p>We can view a simplified visualisation of the term drones in 200 dimension vector space (on a much larger model than we have discussed above) in Figure <a href="machinelearning.html#fig:dronesviz">8.1</a>.</p>
+<div class="figure" style="text-align: center"><span style="display:block;" id="fig:dronesviz"></span>
+<img src="images/drones1_embedding.png" alt="The term drone in 200 dimension vector space" width="948" />
+<p class="caption">
+Figure 8.1: The term drone in 200 dimension vector space
+</p>
+</div>
+<p>Here we have selected to display 400 terms linked to the source word drones across the representation of the vector space. As with network analysis we can see that clusters of association emerge. As we zoom in to the vector space representation we start to more clearly see nearest points in this case based on Principle Components Analysis (PCA) in Figure <a href="machinelearning.html#fig:dronespca">8.2</a>.</p>
+<div class="figure" style="text-align: center"><span style="display:block;" id="fig:dronespca"></span>
+<img src="images/dronesembedding_isolated.png" alt="Zooming in to the Drones cluster" width="606" />
+<p class="caption">
+Figure 8.2: Zooming in to the Drones cluster
+</p>
+</div>
+<p>The representation of terms in vector space in these images is different to those we viewed above and more clearly favours bees and music, although closer inspection reveals words such as ‘winged’, ‘terrorized’. ‘missile’ and ‘predator’ that suggest the presence of news related terms when compared with the patent data used above.</p>
+<p>This visualisation highlights the power of the representation of words as vectors in vector space. It also highlights that the vector space is determined by the source data. For example, many vector models are built from downloads of the <a href="https://en.wikipedia.org/wiki/Wikipedia:Database_download#English-language_Wikipedia">content of Wikipedia</a> (available in a number of languages) or on a much larger scale from internet web pages through services such as <a href="https://commoncrawl.org/">Common Crawl</a>.</p>
+<p>For patent analytics, this can present the problem that the language in vector models lacks the specificity in terms of the use of technical language found in patent documents. For that reason you may be better, as illustrated above, wherever possible it is better to use patent domain specific word embeddings.</p>
+</div>
+<div id="patent-specific-word-embeddings" class="section level2 hasAnchor" number="8.6">
+<h2><span class="header-section-number">8.6</span> Patent Specific Word Embeddings<a href="machinelearning.html#patent-specific-word-embeddings" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p>The increasing accessibility of patent data, with both the US and the EP full text collections now available free of charge, has witnessed growing efforts to develop word embedding approaches to patent classification and search.</p>
+<p>A very good example of this type of approach is provided by Julian Risch and Ralf Krestel at the Hasso Plattner Institute at the University of Potsdam with a focus on patent classification <span class="citation">(<a href="#ref-lens.org/078-034-591-343-369" role="doc-biblioref">Risch and Krestel 2019</a>)</span>.</p>
+<p>Risch and Krestel test word embedding approaches using three different datasets:</p>
+<ol style="list-style-type: lower-alpha">
+<li>the WIPO-alpha dataset of 75,000 excerpts of English language PCT applications accompanied by subclass information <span class="citation">(<a href="#ref-lens.org/056-971-725-855-254" role="doc-biblioref"><em>Automated Categorization in the International Patent Classification</em> 2003</a>)</span>;</li>
+<li>A dataset of 5.4 million patent documents from the USPTO between 1976-2016 called USPTO-5M containing the full text and bibliographic data.^[<a href="https://www.uspto.gov/learning-and-resources/bulk-data-products">USPTO Bulk Products</a>, now more readily available from <a href="http://www.patentsview.org/download/">PatentsView</a></li>
+<li>A public dataset of with 2 million JSON formatted USPTO patent documents called USPTO-2M created by Jason Hoou containing titles, abstracts and IPC subclasses. <a href="#fn29" class="footnote-ref" id="fnref29"><sup>29</sup></a>. [NOTE THIS IS ACCESS PROTECTED! EXCLUDE AS NOT ACTIVE]</li>
+</ol>
+<p>These datasets are primarily intended to assist with the automatic classification of patent documents. They used fastText on 5 million patent documents to train word embeddings with 100, 200 and 300 dimensions based on lower-case words occurring 10 or more times and with a context window of 5. This involved a total of 28 billion tokens and, as they rightly point out, this is larger than the English Wikipedia corpus (16 billion) but lower than the 600 billion tokens in the Common Crawl dataset <span class="citation">(<a href="#ref-lens.org/078-034-591-343-369" role="doc-biblioref">Risch and Krestel 2019</a>)</span>. As part of an open access approach focusing on reproducibility the resulting datasets are made available free of charge<a href="#fn30" class="footnote-ref" id="fnref30"><sup>30</sup></a></p>
+<p>The word embedding were then used to support the development of a deep neural network using gated recurrent units (GRU) with the aim of predicting the main subclass for the document using 300 words from the title and abstract of the documents. The same network architecture was used to test the WIPO set, the standard Wikipedia embeddings. the USPTO-2M set and the USPTO-5M (restricted to titles and abstracts). The specific details of the experiments performed with the word embeddings and GRU deep neural network are available in the article. The main finding of the research is to demonstrate that patent specific word embeddings outperform the Wikipedia based embeddings. This confirms the very crude intuition that we gained from the very small samples of data on the term drones compared with the exploration of Wikipedia based embeddings.</p>
+<p>One important challenge with the use of word vectors or embeddings is size. FastText has the considerable advantage that it is designed to run on CPU. That is, as we have seen it can be run on a laptop. However, the word embeddings provided by Risch and Krestel, notably the 300 dimension dataset, may present significant memory challenges to be used in practice. The word embeddings generated by the work of Risch and Krestel demonstrate some of these issues. Thus, the 100 dimension word embeddings vectors are 6 gigabytes in size, the 200 dimensions file is 12Gb and the 300 dimensions is 18Gb. In practice, these file sizes are not as initially intimidating as they appear. Thus, the 6Gb 100 dimension vectors easily run in fasttext on laptop with 16Gb of RAM. Nevertheless, you should expect to require increased storage space to accommodate the size of datasets associated with machine learning and it is well worth investing in additional RAM for running machine learning tasks on CPU. However, the recent rise of state of the art Transformer models has introduced new demands in terms of size and a transition to GPU rather than CPU based processing. We will return to this at the end of this discussion.</p>
+<p>Having introduced the basics of vector space models we now turn to a small practical example of text classification. We will then move on to Named Entity Recognition.</p>
+</div>
+<div id="machine-learning-in-classification" class="section level2 hasAnchor" number="8.7">
+<h2><span class="header-section-number">8.7</span> Machine learning in Classification<a href="machinelearning.html#machine-learning-in-classification" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p>The rise of machine learning has been accompanied by increasing attention to the possibility of automating the classification of patent documents. As patent filings come in to patent offices they need to be initially screened and classified in order to pass them to the relevant section of examiners. The ability to automate, or partly automate, this task could represent a significant cost saving for patent offices. At the same time, the determination of IPC or CPC classification codes that should be applied to describe the contents of a patent documents by examiner could be assisted by machine learning based approaches to produce predictions based on past experience on how similar documents were classified.</p>
+<p>There is a growing body of literature on this topic and in order to understand existing progress we recommend searching for recent articles that will provide an overview of the state of the art and exploring articles that are cited in the references and articles that cite recent reviews. To assist in that process an open access collection on patent classification has been created on the Lens at [<a href="https://www.lens.org/lens/search/scholar/list?collectionId=199722(https://www.lens.org/lens/search/scholar/list?collectionId=199722" class="uri">https://www.lens.org/lens/search/scholar/list?collectionId=199722(https://www.lens.org/lens/search/scholar/list?collectionId=199722</a>)].</p>
+<p>In the next section we will focus on a step by step example of text classification tasks to introduce the approaches.</p>
+</div>
+<div id="machine-learning-for-text-classification" class="section level2 hasAnchor" number="8.8">
+<h2><span class="header-section-number">8.8</span> Machine Learning for Text Classification<a href="machinelearning.html#machine-learning-for-text-classification" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p>To illustrate text classification we will use the Prodigy annotation tool from explosion.ai. explosion.ai is the company behind the very popular spaCy open source Python library for Natural Language Processing. spaCy is free. However, the Prodigy annotation tool involves an annual subscription fee. We focus here on the use of Prodigy because it allows us to be very transparent about text classification, named entity recognition and image classification. We also use Prodigy because of the tight integration with spaCy and ability to rapidly move models into production. The ability to move models into production is an important consideration when deciding on which tools to use. Academic tools are often focused on research purposes and any code may be of variable quality in terms of robustness and maintenance. This is not an issue with tools such as Prodigy and spaCy that focus on rapidly moving models into production.</p>
+<p>In thinking about classification and other machine learning tasks it is helpful to think in terms of a set of steps. In the case of the drones data that we explored above we can identify three steps that we might want to perform.</p>
+<ul>
+<li>Step 1: Is this text about drone technology (yes/no)</li>
+</ul>
+<p>Step 1 is a filtering classification. We build a classification model that we can use to filter out anything in our raw data that does not involve drone technology.</p>
+<ul>
+<li>Step 2: Identify the main classes of drone technology (multilabel)</li>
+</ul>
+<p>This is a multilabel classification step. That is, a technology may fall into one or more areas of drone technology. We want to train a model to recognise the types that we are interested in.</p>
+<ul>
+<li>Step 3: Name Entity Recognition</li>
+</ul>
+<p>This is not a classification step as such but seeks to identify specific terms of interest in the texts that are selected by the classification models created in Step 1 and Step 2.</p>
+<div id="step-1-binary-text-classification" class="section level3 hasAnchor" number="8.8.1">
+<h3><span class="header-section-number">8.8.1</span> Step 1: Binary Text Classification<a href="machinelearning.html#step-1-binary-text-classification" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>We will start with a binary classification task where we will classify text from the new <code>dronesr</code> package that updates the data in the older <code>drones</code> package used above.</p>
+<p>Prodigy contains a text classification function called <code>textcat.teach</code> that teaches a model what texts to accept and reject. In this case we create a dataset called drones, use a blank English model and import a small set of texts containing valid drone technology documents and a set that are noise. The texts will be labelled as accept/reject for the term DRONE. To assist the model with learning about the texts we have added a set of terms such as “autonomous vehicle”, “musical” and “bee” in a patterns file for the model to spot.</p>
+<div class="sourceCode" id="cb142"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb142-1"><a href="machinelearning.html#cb142-1" aria-hidden="true" tabindex="-1"></a><span class="ex">prodigy</span> textcat.teach drones blank:en ./textcat_texts.csv <span class="at">--label</span> DRONE <span class="at">--patterns</span> textcat_patterns.jsonl </span></code></pre></div>
+<p>The tool will then show each record highlighting the seed terms where relevant as we see in Figure <a href="machinelearning.html#fig:uav">8.3</a>. For a binary task the choices are simply accept (green) or reject (red).</p>
+<div class="figure" style="text-align: center"><span style="display:block;" id="fig:uav"></span>
+<img src="images/ml/uav.png" alt="Binary Classification in Prodigy" width="1712" />
+<p class="caption">
+Figure 8.3: Binary Classification in Prodigy
+</p>
+</div>
+<p>The process of classification can lead to insights about possible multilabel classification labels, such as navigation in Figure <a href="machinelearning.html#fig:route">8.4</a>.</p>
+<div class="figure" style="text-align: center"><span style="display:block;" id="fig:route"></span>
+<img src="images/ml/route.png" alt="Binary Classification in Prodigy" width="1756" />
+<p class="caption">
+Figure 8.4: Binary Classification in Prodigy
+</p>
+</div>
+<p>Our terms also pick up one of the false positives on drones as we see in in Figure <a href="machinelearning.html#fig:bee">8.5</a>.</p>
+<div class="figure" style="text-align: center"><span style="display:block;" id="fig:bee"></span>
+<img src="images/ml/bee.png" alt="Binary Classification in Prodigy" width="1756" />
+<p class="caption">
+Figure 8.5: Binary Classification in Prodigy
+</p>
+</div>
+<p>The outcome of the classification process is a set of annotations that take an accept/reject format. An example of an accept and reject text is provided below. The format is new line Json (jsonl) that is increasingly widely user and in this truncated version we can see that the start and end position of the match terms are recorded along with the label and the answer. Other machine learning software commonly adopts a similar format.</p>
+<div class="sourceCode" id="cb143"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb143-1"><a href="machinelearning.html#cb143-1" aria-hidden="true" tabindex="-1"></a><span class="dt">{</span><span class="st">&quot;text&quot;</span><span class="dt">:</span><span class="st">&quot;Newness and distinctiveness is claimed in the features of shape and configuration of an unmanned aerial vehicle as shown in the representations.&quot;</span><span class="op">,</span><span class="st">&quot;_input_hash&quot;</span><span class="dt">:411114389</span><span class="op">,</span><span class="st">&quot;_task_hash&quot;</span><span class="dt">:887216913</span><span class="op">,</span><span class="st">&quot;spans&quot;</span><span class="dt">:[{</span><span class="st">&quot;text&quot;</span><span class="dt">:</span><span class="st">&quot;unmanned aerial vehicle&quot;</span><span class="op">,</span><span class="st">&quot;start&quot;</span><span class="dt">:88</span><span class="op">,</span><span class="st">&quot;end&quot;</span><span class="dt">:111</span><span class="op">,</span><span class="st">&quot;pattern&quot;</span><span class="dt">:-1050519944}]</span><span class="op">,</span><span class="st">&quot;label&quot;</span><span class="dt">:</span><span class="st">&quot;DRONE&quot;</span><span class="op">,</span><span class="st">&quot;meta&quot;</span><span class="dt">:{</span><span class="st">&quot;pattern&quot;</span><span class="dt">:</span><span class="st">&quot;7&quot;</span><span class="dt">}</span><span class="op">,</span><span class="st">&quot;_view_id&quot;</span><span class="dt">:</span><span class="st">&quot;classification&quot;</span><span class="op">,</span><span class="st">&quot;answer&quot;</span><span class="dt">:</span><span class="st">&quot;accept&quot;</span><span class="op">,</span><span class="st">&quot;_timestamp&quot;</span><span class="dt">:1647448549}</span></span>
+<span id="cb143-2"><a href="machinelearning.html#cb143-2" aria-hidden="true" tabindex="-1"></a><span class="dt">{</span><span class="st">&quot;text&quot;</span><span class="dt">:</span><span class="st">&quot;The utility model provides a pair of be used for honeybee to breed device is equipped with honeybee passageway and worker bee special channel on the interior box...&quot;</span><span class="op">,</span><span class="st">&quot;_input_hash&quot;</span><span class="dt">:1202848216</span><span class="op">,</span><span class="st">&quot;_task_hash&quot;</span><span class="dt">:-1506636545</span><span class="op">,</span><span class="st">&quot;spans&quot;</span><span class="dt">:[{</span><span class="st">&quot;text&quot;</span><span class="dt">:</span><span class="st">&quot;honeybee&quot;</span><span class="op">,</span><span class="st">&quot;start&quot;</span><span class="dt">:49</span><span class="op">,</span><span class="st">&quot;end&quot;</span><span class="dt">:57</span><span class="op">,</span><span class="st">&quot;pattern&quot;</span><span class="dt">:-1721291956}</span><span class="op">,</span><span class="dt">{</span><span class="st">&quot;text&quot;</span><span class="dt">:</span><span class="st">&quot;honeybee&quot;</span><span class="op">,</span><span class="st">&quot;start&quot;</span><span class="dt">:91</span><span class="op">,</span><span class="st">&quot;end&quot;</span><span class="dt">:99</span><span class="op">,</span><span class="st">&quot;pattern&quot;</span><span class="dt">:-1721291956}</span><span class="op">,</span><span class="dt">{</span><span class="st">&quot;text&quot;</span><span class="dt">:</span><span class="st">&quot;bee&quot;</span><span class="op">,</span><span class="st">&quot;start&quot;</span><span class="dt">:122</span><span class="op">,</span><span class="st">&quot;end&quot;</span><span class="dt">:125</span><span class="op">,</span><span class="st">&quot;pattern&quot;</span><span class="dt">:899165370}]</span><span class="op">,</span><span class="st">&quot;label&quot;</span><span class="dt">:</span><span class="st">&quot;DRONE&quot;</span><span class="op">,</span><span class="st">&quot;meta&quot;</span><span class="dt">:{</span><span class="st">&quot;pattern&quot;</span><span class="dt">:</span><span class="st">&quot;15, 15, 13, 15, 15, 15, 15, 15, 13, 0, 13, 0, 15, 0, 0, 15&quot;</span><span class="dt">}</span><span class="op">,</span><span class="st">&quot;_view_id&quot;</span><span class="dt">:</span><span class="st">&quot;classification&quot;</span><span class="op">,</span><span class="st">&quot;answer&quot;</span><span class="dt">:</span><span class="st">&quot;reject&quot;</span><span class="op">,</span><span class="st">&quot;_timestamp&quot;</span><span class="dt">:1647452612}</span></span></code></pre></div>
+<p>Once a number of annotations have been created it is possible to build a model to test out the approach and make adjustments. Model building is often conducted on the command line and involves dividing a set of texts into examples that are used to train the model and a set of examples that are used to test or evaluate the model. The second set is critically important because it is a set of examples with known answers that the model has never seen before.</p>
+<p>This exposes a fundamental point about the form of supervised machine learning that we are using. It is extremely important to have data that is already labelled to use in training and evaluation. The creation of annotations is the hidden workload of machine learning.</p>
+<p>With the development of transfer learning it is possible to use fewer annotations than before. However, you should still expect to think in terms of hundreds, thousands and possibly many more depending on the task.</p>
+<p>An important strength of tools like prodigy is that it is possible to rapidly generate annotations and experiment.</p>
+</div>
+<div id="step-2-multilabel-text-classification" class="section level3 hasAnchor" number="8.8.2">
+<h3><span class="header-section-number">8.8.2</span> Step 2: Multilabel Text Classification<a href="machinelearning.html#step-2-multilabel-text-classification" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>When the number of records has been narrowed down to remove noise we can start to engage in multi-label classification.</p>
+<p>Important issue to consider here are the purposes of classification (what is the objective) and following definition of the objective is the number of labels to use. For our toy example with a handful of texts on drone patent documents a number of labels suggest themselves.</p>
+<ul>
+<li>controls (user and in vehicle)</li>
+<li>communication (wifi, bluetooth)</li>
+<li>navigation (GPS, collision avoidance, this is distinct from drones tracking objects)</li>
+<li>power (batteries, charging pads)</li>
+<li>sensing (scanning, imaging etc)</li>
+<li>take off and landing</li>
+<li>tracking</li>
+</ul>
+<p>That is quite a number of labels and this list is by no means conclusive. Here we would probably want to check the IPC codes for relevant categories. However, one challenge with the IPC categories is that they may be too broad or too specific. However, a review of IPC codes could assist with establishing categories in the areas above. This would have the advantage that you already have labelled texts in some of these categories and could save valuable time in labelling. That is, if you already have labelled data avoid relabelling unless you really have to.</p>
+<p>Let’s take a look at the top IPC descriptions for the drones data to see if any of them match up with our rough list from reviewing the documents in prodigy. We can see the top 10 IPC subclasses by the count for the new <code>dronesr</code> dataset in Table <a href="machinelearning.html#tab:ipc10">8.1</a> below.</p>
+<table>
+<caption>
+<span id="tab:ipc10">Table 8.1: </span>Top 10 IPC descriptions for the drones data
+</caption>
+<thead>
+<tr>
+<th style="text-align:left;">
+subclass
+</th>
+<th style="text-align:left;">
+description
+</th>
+<th style="text-align:right;">
+n
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left;">
+H04W
+</td>
+<td style="text-align:left;">
+WIRELESS COMMUNICATION NETWORKS
+</td>
+<td style="text-align:right;">
+23938
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+B64C
+</td>
+<td style="text-align:left;">
+AEROPLANES
+</td>
+<td style="text-align:right;">
+13108
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+G06F
+</td>
+<td style="text-align:left;">
+ELECTRIC DIGITAL DATA PROCESSING
+</td>
+<td style="text-align:right;">
+10797
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+H04L
+</td>
+<td style="text-align:left;">
+TRANSMISSION OF DIGITAL INFORMATION
+</td>
+<td style="text-align:right;">
+10614
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+H04N
+</td>
+<td style="text-align:left;">
+PICTORIAL COMMUNICATION
+</td>
+<td style="text-align:right;">
+9076
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+G01S
+</td>
+<td style="text-align:left;">
+RADIO DIRECTION-FINDING
+</td>
+<td style="text-align:right;">
+8042
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+G05D
+</td>
+<td style="text-align:left;">
+CONTROLLING NON-ELECTRIC VARIABLES
+</td>
+<td style="text-align:right;">
+6470
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+G06T
+</td>
+<td style="text-align:left;">
+IMAGE DATA GENERATION
+</td>
+<td style="text-align:right;">
+6448
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+B64D
+</td>
+<td style="text-align:left;">
+AIRCRAFT EQUIPMENT
+</td>
+<td style="text-align:right;">
+6372
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+G06Q
+</td>
+<td style="text-align:left;">
+DATA PROCESSING SYSTEMS/METHODS
+</td>
+<td style="text-align:right;">
+5942
+</td>
+</tr>
+</tbody>
+</table>
+<p>We can immediately see that while the terms do not exactly match out existing list we can see communications (wireless communication, transmission of digital information), navigation (radio direction finding), sensing or imaging (pictorial communication &amp; image data generation) can be detected in the list while control systems for drones are addressed by controlling non-electric variables and computing by electric digital data processing and data processing system and methods. With the exception of aeroplanes these are not very suitable as labels and would ideally be shortened or codes (which are hard to recall would be used).</p>
+<p>What this brief discussion makes clear is that the drones data is already labelled by a classification scheme. The IPC is also a multilabel classification scheme because patent documents commonly receive multiple classification codes in order to more accurately describe the content of a document.</p>
+<p>This gives us two choices:</p>
+<ol style="list-style-type: lower-alpha">
+<li>If the existing classification scheme is suitable for our purpose then we can use the existing classification (the IPC) to create a classification model.</li>
+<li>If the classification scheme doesn’t work for our purposes (it is either too broad or too specific) then we should focus on either adding specific labels to more finely describe groups of documents or, if the labels are too specific, we should concentrate on grouping.</li>
+</ol>
+<p>In preparing to create a classification model it is very important to have one or more test runs to assess whether your approach is likely to work. That is, approach the task as an iterative and experimental process. One reason to use a paid tool such as Prodigy is that it is designed to let you experiment. It is normally a mistake to imagine that you will accurately classify hundreds or thousands of documents in one go. It is better to start with experimental sessions and then classify in batches,</p>
+<p>We will illustrate this process with our drones dataset by starting out with an initial set of labels and assessing how useful they are. Figure <a href="machinelearning.html#fig:multi1">8.6</a> shows the classification of a patent abstract from the drones set.</p>
+<div class="figure" style="text-align: center"><span style="display:block;" id="fig:multi1"></span>
+<img src="images/ml/multi1.png" alt="Multi Label Classification" width="1461" />
+<p class="caption">
+Figure 8.6: Multi Label Classification
+</p>
+</div>
+<p>We have chosen a small set of 5 labels to classify the texts. We could have used more labels, however in reality the larger the label set is the more difficult it becomes for a human annotator to manage them. Indeed, the authors of Prodigy suggest that it can often be more efficient to use one label at a time and go through multiple rounds of iteration on each text for the same label. We have tested this approach and it works because it makes the decision-making process easier by reducing the choice to yes/no for a specific label.</p>
+<p>It is normal to run into cases that can challenge your classification scheme quite quickly. Figure <a href="machinelearning.html#fig:multi2">8.7</a>. Figure <a href="machinelearning.html#fig:multi2">8.7</a> is for an drone that will land and deliver a liquid to a plant.</p>
+<div class="figure" style="text-align: center"><span style="display:block;" id="fig:multi2"></span>
+<img src="images/ml/multi2.png" alt="Binary Classification in Prodigy" width="1292" />
+<p class="caption">
+Figure 8.7: Binary Classification in Prodigy
+</p>
+</div>
+<p>In our existing scheme the label that is appropriate here is the single label <code>Imaging</code>. However, this highlights a need to focus on the purpose of the classification and establishing a clear definition of that purpose prior to annotating. That is, what is the objective of classification? It would be easy for example when viewing this type of example to add a label such as Agriculture. In practice, such as label would refer to the proposed USE of a claimed invention. Our classification scheme is directed to identifying the key technologies involved in the document rather than use.</p>
+<p>As this brief discussion makes clear, establishing clarity on the purpose of multi-label classification is central to avoiding distractions and successful completion of the task. However, clear definition of the task will often only appear after a period of initial experimentation. For that reason, rather than jumping in with classification it is good practice to define a period of experimentation. That period may involve multiple sessions and experiments.</p>
+<p>This process will typically involve reconsideration of the labels and a tighter definition of the label set. For example, what is the work that the Processing label is doing in the set above? Could the label be more tightly defined or should another label be used. For example, by processing we could be referring to machine learning (IPC G06N20/00 under computing). If our specific interest is in machine learning rather than processing in general we should change the label.</p>
+<p>At the end of the classification process we will have a set of texts that contain multiple labels. In the case of prodigy and spaCy these will generally be exported as new line json (jsonl) where each document is contained in a single line. Other machine learning tools may use similar or simpler formats. We show two examples below with the long abstract texts abbreviated.</p>
+<blockquote>
+<p>{“text”:“The invention discloses a driving safety radar for a vehicle, and relates to the technical field drones…”options”:[{“id”:“CONTROLS”,“text”:“CONTROLS”},{“id”:“COMMUNICATION”,“text”:“COMMUNICATION”},{“id”:“IMAGING”,“text”:“IMAGING”},{“id”:“NAVIGATION”,“text”:“NAVIGATION”},{“id”:“PROCESSING”,“text”:“PROCESSING”}],“_view_id”:“choice”,“accept”:[],“config”:{“choice_style”:“multiple”},“answer”:“ignore”,“_timestamp”:1647597250}
+{“text”:“The aircraft (FM) according to the invention comprises a helicopter drone (HD) on which a 3D scanner (SC) is mounted via an actively rotatable joint (G). The 3D scanner (SC) has at least one high-resolution camera (C)…”,“options”:[{“id”:“CONTROLS”,“text”:“CONTROLS”},{“id”:“COMMUNICATION”,“text”:“COMMUNICATION”},{“id”:“IMAGING”,“text”:“IMAGING”},{“id”:“NAVIGATION”,“text”:“NAVIGATION”},{“id”:“PROCESSING”,“text”:“PROCESSING”}],“_view_id”:“choice”,“accept”:[“IMAGING”,“PROCESSING”],“config”:{“choice_style”:“multiple”},“answer”:“accept”,“_timestamp”:1647597274}</p>
+</blockquote>
+<p>At the end of the multi-label classification task we will have set of texts that can be used to train a model. In prodigy and spaCy a few hundred examples will typically be enough to start experiments. As the number of annotations increases so should the accuracy of the model that is trained. At that point the annotator should switch focus to reviewing and correcting the annotations generated by a model rather than annotating from scratch.</p>
+<p>Annotating texts is the most labour intensive aspect of machine learning and in some cases is outsourced to specialist companies. Machine learning tools such as Prodigy can take advantage of advances such as transfer-learning which means that it is possible to make fewer annotations to arrive at useful results.</p>
+</div>
+<div id="step-3-named-entity-recognition" class="section level3 hasAnchor" number="8.8.3">
+<h3><span class="header-section-number">8.8.3</span> Step 3: Named Entity Recognition<a href="machinelearning.html#step-3-named-entity-recognition" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>Named entity recognition is the task of training a model to recognise entities such as:</p>
+<ul>
+<li>dates (DATE)</li>
+<li>persons (PERSON)</li>
+<li>organisations (ORG)</li>
+<li>geographical Political Entities (GPE)</li>
+<li>locations (mountains, rivers) (LOC)</li>
+<li>quantities (QUANTITY)</li>
+</ul>
+<p>A considerable amount of time and investment has gone into training what can be called ‘base’ models in multiple languages that will do a pretty good job of identifying these entities. There is therefore no need to start from scratch and most base models are trained on millions of texts (such as Wikipedia or news texts). Rather than seeking to build your own model from scratch the best course of action is to either:</p>
+<ul>
+<li>focus on improving existing labels if they meet your needs</li>
+<li>add new labels for entities using a dictionary of terms as support.</li>
+</ul>
+<p>We will focus on the second approach. One challenge in Natural Language Processing is that it is commonly difficult for a model to capture all of the different entities that we may be interested in. This is particularly true for entities that involve multiple words. Most machine learning models are token based. That is, they focus on individual words (tokens) and entities that span multiple tokens (e.g. 3 or more words) can be difficult for models to accurately and consistently capture. For that reason, it is often desirable for the user to add a dictionary (thesaurus) of terms that they are interested in with a label. In other words, the machine learning approach is combined with a dictionary approach.</p>
+<p>The use of dictionaries or thesauri with a model is a very powerful way of adding new entities and creating annotations that a model can learn from to automate the addition of a new entity type. In Prodigy (an annotation tool) and spaCy (the actual models) it is very easy to add match patterns or an entity ruler.</p>
+<p>The reason that it is often desirable to combine machine learning models with dictionary based approach can be easily seen in Figure <a href="machinelearning.html#fig:multi2">8.7</a>.</p>
+<div class="figure" style="text-align: center"><span style="display:block;" id="fig:ents"></span>
+<img src="images/ml/ents.png" alt="Entity Recognition with the Medium Sized spaCy English Model" width="1387" />
+<p class="caption">
+Figure 8.8: Entity Recognition with the Medium Sized spaCy English Model
+</p>
+</div>
+<p>In this case the model has only recognised the date elements of the texts, rather than entities we might be interested in such as the word drone. The reason for this is that the model has not been exposed to the the types of entities that we are interested in.</p>
+<p>To improve the recognition we will add a dictionary (in spaCy this is an entity ruler and written in jsonl). For the purpose of illustration we will use similar labels to our classification experiment above. Table <a href="machinelearning.html#tab:entityruler">8.2</a> shows the outcome of turning a column of words and phrases with labels into jsonl that can be used as an entity ruler attached to a spaCy model. Note that we specify that the terms will match on lower and upper case versions. We also include plural versions of the same terms (this can also be addressed using lemmatization rules). If seeking to get started with spaCy we recommend using the <a href="https://spacy.io/api/phrasematcher"><code>Phrase Matcher</code></a> first and the <a href="https://prodi.gy/docs/recipes#terms-to-patterns"><code>terms.to-patterns</code></a> recipe to create patterns files to use with annotations. If that does not meet your needs then you can then move on to creating your own code to write more advanced <a href="https://spacy.io/api/entityruler"><code>entity_ruler</code></a> patterns. <a href="https://explosion.ai/software">Explosion.ai</a> have created a <a href="https://explosion.ai/demos/matcher"><code>Rule-based Matcher Explorer</code></a> that you can use to experiment with different types of patterns.</p>
+<table>
+<caption>
+<span id="tab:entityruler">Table 8.2: </span>Terms converted to jsonl for an entity ruler in spaCy
+</caption>
+<thead>
+<tr>
+<th style="text-align:left;">
+text
+</th>
+<th style="text-align:left;">
+label
+</th>
+<th style="text-align:left;">
+jsonl
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left;">
+﻿Drone
+</td>
+<td style="text-align:left;">
+TYPE
+</td>
+<td style="text-align:left;">
+{"label":"TYPE","pattern":[{"LOWER":"drone"}],"id":"text"}
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Unmanned aerial vehicle
+</td>
+<td style="text-align:left;">
+TYPE
+</td>
+<td style="text-align:left;">
+{"label":"TYPE","pattern":[{"LOWER":"unmanned"},{"LOWER":"aerial"},{"LOWER":"vehicle"}],"id":"text"}
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+UNMANNED AERIAL VEHICLES
+</td>
+<td style="text-align:left;">
+TYPE
+</td>
+<td style="text-align:left;">
+{"label":"TYPE","pattern":[{"LOWER":"unmanned"},{"LOWER":"aerial"},{"LOWER":"vehicles"}],"id":"text"}
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+unmanned vehicle
+</td>
+<td style="text-align:left;">
+TYPE
+</td>
+<td style="text-align:left;">
+{"label":"TYPE","pattern":[{"LOWER":"unmanned"},{"LOWER":"vehicle"}],"id":"text"}
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+autonomous vehicles
+</td>
+<td style="text-align:left;">
+TYPE
+</td>
+<td style="text-align:left;">
+{"label":"TYPE","pattern":[{"LOWER":"autonomous"},{"LOWER":"vehicles"}],"id":"text"}
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+AIRCRAFT
+</td>
+<td style="text-align:left;">
+TYPE
+</td>
+<td style="text-align:left;">
+{"label":"TYPE","pattern":[{"LOWER":"aircraft"}],"id":"text"}
+</td>
+</tr>
+</tbody>
+</table>
+<p>We can attach the entity ruler directly to a model or, in this case, when using Prodigy we can add this as a set of patterns to use when matching (as we did above).</p>
+<p>If you are using prodigy you could use the following in the terminal with either the <a href="https://prodi.gy/docs/recipes#ner-manual">ner.manual</a> or the the <a href="https://prodi.gy/docs/recipes#ner-teach">ner.teach recipe</a> to create annotations with new entity types that a model can learn from. Recipes will use the patterns file to bring forward texts containing those patterns so they can be annotated. In the code below we have added an empty label “USE” that we will use to start generating an entity recogniser for the types of use that are proposed in drone related patents. Note here that we could adopt a strategy of identifying uses with IPC codes (such as A01H for agriculture) and annotate the texts that fall into a specific area using the IPC as a guide.</p>
+<div class="sourceCode" id="cb144"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb144-1"><a href="machinelearning.html#cb144-1" aria-hidden="true" tabindex="-1"></a><span class="ex">prodigy</span> ner.manual drones_entities en_core_web_md ./pat_abstract.csv <span class="at">--label</span> ORG,TYPE,COMM,POWER,IMAGING,USE <span class="at">--patterns</span> ./drones_entity_ruler.jsonl</span></code></pre></div>
+<p>In Figure <a href="machinelearning.html#fig:use">8.9</a> below the model has picked up on the term <code>drone</code> from the match patterns as the type throughout the text. We have then expanded the type to <code>variable geometry drone</code> and captured the uses set out in the text.</p>
+<div class="figure" style="text-align: center"><span style="display:block;" id="fig:use"></span>
+<img src="images/ml/use.png" alt="Manual Labelling of Entities with Prodigy" width="1370" />
+<p class="caption">
+Figure 8.9: Manual Labelling of Entities with Prodigy
+</p>
+</div>
+<p>A second example in Figure <a href="machinelearning.html#fig:use2">8.10</a> reveals how we can expand the range of use types as we proceed through the texts.</p>
+<div class="figure" style="text-align: center"><span style="display:block;" id="fig:use2"></span>
+<img src="images/ml/use2.png" alt="Manual Labelling of Entities with Prodigy" width="1331" />
+<p class="caption">
+Figure 8.10: Manual Labelling of Entities with Prodigy
+</p>
+</div>
+<p>Through iterative sessions we will be able to generate a range of labels for the data that can then be used to train a named entity recognition model.</p>
+<p>As we have mentioned above, it will almost always be better to update an existing model because existing models will have been trained on very large volumes of data. However, where the nature of the texts is radically different another strategy is to create your own vectors (using fasttext or gensim) that become the basis for entity recognition. As we have seen above, it is easy to create vectors with tools such as fasttext and NLP libraries such as spaCy make it very easy to add your own vectors to create new models for specialist purposes. Specialist vectors can also be converted for use with Transformer models as the current state of the art in Natural Language Processing.</p>
+</div>
+</div>
+<div id="from-vector-based-models-to-transformers" class="section level2 hasAnchor" number="8.9">
+<h2><span class="header-section-number">8.9</span> From Vector Based Models to Transformers<a href="machinelearning.html#from-vector-based-models-to-transformers" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p>We have focused on vector based models in this chapter because they will be the models you will most commonly encounter <em>and</em> they will run quite happily on a laptop with a limited amount of RAM. In contrast current state of the art transformer models run very slowly on CPU and are designed to be run on GPU which you may not have ready access to.</p>
+<p>Transformer models emerged from work at Google in 2017 and have rapidly become the cutting edge of NLP <span class="citation">(<a href="#ref-lens.org/086-980-365-076-590" role="doc-biblioref">Vaswani et al. 2017</a>)</span>. In their 2017 article revealing Transformers the team led by Ashish Vaswani explained that:</p>
+<blockquote>
+<p>“The dominant sequence transduction models are based on complex recurrent or convolutional neural networks in an encoder-decoder configuration…. We propose a new simple network architecture, the Transformer, based solely on attention mechanisms, dispensing with recurrence and convolutions entirely. Experiments on two machine translation tasks show these models to be superior in quality while being more parallelizable and requiring significantly less time to train.” <span class="citation">(<a href="#ref-lens.org/086-980-365-076-590" role="doc-biblioref">Vaswani et al. 2017</a>)</span></p>
+</blockquote>
+<p>Over the last few years Transformers have become the go to models for Natural Language Processing at scale because of the improvements in accuracy they produce compared with recurrent (RNN) or convolutional (CNN) neural network based models. A range of transformer models have emerged such as BERT, XLNet and GPT-2 as well as a whole range of variants.</p>
+<p>A great deal of work has gone in to making these models available for use by ordinary users (rather than the large technology companies that typically produce them). The AI community site operated by <a href="https://huggingface.co/landing/inference-api/startups?utm_source=Google&amp;utm_medium=Search&amp;utm_campaign=Transformers+10x+Faster&amp;utm_id=12055067954&amp;gclid=EAIaIQobChMI-I7pwfnP9gIVCbrtCh12DAQ7EAAYASAAEgJUMfD_BwE">Hugging Face</a> has been particularly important in providing a platform through which transformer models can be integrated into production level NLP tools such as spaCy.</p>
+<p>The use of Transformer models such BERT with tools such as spaCy will require some setup. However, in the case of spaCy this is <a href="https://spacy.io/usage/embeddings-transformers#transformers">very well documented and easy to follow</a>. If you would like to try out the transformer models in spaCy on regular CPU then this is also easy by installing the .trf (for transformers) at the time of installation. The models will run but will be very slow. In addition, <a href="https://colab.research.google.com/?utm_source=scs-index">Google Colab</a> makes it possible to use GPU to run a spaCy transformer model for free to test it out. For larger scale tests or production level use, cloud service providers such as Amazon Web Services, Google Cloud Platform or Microsoft Azure offer GPU enabled ML pipelines as do services on these platforms such as Databricks Apache Spark (the author uses Databricks on Azure). We have focused on the Prodigy annotation tool and spaCy in this chapter because they are transparent, well documented an easy to explain. However, there are other libraries for NLP at scale including SparkNLP from John Snow Labs that performs natural language natively in spark (rather than through Python as is the case for spaCy). As such, there are an range of choices beyond those highlighted in this chapter.</p>
+<p>The Hugging Face AI community site has become the main site for the sharing of a wide range of machine learning models involving natural language processing. These models include models for text generation, sentiment analysis, classification and named entity recognition and the ability to live test the models to see if they are a fit for your task as we see in Figure <a href="machinelearning.html#fig:hugging">8.11</a>.</p>
+<div class="figure" style="text-align: center"><span style="display:block;" id="fig:hugging"></span>
+<img src="images/ml/hugging.png" alt="The Hugging Face AI Community" width="1679" />
+<p class="caption">
+Figure 8.11: The Hugging Face AI Community
+</p>
+</div>
+<p>Developments at Hugging Face reveal that an important transition is taking place between the users and developers of NLP machine learning software being the same people to a growing user community who want to try out different models to meet their needs and workflows.</p>
+</div>
+<div id="conclusion-4" class="section level2 hasAnchor" number="8.10">
+<h2><span class="header-section-number">8.10</span> Conclusion<a href="machinelearning.html#conclusion-4" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p>This chapter has addressed developments in machine learning for natural language processing and its implications for patent analytics. We have focused on the emergence of vector space based models and their uses for text classification and name entity recognition tasks using the Prodigy annotation tool and spaCy NLP library models from explosion.ai. In the process we have sought to emphasise some of the main insights from our own work with these and similar tools for patent analysts interested in benefiting from machine learning based approaches. In closing this chapter the following points are relevant to decision-making on machine learning and patent analytics.</p>
+<ol style="list-style-type: decimal">
+<li>Is machine learning based NLP really what I need? Machine learning libraries will typically make a big difference in patent analytics if you want to automate entity identification in your workflow. For small to medium scale projects it make sense as you will arrive at faster outcomes with standard NLP approaches and using VantagePoint. Alternatively, some of the plug and play offerings from cloud services that offer text classification or named entity recognition might be the right fit for you.</li>
+<li>If the answer to the first question is yes, the next question is what tool to use for the particular tasks that you have in mind. The author’s work mainly focuses on the extraction of named entities from text that are relatively straightforward for NER models to manage, such as species, common, country and place names. More specialist tasks, such as the recognition of chemical, genetic or other types of entities would merit investigating libraries that have been designed or adapted for these types of entities. For example Allen AI has created the <a href="https://allenai.github.io/scispacy/">SciSpacy</a> set of models for working with biomedical, clinical or scientific texts. The Hugging Face community site may also be a good option for identifying models trained on particular tasks.</li>
+<li>In deciding on a machine learning model or set of models focus on the documentation and the size of the user community. Machine learning can be deeply confusing. Identifying packages and models that are well documented and have active communities will allow you to get things done rather than navigating complex layers of documentation or puzzling over what the statistics from a model run mean. The author chose to use spaCy because it is well documented and supported and included a <a href="https://course.spacy.io/en/">free course</a> and <a href="https://github.com/explosion/projects">model project templates</a> for different use cases.</li>
+<li>What does success look like? When engaging with machine learning it is easy to start pursuing perfection when the objective should be to pursue a model that does a good general job for the task at hand and saves on time and effort that a human would otherwise have to dedicate to the task.</li>
+<li>Define how to evaluate the outcomes. It is extremely easy to create a model that will perform almost perfectly on 100 records using a 80% (training) to 20% (evaluation) split. That model will perform terribly on real world data even if the metrics produced by the model look great. There is a need to introduce measures that allow you to evaluate the real world utility of a model. For this tools such as prodigy are valuable for assessing (and correcting) a model in practice while VantagePoint from Search Technology Inc is very valuable for large scale assessment of model performance (e.g. on hundreds of thousands of tests).</li>
+<li>Do not try to be on the cutting edge of machine learning for NLP. In patent analytics, unless you are an academic researcher developing methods, the place to be is generally a year or two behind the cutting edge. In a fast developing field it can take a while to understand what the successful new approaches really are and how you can use them in your work. For example, the present state of the art is represented by transformers but vector based models are much more practical for everyday use on a laptop and can produce excellent results. When investing in NLP libraries it can make very good sense to plan the transition from using one set of models to another. For example, the transition from version 2 to version 3 of spaCy involved some quite radical changes that required planning. It makes good sense to be some distance behind the curve and to plan transitions to newer approaches as they prove their worth, or, in the case of transformers, as they become more accessible to regular users.</li>
+</ol>
+
+</div>
+</div>
+<h3>References</h3>
+<div id="refs" class="references csl-bib-body hanging-indent">
+<div id="ref-lens.org/056-971-725-855-254" class="csl-entry">
+<em>Automated Categorization in the International Patent Classification</em>. 2003. Vol. 37. 1. United States: Association for Computing Machinery (ACM). <a href="https://doi.org/10.1145/945546.945547">https://doi.org/10.1145/945546.945547</a>.
+</div>
+<div id="ref-bojanowski2016enriching" class="csl-entry">
+Bojanowski, Piotr, Edouard Grave, Armand Joulin, and Tomas Mikolov. 2016. <span>“Enriching Word Vectors with Subword Information.”</span> <em>arXiv Preprint arXiv:1607.04606</em>.
+</div>
+<div id="ref-joulin2016fasttext" class="csl-entry">
+Joulin, Armand, Edouard Grave, Piotr Bojanowski, Matthijs Douze, Hérve Jégou, and Tomas Mikolov. 2016. <span>“FastText.zip: Compressing Text Classification Models.”</span> <em>arXiv Preprint arXiv:1612.03651</em>.
+</div>
+<div id="ref-joulin2016bag" class="csl-entry">
+Joulin, Armand, Edouard Grave, Piotr Bojanowski, and Tomas Mikolov. 2016. <span>“Bag of Tricks for Efficient Text Classification.”</span> <em>arXiv Preprint arXiv:1607.01759</em>.
+</div>
+<div id="ref-lens.org/104-512-929-235-758" class="csl-entry">
+Mikolov, Tomas, Kai Chen, Greg Corrado, and Jeffrey Dean. 2013. <span>“Efficient Estimation of Word Representations in Vector Space.”</span> <a href="https://128.84.21.199/abs/1301.3781?context=cs; https://arxiv.org/abs/1301.3781; https://arxiv.org/pdf/1301.3781; https://lens.org/104-512-929-235-758">https://128.84.21.199/abs/1301.3781?context=cs; https://arxiv.org/abs/1301.3781; https://arxiv.org/pdf/1301.3781; https://lens.org/104-512-929-235-758</a>.
+</div>
+<div id="ref-lens.org/078-034-591-343-369" class="csl-entry">
+Risch, Julian, and Ralf Krestel. 2019. <span>“Domain-Specific Word Embeddings for Patent Classification.”</span> <em>Drug Testing and Analysis</em> 53 (1): 108–22. <a href="https://doi.org/10.1108/dta-01-2019-0002">https://doi.org/10.1108/dta-01-2019-0002</a>.
+</div>
+<div id="ref-lens.org/086-980-365-076-590" class="csl-entry">
+Vaswani, Ashish, Noam Shazeer, Niki Parmar, Jakob Uszkoreit, Llion Jones, Aidan N. Gomez, Lukasz Kaiser, and Illia Polosukhin. 2017. <span>“Attention Is All You Need.”</span> <a href="https://lens.org/086-980-365-076-590">https://lens.org/086-980-365-076-590</a>.
+</div>
+</div>
+<div class="footnotes">
+<hr />
+<ol start="25">
+<li id="fn25"><p><a href="https://royalsociety.org/-/media/policy/projects/machine-learning/publications/machine-learning-report.pdf">https://royalsociety.org/-/media/policy/projects/machine-learning/publications/machine-learning-report.pdf</a><a href="machinelearning.html#fnref25" class="footnote-back">↩︎</a></p></li>
+<li id="fn26"><p><a href="https://www.youtube.com/playlist?list=PLoROMvodv4rOhcuXMZkNm7j3fVwBBY42z">https://www.youtube.com/playlist?list=PLoROMvodv4rOhcuXMZkNm7j3fVwBBY42z</a><a href="machinelearning.html#fnref26" class="footnote-back">↩︎</a></p></li>
+<li id="fn27"><p><a href="https://dev.to/jbahire/demystifying-word-vectors-50pj">https://dev.to/jbahire/demystifying-word-vectors-50pj</a><a href="machinelearning.html#fnref27" class="footnote-back">↩︎</a></p></li>
+<li id="fn28"><p><a href="https://blog.acolyer.org/2016/04/21/the-amazing-power-of-word-vectors/" class="uri">https://blog.acolyer.org/2016/04/21/the-amazing-power-of-word-vectors/</a><a href="machinelearning.html#fnref28" class="footnote-back">↩︎</a></p></li>
+<li id="fn29"><p>Available for download from Github at <a href="https://github.com/JasonHoou/USPTO-2M">https://github.com/JasonHoou/USPTO-2M</a> and at <a href="http://mleg.cse.sc.edu/DeepPatent/">http://mleg.cse.sc.edu/DeepPatent/</a><a href="machinelearning.html#fnref29" class="footnote-back">↩︎</a></p></li>
+<li id="fn30"><p>Accessible from: <a href="https://hpi.de/naumann/projects/web-science/deep-learning-for-text/patent-classification.html">https://hpi.de/naumann/projects/web-science/deep-learning-for-text/patent-classification.html</a>, last accessed: 2019-09-17<a href="machinelearning.html#fnref30" class="footnote-back">↩︎</a></p></li>
+</ol>
+</div>
+            </section>
+
+          </div>
+        </div>
+      </div>
+<a href="textmining.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
+<a href="conclusion.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
+    </div>
+  </div>
+<script src="libs/gitbook-2.6.7/js/app.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/clipboard.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-search.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-sharing.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-fontsettings.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-bookdown.js"></script>
+<script src="libs/gitbook-2.6.7/js/jquery.highlight.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-clipboard.js"></script>
+<script>
+gitbook.require(["gitbook"], function(gitbook) {
+gitbook.start({
+"sharing": {
+"github": false,
+"facebook": true,
+"twitter": true,
+"linkedin": false,
+"weibo": false,
+"instapaper": false,
+"vk": false,
+"whatsapp": false,
+"all": ["facebook", "twitter", "linkedin", "weibo", "instapaper"]
+},
+"fontsettings": {
+"theme": "white",
+"family": "sans",
+"size": 2
+},
+"edit": {
+"link": null,
+"text": null
+},
+"history": {
+"link": null,
+"text": null
+},
+"view": {
+"link": null,
+"text": null
+},
+"download": ["handbook.pdf", "handbook.epub"],
+"search": {
+"engine": "fuse",
+"options": null
+},
+"toc": {
+"collapse": "subsection"
+},
+"show_codefolding_buttons": true
+});
+});
+</script>
+
+</body>
+
+</html>
