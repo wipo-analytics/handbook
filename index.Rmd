@@ -1,0 +1,183 @@
+--- 
+title: "The WIPO Patent Analytics Handbook"
+author: "Paul Oldham"
+date: "2022"
+site: bookdown::bookdown_site
+documentclass: book
+bibliography: [book.bib, crossref.bib, grateful-refs.bib]
+biblio-style: apalike
+link-citations: yes
+description: "The WIPO Patent Analytics Handbook."
+---
+<!--- last spell checked 2022-09-28--->
+
+# Preface {-}
+\index{preface}
+
+The WIPO Patent Analytics Handbook provides an introduction to advanced methods for patent analytics and focuses on tools and skills that patent analysts can use in their everyday work. The Handbook builds on the [WIPO Manual for Open Source Patent Analytics](https://wipo-analytics.github.io/) which provides an introduction to working with patent data using a range of free tools to obtain, clean and visualize patent data. The handbook aims to address two challenges. 
+
+The first of these challenges is that anyone seeking to start work in patent analytics is confronted by a lack of reliable practical guidance on how to develop simple descriptive patent statistics. The *OECD Patent Statistics Manual* is required reading for anyone seeking to engage with patent statistics and is an invaluable resource [@OECD_2009]. However, it focuses on the issues we need to think about rather than practical demonstration. The Handbook addresses this problem by working through first principles in the development of patent counts for descriptive statistics and provides basic illustrations of the use of linear regression and forecasting models. In the process the Handbook aims to build a bridge to more sophisticated approaches to working with patent data at scale in fields such as econometrics and points to useful resources in these areas. 
+
+The ability to generate descriptive patent statistics is only one aspect of patent analytics. Recent years have witnessed an explosion in the availability of different data types that can be integrated with patent data to better inform and enrich analysis. The second and major challenge addressed by the Handbook is integrating different data types from the scientific literature, to geographic information and the results of text mining into patent analytics. In turn the range of methods that are available to patent analysts for working with patent data promises to be transformed by the emergence of accessible machine learning tools for use across a range of topics such as applicant name cleaning, text mining and image classification. In common with many other fields of research the emergence of machine learning appears to hold considerable promise for patent analytics but it remains to be seen whether this promise will be realised. 
+
+The Handbook is therefore intended to be used by researchers and professionals who are relatively new to working with patent data. It is also intended to be of interest for experienced researchers and professionals who are interested in expanding their skills in working with patent and related data at different scales. 
+
+One important challenge that has emerged in recent years with the growth of patent analytics and patent landscape analysis is the problem of reproducibility [@Smith_2017]. Patent analysts typically work with data from a number of different databases and use a number of different methods in their analysis. However, the precise details of the coverage of different sources, the methods used, and the limitations of different approaches are often not made explicit. This makes it difficult for others to reproduce the results and to assess the quality of the analysis presented. The Handbook takes the approach that patent analysis should be reproducible. The Handbook addresses this issue by using examples from standardised open access datasets created for this purpose or from public sources. The online version of the Handbook is an example of literate programming and all chapters are accompanied by the code used to develop the examples. The chapters in Rmarkdown format containing all code are available from the public GitHub repository at [https://github.com/wipo-analytics/handbook](https://github.com/wipo-analytics/handbook)
+
+# About the Author {-}
+
+The Handbook was written by Paul Oldham under the coordination of Irene Kitsara at WIPO. Paul Oldham holds a PhD. from the London School of Economics and Political Science and is the Director of One World Analytics. He is a Senior Visiting Fellow and Industrial Fellow at the Manchester Institute of Innovation Research, Alliance Manchester Business School, Manchester University. Irene Kitsara is an Intellectual Property Lawyer who formerly worked with Deloitte and a Patent Analytics expert. She is presently an Intellectual Property Information Officer at WIPO with responsibility for Patent Analytics. 
+
+# Acknowlegements {-}
+
+The WIPO Patent Analytics Handbook was written with the generous financial support of the Patent Office of Japan (JPO). The Handbook was prepared under the direction of Mr. Yo Takagi (Assistant Director General) and under the supervision of Mr. Alejandro Roca Campaña (Senior Director) and Mr. Andrew Czajkowski (Head of Section). Irene Kitsara (IP Information Officer) coordinated the preparation and review of the Handbook. The author thanks Craig Dsouza for his valuable contribution to checking the Handbook and Lakshmi Supriya at WIPO for her support. 
+
+# How to use the Handbook {-} 
+\index{howto}
+
+This Handbook consists of self standing chapters on different topics and is intended to be used in two ways. It can be used as a reference guide to a topic with worked examples for illustration and key literature sources to guide further reading on a topic. The Handbook can also be used as practical guide by downloading the datasets and reproducing the worked examples to help you apply the methods to your own analysis. Patent analytics involves a wide range of skills across different disciplines and one aim of the Handbook is to point to important sources of further information and training for each topic.   
+
+If you wish to reproduce the examples please use the following instructions. 
+
+\index{installing rstudio}
+\index{installing packages}
+
+The handbook and its examples were written in RStudio with examples drawn from VantagePoint by Search Technology Inc. RStudio is an easy to use and powerful platform for patent analytics and preparing data and reports for publication. To use RStudio you need to start by installing R for your operating system by visiting this [http://cran.rstudio.com/](http://cran.rstudio.com/). We will use the free version of RStudio that can be downloaded [https://www.rstudio.com/products/rstudio/download/](https://www.rstudio.com/products/rstudio/download/).
+
+VantagePoint from Search Technology Inc is specialist analytics software that is available under different price plans for students. It is the premiere tool for patent analytics and does not require programming knowledge. 
+
+This Handbook is open access and each chapter and the code used to develop the examples can be downloaded free of charge from Github at [https://github.com/wipo-analytics/handbook](https://github.com/wipo-analytics/handbook). The Handbook can be opened in RStudio using the `handbook.Rproj` file. 
+
+The Handbook makes use of a number of R packages. To install all packages used in the Handbook run the following lines in the console. Note that this can take some time. The core package across all chapters is the `tidyverse`. The libraries needed to run code in the chapters is present in the code chunks in the individual chapters.
+
+```{r eval=FALSE}
+install.packages("tidyverse")
+install.packages("rmarkdown")
+
+install.packages("collapsibleTree")
+install.packages("devtools")
+install.packages("fable")
+install.packages("fabletools")
+install.packages("feasts")
+install.packages("formattable")
+install.packages("ggmap")
+install.packages("ggraph")
+install.packages("googleway")
+install.packages("igraph")
+install.packages("janitor")
+install.packages("kableExtra")
+install.packages("knitr")
+install.packages("leaflet")
+install.packages("lubridate")
+install.packages("networkD3")
+install.packages("printr")
+install.packages("qdapRegex")
+install.packages("readxl")
+install.packages("stringi")
+install.packages("sunburstR")
+install.packages("tidytext")
+install.packages("tidymodels")
+install.packages("textstem")
+install.packages("textclean")
+install.packages("tokenizers")
+install.packages("tsibble")
+install.packages("udpipe")
+install.packages("usethis")
+install.packages("vroom")
+install.packages("widyr")
+install.packages("wordnet")
+```
+
+The placement package requires a separate installation:
+
+```{r eval=FALSE}
+library(devtools)
+install_github("DerekYves/placement")
+
+```
+
+To load the libraries use:
+
+```{r eval=FALSE}
+library(tidyverse)
+library(collapsibleTree)
+library(devtools)
+library(fable)
+library(fabletools)
+library(feasts)
+library(formattable)
+library(igraph)
+library(ggmap)
+library(ggraph)
+library(googleway)
+library(igraph)
+library(janitor)
+library(kableExtra)
+library(knitr)
+library(leaflet)
+library(lubridate)
+library(networkD3)
+library(placement) 
+library(printr)
+library(qdapRegex)
+library(readxl)
+library(stringi)
+library(sunburstR)
+library(tidytext)
+library(tidymodels)
+library(textstem)
+library(textclean)
+library(tokenizers)
+library(tsibble)
+library(udpipe)
+library(usethis)
+library(vroom)
+library(widyr)
+library(wordnet)
+
+```
+
+# Note to Readers {-}
+
+We would like to ensure that the Handbook remains a useful resource for the patent analytics community. If you would like to correct or comment on entries in the Handbook please raise an issue on Github [here](https://github.com/wipo-analytics/handbook2022/issues). Alternatively please email `poldham at mac dot com`.
+
+# Datasets {-}
+\index{datasets}
+\index{resources!datasets}
+
+All datasets used in the Handbook are publicly available through an Open Science Framework repository at [https://osf.io/jr87e/](https://osf.io/jr87e/) and are arranged by chapter.
+
+The Handbook makes extensive use of a data relating to drone technology. 
+
+- The drones dataset. This is a set of training datasets used in examples. The core dataset consists of 15,557 patent applications involving the term drone or drones somewhere in the text. You can download the data as a zip file from the repository at [https://osf.io/download/zubd4/](https://osf.io/download/zubd4/)
+
+Users of Rstudio can install the drones package directly using the following code. Note that the `devtools` package must be installed (included in the packages above).
+
+```{r install, eval= FALSE}
+#install.packages("devtools")
+
+devtools::install_github("wipo-analytics/drones")
+```
+
+When the drones package is installed review the contents of each dataset in the package documentation (see Packages in Rstudio) and load the data into your work space using the following. 
+
+```{r load_drones, eval=FALSE}
+library(drones)
+drones <- drones::drones
+```
+
+A new version of the drones dataset package that we call `dronesr` has been created using data from [The Lens](https://www.lens.org/) database and its API. If you would like to use updated data to test the approaches provided in the Handbook then install the `dronesr` package. For those who are not using R the new data can be downloaded as a single zipped file from the Open Science Framework repository at https://osf.io/download/yngqc/](https://osf.io/download/yngqc/).
+
+```{r installdronesr, eval=FALSE}
+#install.packages("devtools") # from github
+
+devtools::install_github("wipo-analytics/dronesr")
+```
+
+The `dronesr` data contains patent data and scientific literature and is available in two public Lens collections:
+
+1. The patent collection [https://www.lens.org/lens/search/patent/list?collectionId=199031](https://www.lens.org/lens/search/patent/list?collectionId=199031)
+2. The literature collection [https://www.lens.org/lens/search/scholar/list?collectionId=199039](https://www.lens.org/lens/search/scholar/list?collectionId=199039)
+
+The `dronesr` data is particularly valuable for readers interested in exploring the relationship between the scientific and the patent literature and citations.
+
