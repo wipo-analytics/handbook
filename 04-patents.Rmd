@@ -320,7 +320,7 @@ Table \@ref(tab:countsummary) helps to make clear that we may be dealing with si
 
 In the next section we will progressively move up from counting patent documents using priority numbers and finish by using counts of INPADOC family members to elucidate trends for drone related technology. 
 
-## Counting Priority or First Filings
+## Understanding Priority Numbers
 
 When a patent application is filed for the first time anywhere in the world it becomes the priority document or first filing. The use of this term is based on the 1883 Paris Convention. The WIPO summary of the key provisions of the Paris Convention explains the right of priority introduced by the Convention as follows.  
 

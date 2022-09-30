@@ -6,7 +6,7 @@ In this Chapter we will explore geocoding, Geocoding is the process of turning l
 
 Geocoding is a relatively recent and popular way to map activity in geographic space, such as research organisations, patent applicants and patent inventors. Basic geocoding such as clustering records by country can be performed using country codes or country names in free tools such as Tableau Public. 
 
-This chapter addresses a more advanced form of geocoding using web services, and specifically the Google Maps API to geocode thousands of organisation names from Web of Science data. The Google Maps API can be accessed in a range of programming languages such as Python or R. We will focus on illustrating the issues involved in geocoding sing the `placement`, `ggmap`, and `googleway` packages in R. We will work with some raw data from Clarivate Analytics [`Web of Science`](http://wokinfo.com/) database of scientific literature. Many universities have access to Web of Science and it is an important tool in fields such as bibliometrics/scientometrics. 
+This chapter addresses a more advanced form of geocoding using web services, and specifically the Google Maps API to geocode thousands of organisation names from Web of Science data. The Google Maps API can be accessed in a range of programming languages such as Python or R. We will focus on illustrating the issues involved in geocoding using the `placement`, `ggmap`, and `googleway` packages in R. We will work with some raw data from Clarivate Analytics [`Web of Science`](http://wokinfo.com/) database of scientific literature. Many universities have access to Web of Science and it is an important tool in fields such as bibliometrics/scientometrics. 
 
 Geocoding is the process of taking a name and address and looking up the geographic coordinates expressed in latitude and longitude. This is normally done using a web service. There are plenty of example walkthroughs on how to do this. However, many of them start with data that is already clean. We will be working with data that is really rather messy.   
 
@@ -18,16 +18,22 @@ In this Chapter we will go step by step through the process of geocoding and dea
 
 By the end of this Chapter you will be familiar with what geocoding is and how to carry out geocoding using the `placement`, `ggmap` and `googleway` packages in R with RStudio. You will also be familiar with the Google Maps API and be able to identify and retrieve missing data using packages from the tidyverse. We will take what we learned and combine it into more efficient code for solving the problem and finish off with a quick map of the results. 
 
-### Getting Started
+## Getting Started
 
 If you are new to R and RStudio then first we need to get set up. To install R for your operating system choose the appropriate option [here](http://cran.rstudio.com/) and install R. Then download the free RStudio desktop for your system [here](https://www.rstudio.com/products/rstudio/download/#download). We will be using a suite of packages called the `tidyverse` that make it easy to work with data. When you have installed and opened RStudio run these lines in your console to install the packages that we will be using. 
 
 ```{r installpkg, eval=FALSE}
 install.packages("tidyverse")
-install.packages("placement")
 install.packages("devtools")
 install.packages("usethis")
 install.packages("googleway")
+```
+
+The placement package is no longer available on CRAN and needs to be installed from Github as follows.
+
+```{r}
+library(devtools)
+install_github("DerekYves/placement")
 ```
 
 For ggmap we will load the latest version 2.7 that includes `register_google()` for authentication and install it from Github as follows.
@@ -56,7 +62,7 @@ While `placement` mainly focuses on geocoding, [`ggmap`](https://github.com/dkah
 
 We will mainly use the `placement` package because I like the simplicity of the package, but which you use will depend on your purpose and you will probably want to experiment with the wider functionality of `ggmap` or the more recent `googleway`. 
 
-### Getting set up with the Google Maps API
+## Getting set up with the Google Maps API
 
 To use the Google Maps API you will need to:
 
@@ -93,13 +99,13 @@ We will go with the `usethis::edit_r_environ()` environment option, so let's sto
 key <- Sys.getenv("GOOGLE_MAPS_KEY")
 ```
 
-### Using the API
+## Using the API
 
 Note that API queries are limited to a free 2500 per day. It costs 50 cents per 1000 queries after that. As this is not expensive we signed up for a billing account to run the full list. As we will see below signing up for an API key is a good idea to avoid problems with the return resulting from pressure on the free service. When you sign up for the API key you still get the 2500 results but make sure you put your API key somewhere safe and do not make it public. 
 
 Below we will briefly show how to use the `placement`, `ggmap` and newer `googleway` packages to retrieve geocode data. Unfortunately the return from the Google API with placement also includes a column called `input_url`. I say unfortunate because the `input_url` includes your private API key! So, if you are planning to make any of this data public you should exclude the `input_url` column. 
 
-### The Source Data
+## The Source Data
 
 Next let's take a quick look at the source data. When we send the addresses to the Google Maps API with `placement` it will return the original search terms in a column called `locations`. To make our life easier we renamed the original column in our source dataset. Note that the records field refers to the number of publications associated with an address and will allow us to size dots on any map we produce with the results. We can import the data directly from Github. 
 
@@ -121,9 +127,9 @@ head(affiliation_records)
 
 ## Lookup the Records
 
-In this section we will look up some of the records with each of the three packages to show how easy it is. Purely from personal preference we will use `placement` for the rest of the work.
+In this section we will look up some of the records with each of the three packages to show how easy it is. Purely from personal preference we will use `placement` for the rest of the work. Note that `placement` is no longer being actively maintained and the examples below are used for illustration. We now recommend switching to `ggmap` or `googleway` depending on your needs.
 
-### Using placement
+## Using placement
 
 The `placement` package can do more than we will attempt here. For example, you can attempt address cleaning or calculating driving distances with `placement`. For our purposes the main event is the `geocode_url()` function, We pass the data in the locations column to the function along with the authentication route and the private key. The `clean = TRUE` argument applies the `address_cleaner` function before encoding the URL to send to the API. The default is set to TRUE and you may want to experiment with setting this value to FALSE. We also add the date of search as it is always useful to know when we carried out the search and we set verbose to TRUE to receive more information. Note that other arguments such as `dryrun` can be useful for debugging problem addresses.
 
@@ -153,7 +159,7 @@ save(coordaffil, file = "data/coordaffil.rda")
 load("data/coordaffil.rda")
 ```
 
-### Using ggmap
+## Using ggmap
 
 We can perform the same lookup using `ggmap` and the `geocode()` function. Note that the function defaults to the free allocation of 2500 queries. There are options to return "latlon" and "latlona"" or "more" or "all". In the case of "all" this returns a list with entries of differing lengths that you will need to wrangle. In general use `latlon`, `latlona` or `more` as this will return a data frame. Here we will just test 100 records. `geocode()` does not return the input URL with our private key (which is good).
 
@@ -198,7 +204,7 @@ ggmap1 %>%
   head()
 ```
 
-### Using Googleway
+## Using Googleway
 
 An alternative to `placement` or `ggmap` is also available using the `googleway` package. `googleway` includes access to the Google APIs for directions, distance, elevation, time zones, places, geocoding and reverse geocoding and so has a wider set of uses. However, `googleway` is expecting an address field of length 1 (meaning it takes one address at a time) whereas placement and ggmap are vectorised. The return from googleway returns a list object containing a data frame with the results and the status of the return. Here is one quick example.
 
@@ -274,7 +280,7 @@ When dealing with thousands of records it is often a good idea to add a cut off 
 
 However, the lookup table highlights an issue that the Google Maps API previously struggled to deal with: abbreviations. When working with scientific literature abbreviations in author affiliations along with acronyms are common. So, lets look at how to deal with that.  
 
-### Tackling Abbreviations
+## Tackling Abbreviations
 
 Here we have created a simple file containing some of the major Web of Science organisation abbreviations and their matches. It is probably not complete but is a good start. Next we added a column with word boundaries that we will use to find and replace the abbreviations. You can download the the file directly from Github.
 
@@ -399,7 +405,7 @@ load("data/lookup.rda")
 
 Note that rather than creating a separate character vector we made life easier by simply adding `locations_edited` to our lookup data.frame (because the vectors are of the same length) using `unite()`.
 
-### Lookup edited names
+## Lookup edited names
 
 We now send the cleaned up version off to the Google API. 
 
@@ -427,7 +433,7 @@ coordlookup %>%
 
 So, 8 of our revised names have failed to produce a return. In some cases this is a little surprising. For example the private Kitasato University would be expected to come up, but the reference to Aomori seems to have confused the mapper (as the University is listed as located in Minato). In the case of the Institute Oceanography Vast we can see that there is duplication (Vast refers to the Vietnam Academy of Science and Technology as the parent organisation of the institute) with the second and third entries being recognised. Other variants such as `Nha Trang Institute Oceanography, Khanh Hoa Prov, Vietnam` and the acronym `Vnio, Nha Trang, Vietnam` are also missed. How far you want to push with fixing addresses is up to you and will depend on your purposes. As mentioned above, to avoid a long tail of unresolved addresses for low frequency data you may want to use a cut off on the number of records.
 
-### Bringing the data together
+## Bringing the data together
 
 To join the data back together we need to do some tidying up on the lookup and coordlookup table first. Recall that we sent edited names to Google and those were returned as `locations`. This means that they will not match with the names in our original table. We also created some additional columns. To create tables that will match the original table we need to tidy up by:
 
@@ -476,7 +482,7 @@ write_csv(results_complete, path = "asean_geocode_complete.csv")
 
 We now have a complete set of geocoded results with 5,198 locations from 5,206. That is pretty good. However, having obtained the geocoded data and joined it onto our original data.frame we now need to look at the quality of the return. 
 
-### Assessing the Quality of Geocoding
+## Assessing the Quality of Geocoding
 
 So far we have focused on getting geocoded data without really looking at it. To assess the quality of the data that has been returned we should take a look at the location type field. The API documentation for these entries can be found [here](https://developers.google.com/maps/documentation/geocoding/intro) and in the `geocode_url()` documentation.
 
@@ -598,7 +604,7 @@ run1 %>%
 
 What this has done is improved the rooftop resolution by a couple of percentage points and improved the geometric centre results by about the same. The approximate score has dropped to 19% from 23% so this is definitely progress. In total 214 records have moved up from the approximate to the rooftop or geometric centre location_types. As this suggests, improving the quality of geocoding matters and it is therefore worth putting the effort into improving the resolution of the results. 
 
-### Duplicated Affiliation Names
+## Duplicated Affiliation Names
 
 ```{r echo=FALSE, eval=FALSE}
 save(affiliation2, file = "data/affiliation2.rda")
@@ -653,7 +659,7 @@ res_complete %>%
   count(formatted_address, sort = TRUE)
 ```
 
-### Quickly Mapping the Data
+## Mapping the Data
 
 To finish off lets quickly map the data. We will focus on mapping in more detail in other articles in the Handbook. For the moment we will use the leaflet package for this.
 
@@ -675,7 +681,7 @@ As this makes clear it is relatively straightforward to generate quick maps with
 
 ## Round Up
 
-In this article we looked at three R packages for geocoding data on research affiliations from the scientific literature using Web of Science. We focused on the use of the `placement` package as it is very easy to use. However, your needs may differ with packages such as `ggmap` and `googleway` offering different functionality. 
+In this article we looked at three R packages for geocoding data on research affiliations from the scientific literature using Web of Science. We focused on the use of the `placement` package as it is very easy to use. However, your needs may differ with packages such as `ggmap` and `googleway` offering different functionality. Packages may also come and go and at the time of writing `placement` is now archived with `ggmap` as the obvious replacement. 
 
 The main take away message is that geocoding using the Google Maps API will normally be an iterative process that may requires multiple passes and adjustments to the data to arrive at accurate results. One things should now also be clear, while the Google Maps API has dramatically improved in its ability to offer geocoded results (including on messy names) these results should not be taken at face value. Instead, and depending on your purpose, multiple iterations may be needed to improve the resolution of the results. In this article we have not gone all the way with this but have hopefully provided enough pointers to allow you to take it further. 
 

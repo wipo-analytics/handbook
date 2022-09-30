@@ -1,5 +1,5 @@
 # Patent Citations {#citations}
-\index{citations}
+
 <!--- last spell checked 2022-08-18--->
 This chapter focuses on the use of patent citations in patent analytics. Patent citations take two main forms:
 
@@ -14,7 +14,7 @@ A rich literature has emerged around patent citation analysis and we will highli
 
 In this chapter we will begin with the non-patent literature and move step by step through the issues that need to be considered when working with patent citation data. We will use examples from synthetic biology and CRISPR genome editing technology to illustrate approaches to the non-patent literature and patent citations and finish with recent research on identifying technology paths with citation data. 
 
-### Non Patent Literature
+## Non Patent Literature
 
 Non-patent literature mainly takes the form of scientific publications such as journals, books, or chapters but also extends to other types of materials such as manuals, news reports, drawings and websites. As we will see below, viewed from a data science perspective the non-patent literature is that it generally takes the form of messy free text that requires extensive cleaning. However, from approximately 1980 onwards NPL has become an increasingly important focus for research. 
 
@@ -24,7 +24,7 @@ As this very brief set of way markers suggests, a significant body of work on di
 
 We will consider the case of PatentsView in more detail below. However, one of the most important recent development are efforts by patent databases, led by the [open access Lens database](https://www.lens.org/) to electronically link literature databases and patent databases together. 
 
-### Literature and Patent Citation Data with the Lens
+## Literature and Patent Citation Data with the Lens
 
 As discussed in the chapter on the scientific literature, free electronic access to sources of the scientific literature is increasingly available through services such as Crossref, PubMed and Microsoft Academic Graph. The Lens has now developed a `Scholar Search` service that includes approximately 291.4 million scholarly works from PubMed, Crossref and Microsoft Academic. These records are then linked to citations in patent over 110 million patent documents covered by the Lens `Patent Search`. The importance of this approach is that it allows the user to navigate the non-patent literature linked to a particular record or to extract the cited literature from a record and create a collection to download and analyse. As we will also see, the recent `PATCITE` service also allows users to retrieve data on citations at scale. 
 
@@ -115,7 +115,7 @@ This suggests that one opportunity for using the cited literature identified fro
 
 As this makes clear, linking the scientific and patent literature together makes it very easy to construct an exploratory patent portfolio in minutes. In the past this might have taken weeks or months. However, it is now also possible to work on a larger scale.
 
-#### Retrieving Citations at Scale with PATCITE
+## Retrieving Citations at Scale with PATCITE
 
 The [PATCITE tool](https://www.lens.org/lens/patcite) in the Lens is a recent introduction that allows a user to paste in a set of article or patent identifiers to retrieve citation data. The advantage of PATCITE is that it is possible to do this in bulk at the level of thousands of identifiers, such as the widespread Document Object Identifiers (dois) for the scientific literature. This will normally be more convenient when working with data from other datasets. 
 
@@ -158,7 +158,7 @@ PATCITE offers the possibility of beginning these explorations directly from the
 
 One logical question for researchers seeking to match the scientific literature into patent data is the issue of data capture. That is, it is not immediately clear whether the 3,077 dois that were not identified in PATCITE were not identified because they are absent from patent data or because of limitations in capture. The answer to this question may be a combination of the two. In practice, the ability of an analyst to interrogate data capture at the database level, such as the accurate identification of dois, is likely to be limited. However, we can gain an insight into these issues using the raw citation data from the US PatentsView service. 
 
-#### The US PatentsView Non-Patent Literature Table
+## The US PatentsView Non-Patent Literature Table
 
 For most patent analysts the Lens literature and PATCITE service is the logical starting point for research, for the straight forward reason that it is so easy to use and can generate a targeted patent collection for exploration within a few minutes. However, this may not suit all purposes, particularly where larger scale data is required. It is also a very good idea to have an understanding of what the raw NPL looks like in understanding the strengths and limitations of different databases. 
 
@@ -274,7 +274,7 @@ When coupled with other developments such as non-patent literature tables in PAT
 
 We now turn to the use of patent citations. 
 
-### Patent Citations
+## Patent Citations
 
 Patent citations are citations to other patent documents. They take the form of backward (cited) and forward (citing) citations. Backward citations, also referred to as back citations or cited patent documents, refer to earlier patent applications or grants that affect the scope of the claims of an application. Forward citations or citing documents refer to later filings of applications that are affected by the scope of the claims of the cited document. 
 
@@ -294,13 +294,13 @@ b) as proxies for knowledge flows and networks.
 
 We are now in a position to begin navigating patent citation networks. 
 
-### Navigating Patent Networks
+## Navigating Patent Networks
 
 In the discussion below we will focus on the basic issues involved in navigating patent citations using the CRISPR Cas9 genome editing cases above as our example. We will start with a fictional search of a patent database for CRISPR that identifies [EP2784162B1](https://www.lens.org/lens/patent/081-370-519-314-433) from the Harvard-MIT Broad Institute for `Engineering of systems, methods and optimized guide compositions for sequence manipulation` by inventors Le Cong, Feng Zhang and other collaborators. We will then explore different ways of counting and navigating patent citations.
 
 If you wish to explore the citations discussed below using the Lens you can access the reference document [EP2784162B1 here](https://www.lens.org/lens/patent/081-370-519-314-433). Note that counts of citations may vary across different databases. In the working examples below we use data from Clarivate Analytics Derwent Innovation database. Because of its greater coverage of national collections worldwide Derwent Innovation will often involve higher scores than other databases. 
 
-#### Back citations
+### Back citations
 
 Back citations are earlier patent filings (either applicants or grants) that may be listed by the applicant or an examiner during search and/or examination.
 
@@ -403,7 +403,7 @@ We now have a basic grounding in back and forward patent citations using our CRI
 
 Each of these observations merits further exploration than can be provided in this chapter. The background literature discussed in this chapter explores a number of these topics. We now turn to the question of how to approach counts of patent citations and the implications of counting citations by patent families. Once again we will use the CRISPR example as a real world case.  
 
-### Counting Citations by Patent Families
+## Counting Citations by Patent Families
 
 As we have seen above, one method or exploring the landscape of patent citations is to focus on individual documents. However, as we will now see, conducting analysis on a per document basis may miss the majority of patent citations associated with the wider patent family and the key document or documents within a family. As such _counts limited to individual documents may radically underestimate the impact of a claimed invention within technology space_.
 
@@ -430,7 +430,7 @@ This data makes clear that our original reference document EP2784162B1, with 23 
 
 The important insight from a patent family based perspective is that a focus on citation counts for individual documents will often miss the wider picture. As such, it is important, wherever possible, to construct citation analysis at the patent family level. This will not only assist with identifying the most important documents in a family based on citing counts but in larger datasets will allow for the identification of the most important patent families in terms of their impact upon other actors within the technology space.
 
-When working with patent citations on a family level bear in mind that the number of family members and thus of citations will depend on the family definition. Thus, simple or DOCDB families will be smaller than INPADOC families as we have seen in the discussion of [Patent Families](#families). The citing landscape for those families is therefore also likely to be smaller. 
+When working with patent citations on a family level bear in mind that the number of family members and thus of citations will depend on the family definition. Thus, simple or DOCDB families will be smaller than INPADOC families as we have seen in the earlier discussion of Patent Families. The citing landscape for those families is therefore also likely to be smaller. 
 
 In thinking about calculating the number of citing patent documents we might be tempted to simply sum the count of citing patents provided with the export of the data from the patent database. For this working example we would obtain an answer of 5,138 as the gross figure. However, that is not actually what we want. The figure that we want is the count of `distinct` or `unique` citing documents to arrive at the citing count for the patent family. 
 
@@ -463,7 +463,7 @@ EP2784162B1 %>% # table containing the citing data
 
 If we were to work with a larger dataset containing multiple patent families we would therefore want to perform the above process based on each first filing (as the first family member) to arrive at the count of citing documents. Bear in mind that this choice will depend on the analytical task at hand. However, as we have seen in the case of EP2784162B1 this document is not the most important document in the family. As such, when working with patent search results it is important to move up one level to capture patent family data and then identify the most important documents in the set based on citation counts. The ability to do this will however depend in part on the options provided by the patent databases you have access to. 
 
-#### Patent Citations by Generation
+## Patent Citations by Generation
 
 Patent citations exist in what are often called layers or generations. Thus, a first generation forward citation is a document citing one of our reference documents such as EP2784162B1. A second generation citation is a document that cites the first generation document and so on. This is easier to appreciate where they are displayed in a tree structure. Figure \@ref(fig:citinggen) displays a tree map for PCT family members of [US8697359B1](https://www.lens.org/lens/patent/014-343-086-528-757). As the complete family set consists of 277 INPADOC family members we have restricted the set to PCT documents for ease of visibility. In the online version of this chapter the nodes can be selected and will expand or contract. 
 
@@ -510,7 +510,7 @@ crispr_citing %>%
 
 The visualisation of patent citations across multiple generations draws our attention to competitive activity in the technology space for CRISPR. However, it also draws our attention to the issue of knowledge spillovers that have been a detailed focus of analysis on the scientific literature for patent citations to which we now briefly turn. 
 
-### Citations and Knowledge Spillovers
+## Citations and Knowledge Spillovers
 
 Put simply, knowledge spillovers occur where the knowledge provided by an applicant informs later inventions by other unrelated applicants that may or may not be working in the same technology space.
 

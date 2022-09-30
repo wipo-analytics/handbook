@@ -1,5 +1,5 @@
 # Text Mining {#textmining}
-\index{textmining}
+
 <!--- last spell checked 2022-09-28--->
 
 Text mining involves the extraction of information from text sources. In the case of the scientific literature and patent data, text mining is closely associated with the concept of technology or tech mining as popularised by Alan Porter and Scott Cunningham [@lens.org/023-481-161-675-434]. However, the rise and rise of social media has expanded text mining into the pursuit of insights from platforms Twitter and other social media platforms involving topic modelling and sentiment analysis to inform decision making on public perceptions of technology and responses to products. A [dynamic Lens collection](https://www.lens.org/lens/search/scholar/list?collectionId=203440) on text mining has been created to complement this chapter and will allow you to explore the diverse uses of text mining.
@@ -10,9 +10,9 @@ To introduce text mining we will use the popular tidytext approach using R. This
 
 This chapter draws heavily on and reproduces code examples from _Text Mining with R: A Tidy Approach_ by Julia Silge and David Robinson. This book is strongly recommended for anyone seeking to engage in text mining and is available free of charge at [https://www.tidytextmining.com/](https://www.tidytextmining.com/). We will use code examples from Text Mining with R to illustrate different approaches. However, we will use a large dataset of texts from US PatentsView service in the worked examples. We will also demonstrate how the International Patent Classification allows us to focus our text mining efforts in relevant areas of the patent system. 
 
-The examples in this chapter are designed to illustrate tidy text mining at the scale of millions of records. If the worked examples prove challenging on your computer we recommend that you reduce the size of the examples. The examples in _Text Mining with R_ using the texts of Jane Austen and other classic literature are also highly accessible for working at a smaller scale. [DATASETS ARE AVAILABLE HERE].
+The examples in this chapter are designed to illustrate tidy text mining at the scale of millions of records. If the worked examples prove challenging on your computer we recommend that you reduce the size of the examples. The examples in _Text Mining with R_ using the texts of Jane Austen and other classic literature are also highly accessible for working at a smaller scale.
 
-### The USPTO Patent Granted Data
+## The USPTO Patent Granted Data
 
 In the last chapter on patent classification we used the ipcr table from the US PatentsView Service to explore uses of the International Patent Classification. In this chapter we will use the patents table for patents granted in the United States. At the time of writing that table consists of 7.8 million documents with the patents table containing identifier information, the titles and the abstracts. You can download the latest version of this table to your machine from the following address.
 
@@ -105,7 +105,7 @@ head_ipcr %>%
 
 <!--- load file to data store, cache head--->
 
-### Words
+## Words
 
 A primary task in text mining is tokenizing. A token is a unit in a text, typically a word or punctuation. Phrases are formed from combinations of tokens and sentences are formed from a set of tokens with marker (a full stop) at the end of the sentence. Tokenizing is therefore the process of breaking down texts into their constituent tokens (elements). Tokenizing normally focuses on words (unigrams), phrases (bigrams or trigrams) but extends to sentences and paragraphs. 
 
@@ -262,7 +262,7 @@ grant_words_clean_count %>%
 
 We can make two observations about Table \@ref(tab:cleanwords). The first of these is that there are some words that appear quite commonly in patents such as "thereof" that we would want to add to our own stop words list (others might be words like comprising). However, we would want to take care with other potential stop words that may provide us with information about the type of patent claims (such as composition for composition of matter, methods and process) that we would probably want to keep for some purposes (for example if examining patent claims).
 
-### Lemmatizing words
+## Lemmatizing words
 
 The second observation is that there are pluralised forms of some words, such as method, methods, process, processing, processes and so on. These are words that can be grouped together based on a shared form (normally the singular such as method and process). These groupings are known as lemmas. It is important to emphasise that lemmatizing is distinct from stemming words, which reduces words to a common stem.
 
@@ -875,7 +875,7 @@ The use of tf_idf scored is forms part of a process called topic modelling where
 
 One very useful approach to topic modelling and technological emergence is to measure this emergence of particular words or phrases over time. 
 
-### Terms over time
+## Terms over time
 
 Our aim in examining the use of terms over time is typically to gain visual information on the following issues:
 
@@ -1057,7 +1057,7 @@ The use of these methods is not confined to patent researchers with programming 
 INSERT IMAGES FOR WORKFLOW
 
 --->
-### Conclusion
+## Conclusion
 
 Recent years have witnessed a dramatic transformation in the availability of patent data for text mining at scale. The creation of the USPTO PatentsView Data Download service, formatted specifically for patent analysis, represents an important landmark as does the release of the full texts of EPO patent documents through Google Cloud. Other important developments include the Lens Patent API service that provides access to the full text of patent documents under a range of different plans, including free access. It remains to be seen whether WIPO will follow these developments by making the full texts of PCT documents freely available for use in patent analytics. 
 

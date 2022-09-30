@@ -30,7 +30,7 @@ This chapter focuses on a basic machine learning workflow involving the followin
 2. Named Entity Recognition. Training a model to recognise entities of interest within the texts identified by the true or false model.
 3. Using a model to classify and identify named entities in a text
 
-### From Dictionaries to Word Vectors
+## From Dictionaries to Word Vectors
 
 >"You shall know a word by the company it keeps (Firth, J. R. 1957:11)"
 
@@ -47,7 +47,7 @@ In the case of the second issue it is important to bear in mind that machine lea
 
 In the last chapter we used Vantage Point to create a co-occurrence matrix to build search terms and to refine analysis of a dataset. A co-occurrence matrix can be built in Vantage Point either as a count of the number of times that words or phrases in a dataset co-occur with each or using measures such as cosine similarity. 
 
-One straightforward way of thinking about a word vector is as a co-occurrence matrix where words are transformed into numeric values and the vocabulary is cast into a multidimensional vector space. Within that space words with the same or similar meanings will be closer (in terms of scores or weights). More precisely, words that _share similar contexts_ will have the same or similar meanings while words with dissimilar meanings will be further away. This observation is an important departure point for word vectors compared with a straightforward co-occurrence matrix that counts the number of times that words occur together in a given set. The reason for this is that the focus is on the context, or the company that a word is keeping. As we will see in a moment, word vectors are _learned representations_ of the relationships between words based on minimization of the loss (error) of a predictive model.^[https://dev.to/jbahire/demystifying-word-vectors-50pj](https://dev.to/jbahire/demystifying-word-vectors-50pj)] 
+One straightforward way of thinking about a word vector is as a co-occurrence matrix where words are transformed into numeric values and the vocabulary is cast into a multidimensional vector space. Within that space words with the same or similar meanings will be closer (in terms of scores or weights). More precisely, words that _share similar contexts_ will have the same or similar meanings while words with dissimilar meanings will be further away. This observation is an important departure point for word vectors compared with a straightforward co-occurrence matrix that counts the number of times that words occur together in a given set. The reason for this is that the focus is on the context, or the company that a word is keeping. As we will see in a moment, word vectors are _learned representations_ of the relationships between words based on minimization of the loss (error) of a predictive model.^[[https://dev.to/jbahire/demystifying-word-vectors-50pj](https://dev.to/jbahire/demystifying-word-vectors-50pj)] 
 
 The seminal paper on word vectors by Mikolov et al 2013 neatly summarises the problem they seek to address as follows:
 
@@ -70,9 +70,7 @@ knitr::include_graphics("images/word2vec_coyler.png")
 
 Let us imagine that each word in each individual vector has a distributed value across hundreds of dimensions across the corpus. Words like King, Queen, Princess have a high similarity in vector space with the word Royalty. In contrast, King has a strong similarity with Masculinity while Queen has a strong similarity with Femininity. Deducting Man from King and adding Woman can readily be seen to lead to Queen in the vector space. Other well known examples from the same paper lead to the calculation that "big-bigger" = "small:larger" etc. 
 
-<!---In follow up work Mikolov and others at Google released the word2vec tool for the creation of --->
-
-### Word Vectors with fastext
+## Word Vectors with fastText
 
 To illustrate the use of word vectors we will use the fastText machine learning package developed by Facebook. 
 
@@ -82,7 +80,7 @@ FastText can be used from the command line or in Python (fasttext) or in R with 
 
 FastText was developed by researchers including Tomas Mikolov as an alternative to the increasingly popular deep learning models for text classification at scale. It is a lightweight tool that emphasizes speed in classification [@bojanowski2016enriching; @joulin2016bag; @joulin2016fasttext] and arguably outperforms deep learning models. 
 
-To get started follow [the fastext instructions](https://fasttext.cc/docs/en/support.html) to install fasttext from the command line or in Python. We will demonstrate fasttext in Python but it is easy, if not easier, to run from the command line. 
+To get started follow [the fastText instructions](https://fasttext.cc/docs/en/support.html) to install fasttext from the command line or in Python. We will demonstrate fasttext in Python but it is easy, if not easier, to run from the command line. 
 
 ```{python, eval=FALSE}
 git clone https://github.com/facebookresearch/fastText.git
@@ -103,7 +101,7 @@ python
 
 If this has worked correctly you should not see anything after `import fasttext`.
 
-In the Terminal we now need some data to train. The fastext example uses Wikipedia pages in English that take up 15Gb. In the terminal download the smaller version as follows. 
+In the Terminal we now need some data to train. The fastText example uses Wikipedia pages in English that take up 15Gb. In the terminal download the smaller version as follows. 
 
 ```{r, eval=FALSE}
 $ mkdir data
@@ -111,7 +109,7 @@ $ wget -c http://mattmahoney.net/dc/enwik9.zip -P data
 $ unzip data/enwik9.zip -d data
 ```
 
-As this is an XML file it needs to be parsed. The file for parsing is bundled with fastext as wikifil.pl and you will need to get the path right for your installation. If in doubt download fasttext from the command line, make and then cd into the directory for this step. Record the path to the file that you will need in the next step in Python. 
+As this is an XML file it needs to be parsed. The file for parsing is bundled with fastText as wikifil.pl and you will need to get the path right for your installation. If in doubt download fasttext from the command line, make and then cd into the directory for this step. Record the path to the file that you will need in the next step in Python. 
 
 ```{r, eval=FALSE}
 perl wikifil.pl data/enwik9 > data/fil9
@@ -130,7 +128,7 @@ import fasttext
 model = fasttext.train_unsupervised('/Users/colinbarnes/fastText/data/fil9')
 ```
 
-### Training Word Vectors for Drones
+## Training Word Vectors for Drones
 
 We will use a small set of patent texts on drones from the drones package for illustration. Ideally use the largest possible set. However, for better results use texts in a single language and regularise the texts so that everything is lower case. You may also improve results by removing all punctuation. 
 
@@ -203,7 +201,7 @@ weapon 0.20932 0.59608 0.21891 -0.42716 0.19016 -0.76555 0.23395 -0.63699 -0.120
 ```
 
 
-### Using Word Vectors
+## Using Word Vectors
 
 One common use of word vectors is to build a thesaurus. We can also check how our vectors are performing, and adjust the parameters if we are not getting what we expect. We do this by calculating the nearest neighbours (nn) in the vector space and then entering a query term, The higher the score the closer the neighbour is. 
 
@@ -265,7 +263,7 @@ A Continuous Bag of Words approach attempts to predict the target word from the 
 
 <!---The word drone is another name for an unmanned aerial vehicle or UAV. --->
 
-### Exploring Analogies
+## Exploring Analogies
 
 Word vectors are famous for being able to predict relationships of the type 
 
@@ -329,7 +327,7 @@ This visualisation highlights the power of the representation of words as vector
 
 For patent analytics, this can present the problem that the language in vector models lacks the specificity in terms of the use of technical language found in patent documents. For that reason you may be better, as illustrated above, wherever possible it is better to use patent domain specific word embeddings. 
 
-### Patent Specific Word Embeddings
+## Patent Specific Word Embeddings
 
 The increasing accessibility of patent data, with both the US and the EP full text collections now available free of charge, has witnessed growing efforts to develop word embedding approaches to patent classification and search. 
 
@@ -349,7 +347,7 @@ One important challenge with the use of word vectors or embeddings is size. Fast
 
 Having introduced the basics of vector space models we now turn to a small practical example of text classification. We will then move on to Named Entity Recognition.
 
-### Machine learning in Classification
+## Machine learning in Classification
 
 The rise of machine learning has been accompanied by increasing attention to the possibility of automating the classification of patent documents. As patent filings come in to patent offices they need to be initially screened and classified in order to pass them to the relevant section of examiners. The ability to automate, or partly automate, this task could represent a significant cost saving for patent offices. At the same time, the determination of IPC or CPC classification codes that should be applied to describe the contents of a patent documents by examiner could be assisted by machine learning based approaches to produce predictions based on past experience on how similar documents were classified. 
 
@@ -599,7 +597,7 @@ Through iterative sessions we will be able to generate a range of labels for the
 
 As we have mentioned above, it will almost always be better to update an existing model because existing models will have been trained on very large volumes of data. However, where the nature of the texts is radically different another strategy is to create your own vectors (using fasttext or gensim) that become the basis for entity recognition. As we have seen above, it is easy to create vectors with tools such as fasttext and NLP libraries such as spaCy make it very easy to add your own vectors to create new models for specialist purposes. Specialist vectors can also be converted for use with Transformer models as the current state of the art in Natural Language Processing. 
 
-### From Vector Based Models to Transformers
+## From Vector Based Models to Transformers
 
 We have focused on vector based models in this chapter because they will be the models you will most commonly encounter _and_ they will run quite happily on a laptop with a limited amount of RAM. In contrast current state of the art transformer models run very slowly on CPU and are designed to be run on GPU which you may not have ready access to. 
 
@@ -622,7 +620,7 @@ knitr::include_graphics("images/ml/hugging.png")
 
 Developments at Hugging Face reveal that an important transition is taking place between the users and developers of NLP machine learning software being the same people to a growing user community who want to try out different models to meet their needs and workflows. 
 
-### Conclusion
+## Conclusion
 
 This chapter has addressed developments in machine learning for natural language processing and its implications for patent analytics. We have focused on the emergence of vector space based models and their uses for text classification and name entity recognition tasks using the Prodigy annotation tool and spaCy NLP library models from explosion.ai. In the process we have sought to emphasise some of the main insights from our own work with these and similar tools for patent analysts interested in benefiting from machine learning based approaches. In closing this chapter the following points are relevant to decision-making on machine learning and patent analytics.
 

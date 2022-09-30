@@ -26,7 +26,7 @@ One challenge for patent analysts who have not received training in patent exami
 
 The purpose of this chapter is to introduce the reader to the most important features of patent classification for the purpose of patent analytics. We will use the US PatentsView `ipcr` table that is available free of charge from the following link [http://data.patentsview.org/20190820/download/ipcr.tsv.zip](http://data.patentsview.org/20190820/download/ipcr.tsv.zip) to explore the uses of the classification. We will then examine the use of co-occurrence network analysis using the [WIPO Patent Landscape Report on Animal Genetic Resources](https://www.wipo.int/publications/en/details.jsp?id=3394) to illustrate how an understanding of the relationships between classification codes can be used to make sense of very noisy data. Finally we will consider recent developments focusing on the use of vector space models to assist with patent classification based on a [dynamic Lens public collection of articles on patent classification](https://www.lens.org/lens/scholar/search/results?collectionId=177082).
 
-### Exploring the International Patent Classification
+## Exploring the International Patent Classification
 
 The International Patent Classification in 2019 consisted of over 74,000 classification codes consisting of alphanumeric codes. The IPC is hierarchical in nature moving from the most general level (Section) to the most detailed level (Subgroup). The IPC is ordered in the sections displayed in Table \@ref(tab:ipcsections).
 
@@ -76,7 +76,7 @@ G01N  33/483 • • Physical analysis of biological material
       33/50 • • Chemical analysis of biological material, e.g. blood--->
 
 
-### The US IPC Table
+## The US IPC Table
 
 The USPTO makes its patent data available free of charge in table format for download from the Patents View website [https://www.patentsview.org/download/](https://www.patentsview.org/download/). This is an excellent service and it is recommended that anyone interested in patent analytics should engage with this fundamental resource. In this section we will explore the 2019 IPC table for granted patents and you should expect that numbers will change if you use the latest edition. 
 
@@ -144,7 +144,7 @@ Thus, taking the example that we have used so far from plant agriculture and seq
 
 As this suggests, rather than focusing on the IPC hierarchy in practice we will often want to focus on the _linkages between_ areas of the classification. The increasing use of more than one classification code to describe the content of patent documents introduced under IPC8 represented a major step forward in this regard. 
 
-### Assessing Relationships Between Technology Areas
+## Assessing Relationships Between Technology Areas
 
 To assess relationships or linkages between different areas of the classification we need to cast the IPC data into a matrix that shows co-occurrences between areas of the classification. Co-occurrence is based on counts of the number of documents where one or more classification code or symbol occur together. 
 
@@ -206,7 +206,7 @@ Reading this heatmap column wise from A to H we can almost immediately see that 
 
 There are multiple ways in which heat maps can be constructed for different purposes to display relationships with Figure \@ref(fig:heatmap) is one of the simplest. For patent analysts heat maps can be particularly useful as _exploratory devices_ for identifying the intensity of activity rather than as _explanatory devices_ when communicating with a general audience. Network visualisations are typically a more effective device for visual communication with an audience as we will now see. 
 
-### Visualising Relationships with Chord Diagrams
+## Visualising Relationships with Chord Diagrams
 
 We can visualize this co-occurrence network using a Chord Diagram or a network. Figure \@ref(fig:sectionraw) displays the raw connections between US patent documents classified in more than one section of the IPC. The chord diagram was generated using the easy to use `circlize` package in R. Similar options available in the `bokeh` and `plotly` packages in Python and R. The `circilize` package and software programmes such as `circos` are widely used in bioinformatics and genomics for visualising relationships.^[To explore open source Circos software see [http://circos.ca/](http://circos.ca/).]
 
@@ -242,7 +242,7 @@ The issue here is not the type of visualisation. Chord diagrams are effective me
 
 In the case of the IPC one challenge is that code descriptions are generally long multi-phrase statements. In practice these descriptions were not created with visualisation in mind. One solution to this problem is to edit the IPC to short one word or two word phrases that seek to capture the dominant meaning of a particular code. This exercise will never be perfect but it provides a means of visually communicating data while at the same time providing opportunities to provide narrative explanations of the nuances to the reader.
 
-### The Short IPC
+## The Short IPC
 
 The short IPC was developed by Paul Oldham and Stephen Hall to overcome the challenge of visualising IPC data in dashboard displays such as Tableau, notably labelled vertical bar charts. The short IPC was created by manually editing the complete classification in Vantage Point from Search Technology Inc in order to produce human readable labels on the section, class and subclass levels. An extended version of the short ipc includes ipc descriptions on the group level. Table \@ref(tab:ipcshort) displays a sample of the short IPC.
 
@@ -309,7 +309,7 @@ As this discussion reveals, there are a variety of ways of visualising IPC data.
 
 In closing this chapter on the use of the International Patent Classification in patent analytics we will illustrate how an in depth knowledge of the IPC combined with network visualisation techniques allowed the author of this handbook to identify and visualise a needle in a haystack. 
 
-#### Case Study: Finding A Needle in A Haystack
+### Case Study: Finding A Needle in A Haystack
 
 In 2013 WIPO was invited by the Food and Agriculture Organisation (FAO) to develop a patent landscape analysis on animal genetic resources for food and agriculture. This landscape analysis covered all the major species of livestock such as cattle, pigs, goats, deer, horses, buffalo etc. as well as birds such as chickens, geese, ducks and so on. 
 
@@ -376,7 +376,7 @@ An important insight from this example when planning patent or wider literature 
 
 <!--- We began this exploration of the International Patent Classification by focusing on ... Add EMERGING TECHNOLOGIES LITERATURE--->
 
-#### Classification and Patent Overlay Mapping
+## Classification and Patent Overlay Mapping
 
 In the preceding discussion we focused on the use of the classification to identify and explore specific areas of patent activity. However, a second area of research of relevance to patent analytics is efforts to map the wider structure of science and patent activity.
 
@@ -414,7 +414,7 @@ The map in Figure \@ref(fig:clickstream) uses an entirely different methodology 
 
 An important feature of the development of science overlay maps is the use of open source software such as Pajek, Vos Viewer and Gephi and forms part of an increasing drive to transparent and reproducible methods. Researchers have also sought to extend science mapping into the patent system using patent classification systems. 
 
-### The Structure of Patent Activity
+## The Structure of Patent Activity
 
 The increasing availability of patent data at scale such as the EPO World Patent Statistical Database and more recently the entire USPTO patent collection, has made large scale analysis of the structure of patent activity increasingly possible and reproducible by others. 
 
@@ -472,7 +472,7 @@ knitr::include_graphics("images/ipc/basemaps/hevexample.png")
 
 These developments in the use of the IPC at scale are being accompanied by debates within the scientific literature on the appropriate statistical techniques to more accurately map and predict technological developments (see for example, @lens.org/024-806-011-424-241). At the same time, the increasing availability of patent data at scale is opening up new research questions such as measuring innovation at the city level using the IPC and US patent data [@lens.org/055-799-422-004-518].
 
-### Conclusion
+## Conclusion
 
 This chapter has provided a detailed account of the use of the International Patent Classification in patent analytics. Starting with an introduction to the structure of the IPC we have then moved through a range of methods for visualising IPC data in order to communicate IPC based analysis to a wider audience. An important limitation of the IPC in terms of communication is that it consists of hard to decipher codes or long descriptive strings. In this chapter we presented the informal "short IPC" as a solution to this problem. 
 
@@ -481,30 +481,3 @@ Using the WIPO patent landscape report on animal genetic resources we demonstrat
 In the final section of this chapter we moved up in scale to consider the growth of science and patent mapping in order to inform investment, management and policy decision making. The increasing use of network and mapping techniques using the International Patent Classification forms part of a broader trend towards the use of multiple methods for patent landscape analysis at multiple scales. This convergence involves the use of multiple patent and non-patent literature data fields, the application or further development of a range of statistical measures, techniques from advanced natural language processing such as topic modelling and word or document embeddings, and other techniques. The combination falls within the description, and is a further development of technology mining or tech mining as originally defined by Alan Porter and Scott Cunningham in 2004 [@lens.org/023-481-161-675-434].
 
 In Chapter \@ref(textmining) we will focus on combining the use of the patent classification with text mining techniques.
-
-
-
-
-
-<!--- ### Indicators of Emerge
-
-Porter and Cunningham 2004 is @book{lens.org/023-481-161-675-434
-
-
- it would be better I think to use the updated vos viewer maps if these can be located and used copyright free≈
-
-Leydesdorfy @article{lens.org/003-564-261-756-723
-
-Newman @article{lens.org/019-075-812-828-660
-
-
-<!---See KeySupplementary2 for the maps in powerpoint
-
-
-The key link to make here is to Indicators of Technological Emergence
-
-See Leydesdorfs A Review of Theory and Practice in Scientometrics 2015 for an update on scientometrics
-
-Look at the most recent citations to this article for applications in other areas using the classification. 
-
-
