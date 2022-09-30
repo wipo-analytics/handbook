@@ -1,0 +1,3481 @@
+<!DOCTYPE html>
+<html lang="" xml:lang="">
+<head>
+
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <title>Chapter 7 Text Mining | The WIPO Patent Analytics Handbook</title>
+  <meta name="description" content="Chapter 7 Text Mining | The WIPO Patent Analytics Handbook." />
+  <meta name="generator" content="bookdown 0.28.1 and GitBook 2.6.7" />
+
+  <meta property="og:title" content="Chapter 7 Text Mining | The WIPO Patent Analytics Handbook" />
+  <meta property="og:type" content="book" />
+  
+  <meta property="og:description" content="Chapter 7 Text Mining | The WIPO Patent Analytics Handbook." />
+  
+
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:title" content="Chapter 7 Text Mining | The WIPO Patent Analytics Handbook" />
+  
+  <meta name="twitter:description" content="Chapter 7 Text Mining | The WIPO Patent Analytics Handbook." />
+  
+
+<meta name="author" content="Paul Oldham" />
+
+
+<meta name="date" content="2022-01-01" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black" />
+  
+  
+<link rel="prev" href="citations.html"/>
+<link rel="next" href="machinelearning.html"/>
+<script src="libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/fuse.js@6.4.6/dist/fuse.min.js"></script>
+<link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-table.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-bookdown.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-highlight.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-search.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-fontsettings.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-clipboard.css" rel="stylesheet" />
+
+
+
+
+
+
+
+
+<link href="libs/anchor-sections-1.1.0/anchor-sections.css" rel="stylesheet" />
+<link href="libs/anchor-sections-1.1.0/anchor-sections-hash.css" rel="stylesheet" />
+<script src="libs/anchor-sections-1.1.0/anchor-sections.js"></script>
+<script src="libs/htmlwidgets-1.5.4/htmlwidgets.js"></script>
+<script src="libs/d3-4.13.0/d3.min.js"></script>
+<script src="libs/sankey-1/sankey.js"></script>
+<script src="libs/sankeyNetwork-binding-0.4/sankeyNetwork.js"></script>
+<link href="libs/leaflet-1.3.1/leaflet.css" rel="stylesheet" />
+<script src="libs/leaflet-1.3.1/leaflet.js"></script>
+<link href="libs/leafletfix-1.0.0/leafletfix.css" rel="stylesheet" />
+<script src="libs/proj4-2.6.2/proj4.min.js"></script>
+<script src="libs/Proj4Leaflet-1.0.1/proj4leaflet.js"></script>
+<link href="libs/rstudio_leaflet-1.3.1/rstudio_leaflet.css" rel="stylesheet" />
+<script src="libs/leaflet-binding-2.1.1/leaflet.js"></script>
+<script src="libs/kePrint-0.0.1/kePrint.js"></script>
+<link href="libs/lightable-0.0.1/lightable.css" rel="stylesheet" />
+<script src="libs/sund2b-binding-2.1.6/sund2b.js"></script>
+<link href="libs/d2b-1.0.9/d2b_custom.css" rel="stylesheet" />
+<script src="libs/d2b-1.0.9/d2b.min.js"></script>
+<link href="libs/collapsibleTree-0.1.6/collapsibleTree.css" rel="stylesheet" />
+<script src="libs/collapsibleTree-binding-0.1.7/collapsibleTree.js"></script>
+
+
+<style type="text/css">
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #7d9029; } /* Attribute */
+code span.bn { color: #40a070; } /* BaseN */
+code span.bu { } /* BuiltIn */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4070a0; } /* Char */
+code span.cn { color: #880000; } /* Constant */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code span.dt { color: #902000; } /* DataType */
+code span.dv { color: #40a070; } /* DecVal */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #40a070; } /* Float */
+code span.fu { color: #06287e; } /* Function */
+code span.im { } /* Import */
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.op { color: #666666; } /* Operator */
+code span.ot { color: #007020; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #4070a0; } /* String */
+code span.va { color: #19177c; } /* Variable */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+</style>
+
+<style type="text/css">
+/* Used with Pandoc 2.11+ new --citeproc when CSL is used */
+div.csl-bib-body { }
+div.csl-entry {
+  clear: both;
+}
+.hanging div.csl-entry {
+  margin-left:2em;
+  text-indent:-2em;
+}
+div.csl-left-margin {
+  min-width:2em;
+  float:left;
+}
+div.csl-right-inline {
+  margin-left:2em;
+  padding-left:1em;
+}
+div.csl-indent {
+  margin-left: 2em;
+}
+</style>
+
+<link rel="stylesheet" href="style.css" type="text/css" />
+</head>
+
+<body>
+
+
+
+  <div class="book without-animation with-summary font-size-2 font-family-1" data-basepath=".">
+
+    <div class="book-summary">
+      <nav role="navigation">
+
+<ul class="summary">
+<li><a href="./">The WIPO Patent Analytics Handbook</a></li>
+
+<li class="divider"></li>
+<li class="chapter" data-level="" data-path="index.html"><a href="index.html"><i class="fa fa-check"></i>Preface</a></li>
+<li class="chapter" data-level="" data-path="about-the-author.html"><a href="about-the-author.html"><i class="fa fa-check"></i>About the Author</a></li>
+<li class="chapter" data-level="" data-path="acknowlegements.html"><a href="acknowlegements.html"><i class="fa fa-check"></i>Acknowlegements</a></li>
+<li class="chapter" data-level="" data-path="how-to-use-the-handbook.html"><a href="how-to-use-the-handbook.html"><i class="fa fa-check"></i>How to use the Handbook</a></li>
+<li class="chapter" data-level="" data-path="note-to-readers.html"><a href="note-to-readers.html"><i class="fa fa-check"></i>Note to Readers</a></li>
+<li class="chapter" data-level="" data-path="datasets.html"><a href="datasets.html"><i class="fa fa-check"></i>Datasets</a></li>
+<li class="chapter" data-level="1" data-path="introduction.html"><a href="introduction.html"><i class="fa fa-check"></i><b>1</b> Introduction</a></li>
+<li class="chapter" data-level="2" data-path="literature.html"><a href="literature.html"><i class="fa fa-check"></i><b>2</b> Scientific Literature</a>
+<ul>
+<li class="chapter" data-level="2.1" data-path="literature.html"><a href="literature.html#accessing-the-scientific-literature"><i class="fa fa-check"></i><b>2.1</b> Accessing the Scientific Literature</a></li>
+<li class="chapter" data-level="2.2" data-path="literature.html"><a href="literature.html#searching-literature-databases"><i class="fa fa-check"></i><b>2.2</b> Searching Literature Databases</a>
+<ul>
+<li class="chapter" data-level="2.2.1" data-path="literature.html"><a href="literature.html#stemming"><i class="fa fa-check"></i><b>2.2.1</b> Stemming</a></li>
+<li class="chapter" data-level="2.2.2" data-path="literature.html"><a href="literature.html#using-search-operators"><i class="fa fa-check"></i><b>2.2.2</b> Using Search Operators</a></li>
+<li class="chapter" data-level="2.2.3" data-path="literature.html"><a href="literature.html#proximity-operators"><i class="fa fa-check"></i><b>2.2.3</b> Proximity Operators</a></li>
+<li class="chapter" data-level="2.2.4" data-path="literature.html"><a href="literature.html#regular-expressions"><i class="fa fa-check"></i><b>2.2.4</b> Regular Expressions</a></li>
+</ul></li>
+<li class="chapter" data-level="2.3" data-path="literature.html"><a href="literature.html#precision-vs.-recall"><i class="fa fa-check"></i><b>2.3</b> Precision vs. Recall</a></li>
+<li class="chapter" data-level="2.4" data-path="literature.html"><a href="literature.html#processing-scientific-literature"><i class="fa fa-check"></i><b>2.4</b> Processing Scientific Literature</a></li>
+<li class="chapter" data-level="2.5" data-path="literature.html"><a href="literature.html#visualizing-the-scientific-literature"><i class="fa fa-check"></i><b>2.5</b> Visualizing the Scientific Literature</a>
+<ul>
+<li class="chapter" data-level="2.5.1" data-path="literature.html"><a href="literature.html#dashboards"><i class="fa fa-check"></i><b>2.5.1</b> Dashboards</a></li>
+<li class="chapter" data-level="2.5.2" data-path="literature.html"><a href="literature.html#network-visualisation"><i class="fa fa-check"></i><b>2.5.2</b> Network Visualisation</a></li>
+<li class="chapter" data-level="2.5.3" data-path="literature.html"><a href="literature.html#other-forms-of-visualisation"><i class="fa fa-check"></i><b>2.5.3</b> Other forms of visualisation</a></li>
+</ul></li>
+<li class="chapter" data-level="2.6" data-path="literature.html"><a href="literature.html#linking-the-scientific-literature-with-patent-analysis"><i class="fa fa-check"></i><b>2.6</b> Linking the Scientific Literature with Patent Analysis</a>
+<ul>
+<li class="chapter" data-level="2.6.1" data-path="literature.html"><a href="literature.html#mapping-authors-to-inventors"><i class="fa fa-check"></i><b>2.6.1</b> Mapping Authors to Inventors</a></li>
+</ul></li>
+<li class="chapter" data-level="2.7" data-path="literature.html"><a href="literature.html#linking-citations-with-patent-literature"><i class="fa fa-check"></i><b>2.7</b> Linking Citations with Patent Literature</a></li>
+<li class="chapter" data-level="2.8" data-path="literature.html"><a href="literature.html#conclusion"><i class="fa fa-check"></i><b>2.8</b> Conclusion</a></li>
+</ul></li>
+<li class="chapter" data-level="3" data-path="geocoding.html"><a href="geocoding.html"><i class="fa fa-check"></i><b>3</b> Geocoding</a>
+<ul>
+<li class="chapter" data-level="3.1" data-path="geocoding.html"><a href="geocoding.html#getting-started"><i class="fa fa-check"></i><b>3.1</b> Getting Started</a></li>
+<li class="chapter" data-level="3.2" data-path="geocoding.html"><a href="geocoding.html#getting-set-up-with-the-google-maps-api"><i class="fa fa-check"></i><b>3.2</b> Getting set up with the Google Maps API</a></li>
+<li class="chapter" data-level="3.3" data-path="geocoding.html"><a href="geocoding.html#using-the-api"><i class="fa fa-check"></i><b>3.3</b> Using the API</a></li>
+<li class="chapter" data-level="3.4" data-path="geocoding.html"><a href="geocoding.html#the-source-data"><i class="fa fa-check"></i><b>3.4</b> The Source Data</a></li>
+<li class="chapter" data-level="3.5" data-path="geocoding.html"><a href="geocoding.html#lookup-the-records"><i class="fa fa-check"></i><b>3.5</b> Lookup the Records</a></li>
+<li class="chapter" data-level="3.6" data-path="geocoding.html"><a href="geocoding.html#using-placement"><i class="fa fa-check"></i><b>3.6</b> Using placement</a></li>
+<li class="chapter" data-level="3.7" data-path="geocoding.html"><a href="geocoding.html#using-ggmap"><i class="fa fa-check"></i><b>3.7</b> Using ggmap</a></li>
+<li class="chapter" data-level="3.8" data-path="geocoding.html"><a href="geocoding.html#using-googleway"><i class="fa fa-check"></i><b>3.8</b> Using Googleway</a></li>
+<li class="chapter" data-level="3.9" data-path="geocoding.html"><a href="geocoding.html#reviewing-initial-results"><i class="fa fa-check"></i><b>3.9</b> Reviewing Initial Results</a></li>
+<li class="chapter" data-level="3.10" data-path="geocoding.html"><a href="geocoding.html#tackling-abbreviations"><i class="fa fa-check"></i><b>3.10</b> Tackling Abbreviations</a></li>
+<li class="chapter" data-level="3.11" data-path="geocoding.html"><a href="geocoding.html#lookup-edited-names"><i class="fa fa-check"></i><b>3.11</b> Lookup edited names</a></li>
+<li class="chapter" data-level="3.12" data-path="geocoding.html"><a href="geocoding.html#bringing-the-data-together"><i class="fa fa-check"></i><b>3.12</b> Bringing the data together</a></li>
+<li class="chapter" data-level="3.13" data-path="geocoding.html"><a href="geocoding.html#assessing-the-quality-of-geocoding"><i class="fa fa-check"></i><b>3.13</b> Assessing the Quality of Geocoding</a></li>
+<li class="chapter" data-level="3.14" data-path="geocoding.html"><a href="geocoding.html#preprocess-the-data-and-rerun-the-query"><i class="fa fa-check"></i><b>3.14</b> Preprocess the Data and Rerun the Query</a></li>
+<li class="chapter" data-level="3.15" data-path="geocoding.html"><a href="geocoding.html#duplicated-affiliation-names"><i class="fa fa-check"></i><b>3.15</b> Duplicated Affiliation Names</a></li>
+<li class="chapter" data-level="3.16" data-path="geocoding.html"><a href="geocoding.html#mapping-the-data"><i class="fa fa-check"></i><b>3.16</b> Mapping the Data</a></li>
+<li class="chapter" data-level="3.17" data-path="geocoding.html"><a href="geocoding.html#round-up"><i class="fa fa-check"></i><b>3.17</b> Round Up</a></li>
+</ul></li>
+<li class="chapter" data-level="4" data-path="patents.html"><a href="patents.html"><i class="fa fa-check"></i><b>4</b> Counting Patent Data</a>
+<ul>
+<li class="chapter" data-level="4.1" data-path="patents.html"><a href="patents.html#the-structure-of-patent-numbers"><i class="fa fa-check"></i><b>4.1</b> The structure of patent numbers</a>
+<ul>
+<li class="chapter" data-level="4.1.1" data-path="patents.html"><a href="patents.html#the-country-code"><i class="fa fa-check"></i><b>4.1.1</b> The country code</a></li>
+<li class="chapter" data-level="4.1.2" data-path="patents.html"><a href="patents.html#the-numeric-identifier"><i class="fa fa-check"></i><b>4.1.2</b> The numeric identifier</a></li>
+<li class="chapter" data-level="4.1.3" data-path="patents.html"><a href="patents.html#kind-codes"><i class="fa fa-check"></i><b>4.1.3</b> Kind Codes</a></li>
+</ul></li>
+<li class="chapter" data-level="4.2" data-path="patents.html"><a href="patents.html#preparing-to-count-patent-data"><i class="fa fa-check"></i><b>4.2</b> Preparing to Count Patent Data</a></li>
+<li class="chapter" data-level="4.3" data-path="patents.html"><a href="patents.html#understanding-priority-numbers"><i class="fa fa-check"></i><b>4.3</b> Understanding Priority Numbers</a></li>
+<li class="chapter" data-level="4.4" data-path="patents.html"><a href="patents.html#counting-priority-applications"><i class="fa fa-check"></i><b>4.4</b> Counting Priority Applications</a></li>
+<li class="chapter" data-level="4.5" data-path="patents.html"><a href="patents.html#counting-applications"><i class="fa fa-check"></i><b>4.5</b> Counting Applications</a>
+<ul>
+<li class="chapter" data-level="4.5.1" data-path="patents.html"><a href="patents.html#mapping-publications-family-members"><i class="fa fa-check"></i><b>4.5.1</b> Mapping Publications (Family Members)</a></li>
+</ul></li>
+<li class="chapter" data-level="4.6" data-path="patents.html"><a href="patents.html#trends-by-country-using-publication-data"><i class="fa fa-check"></i><b>4.6</b> Trends by Country using Publication Data</a></li>
+<li class="chapter" data-level="4.7" data-path="patents.html"><a href="patents.html#families"><i class="fa fa-check"></i><b>4.7</b> Patent Families</a></li>
+<li class="chapter" data-level="4.8" data-path="patents.html"><a href="patents.html#modelling-data"><i class="fa fa-check"></i><b>4.8</b> Modelling Data</a>
+<ul>
+<li class="chapter" data-level="4.8.1" data-path="patents.html"><a href="patents.html#the-data"><i class="fa fa-check"></i><b>4.8.1</b> The Data</a></li>
+<li class="chapter" data-level="4.8.2" data-path="patents.html"><a href="patents.html#loess-smoothing"><i class="fa fa-check"></i><b>4.8.2</b> Loess Smoothing</a></li>
+</ul></li>
+<li class="chapter" data-level="4.9" data-path="patents.html"><a href="patents.html#forecasting"><i class="fa fa-check"></i><b>4.9</b> Forecasting</a>
+<ul>
+<li class="chapter" data-level="4.9.1" data-path="patents.html"><a href="patents.html#day-of-days"><i class="fa fa-check"></i><b>4.9.1</b> Day of Days</a></li>
+<li class="chapter" data-level="4.9.2" data-path="patents.html"><a href="patents.html#the-data-1"><i class="fa fa-check"></i><b>4.9.2</b> The Data</a></li>
+</ul></li>
+<li class="chapter" data-level="4.10" data-path="patents.html"><a href="patents.html#conclusion-1"><i class="fa fa-check"></i><b>4.10</b> Conclusion</a></li>
+</ul></li>
+<li class="chapter" data-level="5" data-path="classification.html"><a href="classification.html"><i class="fa fa-check"></i><b>5</b> Patent Classfication</a>
+<ul>
+<li class="chapter" data-level="5.1" data-path="classification.html"><a href="classification.html#exploring-the-international-patent-classification"><i class="fa fa-check"></i><b>5.1</b> Exploring the International Patent Classification</a></li>
+<li class="chapter" data-level="5.2" data-path="classification.html"><a href="classification.html#the-us-ipc-table"><i class="fa fa-check"></i><b>5.2</b> The US IPC Table</a></li>
+<li class="chapter" data-level="5.3" data-path="classification.html"><a href="classification.html#assessing-relationships-between-technology-areas"><i class="fa fa-check"></i><b>5.3</b> Assessing Relationships Between Technology Areas</a></li>
+<li class="chapter" data-level="5.4" data-path="classification.html"><a href="classification.html#visualising-relationships-with-chord-diagrams"><i class="fa fa-check"></i><b>5.4</b> Visualising Relationships with Chord Diagrams</a></li>
+<li class="chapter" data-level="5.5" data-path="classification.html"><a href="classification.html#the-short-ipc"><i class="fa fa-check"></i><b>5.5</b> The Short IPC</a>
+<ul>
+<li class="chapter" data-level="5.5.1" data-path="classification.html"><a href="classification.html#case-study-finding-a-needle-in-a-haystack"><i class="fa fa-check"></i><b>5.5.1</b> Case Study: Finding A Needle in A Haystack</a></li>
+</ul></li>
+<li class="chapter" data-level="5.6" data-path="classification.html"><a href="classification.html#classification-and-patent-overlay-mapping"><i class="fa fa-check"></i><b>5.6</b> Classification and Patent Overlay Mapping</a></li>
+<li class="chapter" data-level="5.7" data-path="classification.html"><a href="classification.html#the-structure-of-patent-activity"><i class="fa fa-check"></i><b>5.7</b> The Structure of Patent Activity</a></li>
+<li class="chapter" data-level="5.8" data-path="classification.html"><a href="classification.html#conclusion-2"><i class="fa fa-check"></i><b>5.8</b> Conclusion</a></li>
+</ul></li>
+<li class="chapter" data-level="6" data-path="citations.html"><a href="citations.html"><i class="fa fa-check"></i><b>6</b> Patent Citations</a>
+<ul>
+<li class="chapter" data-level="6.1" data-path="citations.html"><a href="citations.html#non-patent-literature"><i class="fa fa-check"></i><b>6.1</b> Non Patent Literature</a></li>
+<li class="chapter" data-level="6.2" data-path="citations.html"><a href="citations.html#literature-and-patent-citation-data-with-the-lens"><i class="fa fa-check"></i><b>6.2</b> Literature and Patent Citation Data with the Lens</a></li>
+<li class="chapter" data-level="6.3" data-path="citations.html"><a href="citations.html#retrieving-citations-at-scale-with-patcite"><i class="fa fa-check"></i><b>6.3</b> Retrieving Citations at Scale with PATCITE</a></li>
+<li class="chapter" data-level="6.4" data-path="citations.html"><a href="citations.html#the-us-patentsview-non-patent-literature-table"><i class="fa fa-check"></i><b>6.4</b> The US PatentsView Non-Patent Literature Table</a></li>
+<li class="chapter" data-level="6.5" data-path="citations.html"><a href="citations.html#patent-citations"><i class="fa fa-check"></i><b>6.5</b> Patent Citations</a></li>
+<li class="chapter" data-level="6.6" data-path="citations.html"><a href="citations.html#navigating-patent-networks"><i class="fa fa-check"></i><b>6.6</b> Navigating Patent Networks</a>
+<ul>
+<li class="chapter" data-level="6.6.1" data-path="citations.html"><a href="citations.html#back-citations"><i class="fa fa-check"></i><b>6.6.1</b> Back citations</a></li>
+<li class="chapter" data-level="6.6.2" data-path="citations.html"><a href="citations.html#forward-citations"><i class="fa fa-check"></i><b>6.6.2</b> Forward Citations</a></li>
+</ul></li>
+<li class="chapter" data-level="6.7" data-path="citations.html"><a href="citations.html#counting-citations-by-patent-families"><i class="fa fa-check"></i><b>6.7</b> Counting Citations by Patent Families</a></li>
+<li class="chapter" data-level="6.8" data-path="citations.html"><a href="citations.html#patent-citations-by-generation"><i class="fa fa-check"></i><b>6.8</b> Patent Citations by Generation</a></li>
+<li class="chapter" data-level="6.9" data-path="citations.html"><a href="citations.html#citations-and-knowledge-spillovers"><i class="fa fa-check"></i><b>6.9</b> Citations and Knowledge Spillovers</a></li>
+</ul></li>
+<li class="chapter" data-level="7" data-path="textmining.html"><a href="textmining.html"><i class="fa fa-check"></i><b>7</b> Text Mining</a>
+<ul>
+<li class="chapter" data-level="7.1" data-path="textmining.html"><a href="textmining.html#the-uspto-patent-granted-data"><i class="fa fa-check"></i><b>7.1</b> The USPTO Patent Granted Data</a></li>
+<li class="chapter" data-level="7.2" data-path="textmining.html"><a href="textmining.html#words"><i class="fa fa-check"></i><b>7.2</b> Words</a></li>
+<li class="chapter" data-level="7.3" data-path="textmining.html"><a href="textmining.html#removing-stop-words"><i class="fa fa-check"></i><b>7.3</b> Removing Stop Words</a></li>
+<li class="chapter" data-level="7.4" data-path="textmining.html"><a href="textmining.html#lemmatizing-words"><i class="fa fa-check"></i><b>7.4</b> Lemmatizing words</a></li>
+<li class="chapter" data-level="7.5" data-path="textmining.html"><a href="textmining.html#terms-by-technology"><i class="fa fa-check"></i><b>7.5</b> Terms by Technology</a></li>
+<li class="chapter" data-level="7.6" data-path="textmining.html"><a href="textmining.html#combining-text-mining-with-patent-classification"><i class="fa fa-check"></i><b>7.6</b> Combining Text Mining with Patent Classification</a></li>
+<li class="chapter" data-level="7.7" data-path="textmining.html"><a href="textmining.html#from-words-to-phrases-ngrams"><i class="fa fa-check"></i><b>7.7</b> From words to phrases (ngrams)</a></li>
+<li class="chapter" data-level="7.8" data-path="textmining.html"><a href="textmining.html#terms-over-time"><i class="fa fa-check"></i><b>7.8</b> Terms over time</a></li>
+<li class="chapter" data-level="7.9" data-path="textmining.html"><a href="textmining.html#correlation-measures"><i class="fa fa-check"></i><b>7.9</b> Correlation Measures</a></li>
+<li class="chapter" data-level="7.10" data-path="textmining.html"><a href="textmining.html#conclusion-3"><i class="fa fa-check"></i><b>7.10</b> Conclusion</a></li>
+</ul></li>
+<li class="chapter" data-level="8" data-path="machinelearning.html"><a href="machinelearning.html"><i class="fa fa-check"></i><b>8</b> Machine Learning</a>
+<ul>
+<li class="chapter" data-level="8.1" data-path="machinelearning.html"><a href="machinelearning.html#from-dictionaries-to-word-vectors"><i class="fa fa-check"></i><b>8.1</b> From Dictionaries to Word Vectors</a></li>
+<li class="chapter" data-level="8.2" data-path="machinelearning.html"><a href="machinelearning.html#word-vectors-with-fasttext"><i class="fa fa-check"></i><b>8.2</b> Word Vectors with fastText</a></li>
+<li class="chapter" data-level="8.3" data-path="machinelearning.html"><a href="machinelearning.html#training-word-vectors-for-drones"><i class="fa fa-check"></i><b>8.3</b> Training Word Vectors for Drones</a></li>
+<li class="chapter" data-level="8.4" data-path="machinelearning.html"><a href="machinelearning.html#using-word-vectors"><i class="fa fa-check"></i><b>8.4</b> Using Word Vectors</a></li>
+<li class="chapter" data-level="8.5" data-path="machinelearning.html"><a href="machinelearning.html#exploring-analogies"><i class="fa fa-check"></i><b>8.5</b> Exploring Analogies</a></li>
+<li class="chapter" data-level="8.6" data-path="machinelearning.html"><a href="machinelearning.html#patent-specific-word-embeddings"><i class="fa fa-check"></i><b>8.6</b> Patent Specific Word Embeddings</a></li>
+<li class="chapter" data-level="8.7" data-path="machinelearning.html"><a href="machinelearning.html#machine-learning-in-classification"><i class="fa fa-check"></i><b>8.7</b> Machine learning in Classification</a></li>
+<li class="chapter" data-level="8.8" data-path="machinelearning.html"><a href="machinelearning.html#machine-learning-for-text-classification"><i class="fa fa-check"></i><b>8.8</b> Machine Learning for Text Classification</a>
+<ul>
+<li class="chapter" data-level="8.8.1" data-path="machinelearning.html"><a href="machinelearning.html#step-1-binary-text-classification"><i class="fa fa-check"></i><b>8.8.1</b> Step 1: Binary Text Classification</a></li>
+<li class="chapter" data-level="8.8.2" data-path="machinelearning.html"><a href="machinelearning.html#step-2-multilabel-text-classification"><i class="fa fa-check"></i><b>8.8.2</b> Step 2: Multilabel Text Classification</a></li>
+<li class="chapter" data-level="8.8.3" data-path="machinelearning.html"><a href="machinelearning.html#step-3-named-entity-recognition"><i class="fa fa-check"></i><b>8.8.3</b> Step 3: Named Entity Recognition</a></li>
+</ul></li>
+<li class="chapter" data-level="8.9" data-path="machinelearning.html"><a href="machinelearning.html#from-vector-based-models-to-transformers"><i class="fa fa-check"></i><b>8.9</b> From Vector Based Models to Transformers</a></li>
+<li class="chapter" data-level="8.10" data-path="machinelearning.html"><a href="machinelearning.html#conclusion-4"><i class="fa fa-check"></i><b>8.10</b> Conclusion</a></li>
+</ul></li>
+<li class="chapter" data-level="9" data-path="literature.html"><a href="literature.html#conclusion"><i class="fa fa-check"></i><b>9</b> Conclusion</a></li>
+<li class="divider"></li>
+<li><a href="https://github.com/wipo-analytics/handbook" target="blank">Published with bookdown</a></li>
+
+</ul>
+
+      </nav>
+    </div>
+
+    <div class="book-body">
+      <div class="body-inner">
+        <div class="book-header" role="navigation">
+          <h1>
+            <i class="fa fa-circle-o-notch fa-spin"></i><a href="./">The WIPO Patent Analytics Handbook</a>
+          </h1>
+        </div>
+
+        <div class="page-wrapper" tabindex="-1" role="main">
+          <div class="page-inner">
+
+            <section class="normal" id="section-">
+<div id="textmining" class="section level1 hasAnchor" number="7">
+<h1><span class="header-section-number">Chapter 7</span> Text Mining<a href="textmining.html#textmining" class="anchor-section" aria-label="Anchor link to header"></a></h1>
+<!--- last spell checked 2022-09-28--->
+<p>Text mining involves the extraction of information from text sources. In the case of the scientific literature and patent data, text mining is closely associated with the concept of technology or tech mining as popularised by Alan Porter and Scott Cunningham <span class="citation">(<a href="#ref-lens.org/023-481-161-675-434" role="doc-biblioref">Porter and Cunningham 2004</a>)</span>. However, the rise and rise of social media has expanded text mining into the pursuit of insights from platforms Twitter and other social media platforms involving topic modelling and sentiment analysis to inform decision making on public perceptions of technology and responses to products. A <a href="https://www.lens.org/lens/search/scholar/list?collectionId=203440">dynamic Lens collection</a> on text mining has been created to complement this chapter and will allow you to explore the diverse uses of text mining.</p>
+<p>What we might call classic approaches to text mining are rapidly being blended with or replaced by machine learning approaches to Natural Language Processing. We consider machine learning based approaches in the next chapter. In this chapter we focus on some of the basics of text mining and argue that rather than jumping into machine learning based approaches a great deal can be achieved using standard text mining approaches. Standard approaches to text mining have the advantage that they are relatively straightforward to implement and are transparent to the analyst. This is not always true for machine learning based approaches. Perhaps more importantly, an understanding of standard text mining techniques provides a platform for engaging with machine learning based approaches considered in the next chapter.</p>
+<p>To introduce text mining we will use the popular tidytext approach using R. This differs from the classic use of a corpus of texts and the creation of document terms matrices that you might have come across elsewhere. An major advantage of the tidytext approach is that the data is easy to understand, visualise and keep track of during transformation steps. In particular, it is easy to retain the document identifiers that are the key to joining to patent text data with other patent data.</p>
+<p>This chapter draws heavily on and reproduces code examples from <em>Text Mining with R: A Tidy Approach</em> by Julia Silge and David Robinson. This book is strongly recommended for anyone seeking to engage in text mining and is available free of charge at <a href="https://www.tidytextmining.com/">https://www.tidytextmining.com/</a>. We will use code examples from Text Mining with R to illustrate different approaches. However, we will use a large dataset of texts from US PatentsView service in the worked examples. We will also demonstrate how the International Patent Classification allows us to focus our text mining efforts in relevant areas of the patent system.</p>
+<p>The examples in this chapter are designed to illustrate tidy text mining at the scale of millions of records. If the worked examples prove challenging on your computer we recommend that you reduce the size of the examples. The examples in <em>Text Mining with R</em> using the texts of Jane Austen and other classic literature are also highly accessible for working at a smaller scale.</p>
+<div id="the-uspto-patent-granted-data" class="section level2 hasAnchor" number="7.1">
+<h2><span class="header-section-number">7.1</span> The USPTO Patent Granted Data<a href="textmining.html#the-uspto-patent-granted-data" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p>In the last chapter on patent classification we used the ipcr table from the US PatentsView Service to explore uses of the International Patent Classification. In this chapter we will use the patents table for patents granted in the United States. At the time of writing that table consists of 7.8 million documents with the patents table containing identifier information, the titles and the abstracts. You can download the latest version of this table to your machine from the following address.</p>
+<div class="sourceCode" id="cb97"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb97-1"><a href="textmining.html#cb97-1" aria-hidden="true" tabindex="-1"></a><span class="st">&quot;https://s3.amazonaws.com/data.patentsview.org/download/patent.tsv.zip&quot;</span>   </span></code></pre></div>
+<p>Building on the discussion in the last chapter on patent classification we will also download the latest version of the ipcr table that is available from here.</p>
+<div class="sourceCode" id="cb98"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb98-1"><a href="textmining.html#cb98-1" aria-hidden="true" tabindex="-1"></a><span class="st">&quot;https://s3.amazonaws.com/data.patentsview.org/download/ipcr.tsv.zip&quot;</span>    </span></code></pre></div>
+<p>One issue with .zip files is that they may not always read in correctly without being unzipped first. Unzip the files on your machine either using a built in application or programatically. We then read in the file. We will be using R and the tidytext package but it is straightforward to read in this data in Python with Pandas.</p>
+<p>We will read in a selection of the columns that we will use. To assist with joining our tables we will rename the id column in the grants table as this is called patent_id in the ipc table. We will also create a publication number by joining up the country, number and kind columns. That can assist us with looking up documents online or preparing data for joining to other databases (such as PATSTAT). We can also vary the separator e.g. use “_” depending on the format used by the external database. Table <a href="textmining.html#tab:rawgrants">7.1</a> displays a selection of the data.</p>
+<div class="sourceCode" id="cb99"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb99-1"><a href="textmining.html#cb99-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tidyverse)</span>
+<span id="cb99-2"><a href="textmining.html#cb99-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(vroom)</span>
+<span id="cb99-3"><a href="textmining.html#cb99-3" aria-hidden="true" tabindex="-1"></a>grants <span class="ot">&lt;-</span> vroom<span class="sc">::</span><span class="fu">vroom</span>(<span class="st">&quot;data/text_mining/patent.csv.gz&quot;</span>, <span class="at">show_col_types =</span> <span class="cn">FALSE</span>) <span class="sc">%&gt;%</span> </span>
+<span id="cb99-4"><a href="textmining.html#cb99-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(id, country, number, kind, title, abstract, date) <span class="sc">%&gt;%</span></span>
+<span id="cb99-5"><a href="textmining.html#cb99-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">rename</span>(<span class="at">patent_id =</span> id) <span class="sc">%&gt;%</span> </span>
+<span id="cb99-6"><a href="textmining.html#cb99-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">year =</span> lubridate<span class="sc">::</span><span class="fu">year</span>(date)) <span class="sc">%&gt;%</span> </span>
+<span id="cb99-7"><a href="textmining.html#cb99-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">unite</span>(publication_number, <span class="fu">c</span>(country, number, kind), <span class="at">sep =</span> <span class="st">&quot;&quot;</span>, <span class="at">remove =</span> <span class="cn">TRUE</span>)</span></code></pre></div>
+<table>
+<caption>
+<span id="tab:rawgrants">Table 7.1: </span>A Sample of Fields in the Edited Grants Table
+</caption>
+<thead>
+<tr>
+<th style="text-align:left;">
+patent_id
+</th>
+<th style="text-align:left;">
+publication_number
+</th>
+<th style="text-align:left;">
+title
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left;">
+10000000
+</td>
+<td style="text-align:left;">
+US10000000B2
+</td>
+<td style="text-align:left;">
+Coherent LADAR using intra-pixel quadrature detection
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+10000001
+</td>
+<td style="text-align:left;">
+US10000001B2
+</td>
+<td style="text-align:left;">
+Injection molding machine and mold thickness control method
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+10000002
+</td>
+<td style="text-align:left;">
+US10000002B2
+</td>
+<td style="text-align:left;">
+Method for manufacturing polymer film and co-extruded film
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+10000003
+</td>
+<td style="text-align:left;">
+US10000003B2
+</td>
+<td style="text-align:left;">
+Method for producing a container from a thermoplastic
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+10000004
+</td>
+<td style="text-align:left;">
+US10000004B2
+</td>
+<td style="text-align:left;">
+Process of obtaining a double-oriented film, co-extruded, and of low thickness made by a three bubble process that at the time of being thermoformed provides a uniform thickness in the produced tray
+</td>
+</tr>
+</tbody>
+</table>
+<p>In the previous chapter we worked with the PatentsView IPC table. The raw table contains a ‘patent_id’ field that we can link with other tables and a set of columns with different ipc levels that we can use to construct the four character subclass (e.g. C12N) with. We will use this table below with the patent_id field as the basis for joining with the titles and abstracts. Table <a href="textmining.html#tab:cleanipcsubclass">7.2</a> shows a sample of patent ids and IPC subclass from the cleaned ipcr field. This code also illustrates the use of the <code>dplyr::case_when()</code> function to correct missing zeros in IPC classes in the raw ipcr table as an alternative to the use of if statements.</p>
+<div class="sourceCode" id="cb100"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb100-1"><a href="textmining.html#cb100-1" aria-hidden="true" tabindex="-1"></a>ipcr <span class="ot">&lt;-</span> vroom<span class="sc">::</span><span class="fu">vroom</span>(<span class="st">&quot;data/text_mining/ipcr.csv.gz&quot;</span>, <span class="at">show_col_types =</span> <span class="cn">FALSE</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb100-2"><a href="textmining.html#cb100-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">ipc_class =</span></span>
+<span id="cb100-3"><a href="textmining.html#cb100-3" aria-hidden="true" tabindex="-1"></a>           <span class="fu">case_when</span>(</span>
+<span id="cb100-4"><a href="textmining.html#cb100-4" aria-hidden="true" tabindex="-1"></a>             </span>
+<span id="cb100-5"><a href="textmining.html#cb100-5" aria-hidden="true" tabindex="-1"></a>             <span class="fu">nchar</span>(ipc_class) <span class="sc">==</span> <span class="dv">1</span> <span class="sc">~</span> <span class="fu">paste0</span>(<span class="dv">0</span>,ipc_class),</span>
+<span id="cb100-6"><a href="textmining.html#cb100-6" aria-hidden="true" tabindex="-1"></a>             <span class="fu">nchar</span>(ipc_class) <span class="sc">&gt;</span> <span class="dv">1</span> <span class="sc">~</span> ipc_class</span>
+<span id="cb100-7"><a href="textmining.html#cb100-7" aria-hidden="true" tabindex="-1"></a>                       </span>
+<span id="cb100-8"><a href="textmining.html#cb100-8" aria-hidden="true" tabindex="-1"></a>                       )</span>
+<span id="cb100-9"><a href="textmining.html#cb100-9" aria-hidden="true" tabindex="-1"></a>           ) <span class="sc">%&gt;%</span> </span>
+<span id="cb100-10"><a href="textmining.html#cb100-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">unite</span>(ipc_subclass, <span class="fu">c</span>(section, ipc_class, subclass), <span class="at">sep =</span> <span class="st">&quot;&quot;</span>, <span class="at">remove =</span> <span class="cn">FALSE</span>) <span class="sc">%&gt;%</span> </span>
+<span id="cb100-11"><a href="textmining.html#cb100-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(patent_id, ipc_subclass) <span class="sc">%&gt;%</span> </span>
+<span id="cb100-12"><a href="textmining.html#cb100-12" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">ipc_subclass =</span> <span class="fu">str_to_upper</span>(ipc_subclass))</span></code></pre></div>
+<table>
+<caption>
+<span id="tab:cleanipcsubclass">Table 7.2: </span>Patent Ids and IPC Subclasses in the Cleaned IPCR Table
+</caption>
+<thead>
+<tr>
+<th style="text-align:left;">
+patent_id
+</th>
+<th style="text-align:left;">
+ipc_subclass
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left;">
+6864832
+</td>
+<td style="text-align:left;">
+G01S
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+9954111
+</td>
+<td style="text-align:left;">
+H01L
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+10048897
+</td>
+<td style="text-align:left;">
+G06F
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+10694566
+</td>
+<td style="text-align:left;">
+H04W
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+D409748
+</td>
+<td style="text-align:left;">
+D2404
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+7645556
+</td>
+<td style="text-align:left;">
+G03F
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+8524174
+</td>
+<td style="text-align:left;">
+B01L
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+10008744
+</td>
+<td style="text-align:left;">
+H01M
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+11046328
+</td>
+<td style="text-align:left;">
+B60W
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+9508104
+</td>
+<td style="text-align:left;">
+G06Q
+</td>
+</tr>
+</tbody>
+</table>
+<!--- load file to data store, cache head--->
+</div>
+<div id="words" class="section level2 hasAnchor" number="7.2">
+<h2><span class="header-section-number">7.2</span> Words<a href="textmining.html#words" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p>A primary task in text mining is tokenizing. A token is a unit in a text, typically a word or punctuation. Phrases are formed from combinations of tokens and sentences are formed from a set of tokens with marker (a full stop) at the end of the sentence. Tokenizing is therefore the process of breaking down texts into their constituent tokens (elements). Tokenizing normally focuses on words (unigrams), phrases (bigrams or trigrams) but extends to sentences and paragraphs.</p>
+<p>The tidytext package has a function called <code>unnest_tokens()</code> that by default will tokenize words in a text and will also remove punctuation and turn the case to lowercase. The effect of converting to lowercase is that words such as drone, Drone or DRONE will all be converted to the same case (drone) making for more accurate groupings and counts. Removing punctuation limits the amount of pointless characters in our results.</p>
+<p>What is important about tidytext is that it preserves the patent_id as the identifier for each word. This means that we know which document each individual word appears in. This makes it very powerful for dictionary based matches of patent documents. To illustrate, we create a table called <code>grant_words</code>. Depending on how much memory you have this should take a few minutes to run. By default the tidytext package will convert the text to lowercase and remove punctuation. Converting to lowercase makes counts accurate and removing punctuation removes text elements that are not useful for most tasks. Note that you will not always want to convert text to lowercase.</p>
+<div class="sourceCode" id="cb101"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb101-1"><a href="textmining.html#cb101-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tidytext)</span>
+<span id="cb101-2"><a href="textmining.html#cb101-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb101-3"><a href="textmining.html#cb101-3" aria-hidden="true" tabindex="-1"></a>grant_words <span class="ot">&lt;-</span> grants <span class="sc">%&gt;%</span></span>
+<span id="cb101-4"><a href="textmining.html#cb101-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(patent_id, publication_number, title) <span class="sc">%&gt;%</span> </span>
+<span id="cb101-5"><a href="textmining.html#cb101-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">unnest_tokens</span>(word, title)</span></code></pre></div>
+<p>When we have processed the text we will see that out 7.9 million individual document titles have expanded to 60,839,863 rows containing words in documents as we see in Table <a href="textmining.html#tab:titles">7.3</a> which shows words appearing in the titles per document. The important point here is that we know exactly what words appear in each patent document which is a very powerful tool.</p>
+<table>
+<caption>
+<span id="tab:titles">Table 7.3: </span>Words Appearing in the Titles of Two Patent Documents
+</caption>
+<thead>
+<tr>
+<th style="text-align:left;">
+patent_id
+</th>
+<th style="text-align:left;">
+publication_number
+</th>
+<th style="text-align:left;">
+word
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left;">
+10000000
+</td>
+<td style="text-align:left;">
+US10000000B2
+</td>
+<td style="text-align:left;">
+coherent
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+10000000
+</td>
+<td style="text-align:left;">
+US10000000B2
+</td>
+<td style="text-align:left;">
+ladar
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+10000000
+</td>
+<td style="text-align:left;">
+US10000000B2
+</td>
+<td style="text-align:left;">
+using
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+10000000
+</td>
+<td style="text-align:left;">
+US10000000B2
+</td>
+<td style="text-align:left;">
+intra
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+10000000
+</td>
+<td style="text-align:left;">
+US10000000B2
+</td>
+<td style="text-align:left;">
+pixel
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+10000000
+</td>
+<td style="text-align:left;">
+US10000000B2
+</td>
+<td style="text-align:left;">
+quadrature
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+10000000
+</td>
+<td style="text-align:left;">
+US10000000B2
+</td>
+<td style="text-align:left;">
+detection
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+10000001
+</td>
+<td style="text-align:left;">
+US10000001B2
+</td>
+<td style="text-align:left;">
+injection
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+10000001
+</td>
+<td style="text-align:left;">
+US10000001B2
+</td>
+<td style="text-align:left;">
+molding
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+10000001
+</td>
+<td style="text-align:left;">
+US10000001B2
+</td>
+<td style="text-align:left;">
+machine
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+10000001
+</td>
+<td style="text-align:left;">
+US10000001B2
+</td>
+<td style="text-align:left;">
+and
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+10000001
+</td>
+<td style="text-align:left;">
+US10000001B2
+</td>
+<td style="text-align:left;">
+mold
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+10000001
+</td>
+<td style="text-align:left;">
+US10000001B2
+</td>
+<td style="text-align:left;">
+thickness
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+10000001
+</td>
+<td style="text-align:left;">
+US10000001B2
+</td>
+<td style="text-align:left;">
+control
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+10000001
+</td>
+<td style="text-align:left;">
+US10000001B2
+</td>
+<td style="text-align:left;">
+method
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+10000002
+</td>
+<td style="text-align:left;">
+US10000002B2
+</td>
+<td style="text-align:left;">
+method
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+10000002
+</td>
+<td style="text-align:left;">
+US10000002B2
+</td>
+<td style="text-align:left;">
+for
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+10000002
+</td>
+<td style="text-align:left;">
+US10000002B2
+</td>
+<td style="text-align:left;">
+manufacturing
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+10000002
+</td>
+<td style="text-align:left;">
+US10000002B2
+</td>
+<td style="text-align:left;">
+polymer
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+10000002
+</td>
+<td style="text-align:left;">
+US10000002B2
+</td>
+<td style="text-align:left;">
+film
+</td>
+</tr>
+</tbody>
+</table>
+<p>As this makes clear, it is very easy to break a document down into its constituent words with tidytext.</p>
+</div>
+<div id="removing-stop-words" class="section level2 hasAnchor" number="7.3">
+<h2><span class="header-section-number">7.3</span> Removing Stop Words<a href="textmining.html#removing-stop-words" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p>As we can see in Table <a href="textmining.html#tab:titles">7.3</a> there are many common words such as “and” that do not contain useful information. We can see the impact of these terms if we count up the words as we see in Table <a href="textmining.html#tab:commonwords">7.4</a>.</p>
+<table>
+<caption>
+<span id="tab:commonwords">Table 7.4: </span>Top Words in Grant Titles
+</caption>
+<thead>
+<tr>
+<th style="text-align:left;">
+word
+</th>
+<th style="text-align:right;">
+n
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left;">
+and
+</td>
+<td style="text-align:right;">
+3266729
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+for
+</td>
+<td style="text-align:right;">
+2974726
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+method
+</td>
+<td style="text-align:right;">
+1859165
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+of
+</td>
+<td style="text-align:right;">
+1732262
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+a
+</td>
+<td style="text-align:right;">
+1499277
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+system
+</td>
+<td style="text-align:right;">
+1014262
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+device
+</td>
+<td style="text-align:right;">
+997272
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+apparatus
+</td>
+<td style="text-align:right;">
+978236
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+with
+</td>
+<td style="text-align:right;">
+739534
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+the
+</td>
+<td style="text-align:right;">
+651349
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+in
+</td>
+<td style="text-align:right;">
+588004
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+methods
+</td>
+<td style="text-align:right;">
+366751
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+an
+</td>
+<td style="text-align:right;">
+340798
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+to
+</td>
+<td style="text-align:right;">
+336512
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+same
+</td>
+<td style="text-align:right;">
+300901
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+using
+</td>
+<td style="text-align:right;">
+300292
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+control
+</td>
+<td style="text-align:right;">
+294340
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+having
+</td>
+<td style="text-align:right;">
+271477
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+process
+</td>
+<td style="text-align:right;">
+244300
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+image
+</td>
+<td style="text-align:right;">
+232694
+</td>
+</tr>
+</tbody>
+</table>
+<p>In Table <a href="textmining.html#tab:commonwords">7.4</a> we can see that common words will rise to the top but do not convey useful information. For this reason a common approach in text mining is to remove so called ‘stop words’. Exactly what counts a stop word may vary depending on the task at hand. However, certain words such as <code>a, and, the, for, with</code> and so on are not useful if we want to understand what a text or set of texts is about.</p>
+<p>In tidytext there is a built in table of stop words and lists of stop words can be found on the internet that you can readily edit to meet your needs. We can see some of the stop words from tidytext in Table <a href="textmining.html#tab:stopwords">7.5</a>. In reality tidytext includes three lexicons of stop words (onix, SMART and snowball) that you can use or adapt for your needs. There are also options to add your own.</p>
+<table>
+<caption>
+<span id="tab:stopwords">Table 7.5: </span>Tidytext Stop Words
+</caption>
+<thead>
+<tr>
+<th style="text-align:left;">
+word
+</th>
+<th style="text-align:left;">
+lexicon
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left;">
+a
+</td>
+<td style="text-align:left;">
+SMART
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+a’s
+</td>
+<td style="text-align:left;">
+SMART
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+able
+</td>
+<td style="text-align:left;">
+SMART
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+about
+</td>
+<td style="text-align:left;">
+SMART
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+above
+</td>
+<td style="text-align:left;">
+SMART
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+according
+</td>
+<td style="text-align:left;">
+SMART
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+accordingly
+</td>
+<td style="text-align:left;">
+SMART
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+across
+</td>
+<td style="text-align:left;">
+SMART
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+actually
+</td>
+<td style="text-align:left;">
+SMART
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+after
+</td>
+<td style="text-align:left;">
+SMART
+</td>
+</tr>
+</tbody>
+</table>
+<p>Applying stop words to our grant titles is straightforward. In the code below we first create a new column that matches words in the stopword list. We then filter them out (the same code can be written in various ways).</p>
+<div class="sourceCode" id="cb102"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb102-1"><a href="textmining.html#cb102-1" aria-hidden="true" tabindex="-1"></a>grant_words_clean <span class="ot">&lt;-</span> grant_words <span class="sc">%&gt;%</span> </span>
+<span id="cb102-2"><a href="textmining.html#cb102-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(patent_id, word) <span class="sc">%&gt;%</span> </span>
+<span id="cb102-3"><a href="textmining.html#cb102-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">stop =</span> word <span class="sc">%in%</span> tidytext<span class="sc">::</span>stop_words<span class="sc">$</span>word) <span class="sc">%&gt;%</span> </span>
+<span id="cb102-4"><a href="textmining.html#cb102-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(stop <span class="sc">==</span> <span class="cn">FALSE</span>)</span></code></pre></div>
+<p>This reduces our 60.8 million row dataset to 44 million, losing nearly 17 million words.</p>
+<p>Now when we count up the words in the grants titles we should get some more useful results as we see in Table <a href="textmining.html#tab:cleanwords">7.6</a>.</p>
+<table>
+<caption>
+<span id="tab:cleanwords">Table 7.6: </span>Cleaned Words in Patent Titles
+</caption>
+<thead>
+<tr>
+<th style="text-align:left;">
+word
+</th>
+<th style="text-align:right;">
+n
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left;">
+method
+</td>
+<td style="text-align:right;">
+1859165
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+system
+</td>
+<td style="text-align:right;">
+1014262
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+device
+</td>
+<td style="text-align:right;">
+997272
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+apparatus
+</td>
+<td style="text-align:right;">
+978236
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+methods
+</td>
+<td style="text-align:right;">
+366751
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+control
+</td>
+<td style="text-align:right;">
+294340
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+process
+</td>
+<td style="text-align:right;">
+244300
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+image
+</td>
+<td style="text-align:right;">
+232694
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+data
+</td>
+<td style="text-align:right;">
+232002
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+display
+</td>
+<td style="text-align:right;">
+218565
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+systems
+</td>
+<td style="text-align:right;">
+201809
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+circuit
+</td>
+<td style="text-align:right;">
+192200
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+semiconductor
+</td>
+<td style="text-align:right;">
+187196
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+thereof
+</td>
+<td style="text-align:right;">
+184853
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+processing
+</td>
+<td style="text-align:right;">
+184550
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+vehicle
+</td>
+<td style="text-align:right;">
+175908
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+assembly
+</td>
+<td style="text-align:right;">
+174347
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+manufacturing
+</td>
+<td style="text-align:right;">
+172285
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+power
+</td>
+<td style="text-align:right;">
+163450
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+optical
+</td>
+<td style="text-align:right;">
+156712
+</td>
+</tr>
+</tbody>
+</table>
+<p>We can make two observations about Table <a href="textmining.html#tab:cleanwords">7.6</a>. The first of these is that there are some words that appear quite commonly in patents such as “thereof” that we would want to add to our own stop words list (others might be words like comprising). However, we would want to take care with other potential stop words that may provide us with information about the type of patent claims (such as composition for composition of matter, methods and process) that we would probably want to keep for some purposes (for example if examining patent claims).</p>
+</div>
+<div id="lemmatizing-words" class="section level2 hasAnchor" number="7.4">
+<h2><span class="header-section-number">7.4</span> Lemmatizing words<a href="textmining.html#lemmatizing-words" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p>The second observation is that there are pluralised forms of some words, such as method, methods, process, processing, processes and so on. These are words that can be grouped together based on a shared form (normally the singular such as method and process). These groupings are known as lemmas. It is important to emphasise that lemmatizing is distinct from stemming words, which reduces words to a common stem.</p>
+<p>There are a variety of tools out there for lemmatizing text. We will use the <code>textstem</code> package by Tyler Rinker <span class="citation">(<a href="#ref-textstem" role="doc-biblioref">Rinker 2018</a>)</span> in R which provides a range of options for lemmatizing words. In the code below we will create a new column with the lemmatized version of words called lemma. We will filter out any digits at the same time. Here we lemmatize the words that we have already applied stop words to.</p>
+<div class="sourceCode" id="cb103"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb103-1"><a href="textmining.html#cb103-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(textstem)</span>
+<span id="cb103-2"><a href="textmining.html#cb103-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb103-3"><a href="textmining.html#cb103-3" aria-hidden="true" tabindex="-1"></a>grant_lemma <span class="ot">&lt;-</span> grant_words_clean <span class="sc">%&gt;%</span> </span>
+<span id="cb103-4"><a href="textmining.html#cb103-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">word =</span> <span class="fu">str_trim</span>(word, <span class="at">side =</span> <span class="st">&quot;both&quot;</span>)) <span class="sc">%&gt;%</span> </span>
+<span id="cb103-5"><a href="textmining.html#cb103-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">lemma =</span> <span class="fu">lemmatize_words</span>(word)) <span class="sc">%&gt;%</span> </span>
+<span id="cb103-6"><a href="textmining.html#cb103-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">digit =</span> <span class="fu">str_detect</span>(word, <span class="st">&quot;[[:digit:]]&quot;</span>)) <span class="sc">%&gt;%</span> </span>
+<span id="cb103-7"><a href="textmining.html#cb103-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(digit <span class="sc">==</span> <span class="cn">FALSE</span>) <span class="sc">%&gt;%</span> </span>
+<span id="cb103-8"><a href="textmining.html#cb103-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(<span class="sc">-</span>digit)</span></code></pre></div>
+<p>If we count up our lemmatized words we will see a dramatic change in the scores for terms such as ‘method’ and ‘process’ as we see in Table <a href="textmining.html#tab:lemmaout">7.7</a>.</p>
+<table>
+<caption>
+<span id="tab:lemmaout">Table 7.7: </span>Outcome of Lemmatization of Words in Patent Titles
+</caption>
+<thead>
+<tr>
+<th style="text-align:left;">
+lemma
+</th>
+<th style="text-align:right;">
+n
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left;">
+method
+</td>
+<td style="text-align:right;">
+2225916
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+system
+</td>
+<td style="text-align:right;">
+1216071
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+device
+</td>
+<td style="text-align:right;">
+1122573
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+apparatus
+</td>
+<td style="text-align:right;">
+991158
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+process
+</td>
+<td style="text-align:right;">
+451231
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+control
+</td>
+<td style="text-align:right;">
+420688
+</td>
+</tr>
+</tbody>
+</table>
+<p>It is important to be cautious with lemmatizing to ensure that you will be getting what you expect. However, it is a particularly powerful tool for harmonising data to enable aggregation for counts. As we will also see, this is an important for topic modelling and network visualization.</p>
+<p>We now have a clearer idea of the top terms that appear across the corpus of US patent grants. As we will see below, if we know what words we are interested in we could simply identify all of the documents that contain those words for further analysis.</p>
+<p>As discussed in the discussion of the patent landscape for animal genetic resources in the last chapter on classification, the use of a dictionary of terms such as pig, horse, cow and so on allows us to capture a universe of documents that contain animal related terms. However, this will also catch a lot of extraneous noise from uses of terms that are difficult for the analyst to predict in advance (such as pipeline pigs and clothes horses).<br />
+What is important in the case of the patent system is that we can leverage the patent classification to help us refine our text mining efforts.</p>
+<p>To illustrate this we will start by using a well known measure known as “term frequency inverse document frequency” (TFIDF) to understand what terms are distinctive in our set for particular areas of technology.</p>
+</div>
+<div id="terms-by-technology" class="section level2 hasAnchor" number="7.5">
+<h2><span class="header-section-number">7.5</span> Terms by Technology<a href="textmining.html#terms-by-technology" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p>As an experiment we will see what the terms are in four areas of technology using IPC subclasses. For this experiment, we will use examples that are distinctive and some that are likely to overlap, these are:</p>
+<ul>
+<li>Plant agriculture (A01H),</li>
+<li>Medicines and pharmaceuticals (A61K),</li>
+<li>Biotechnology (C12N)</li>
+<li>Computing (G06F)</li>
+</ul>
+<p>To do this we will start by identifying the patent_ids that fall into these subclasses with the results shown in Table <a href="textmining.html#tab:ipcsubhead">7.8</a>.</p>
+<div class="sourceCode" id="cb104"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb104-1"><a href="textmining.html#cb104-1" aria-hidden="true" tabindex="-1"></a>ipc_set <span class="ot">&lt;-</span> ipcr <span class="sc">%&gt;%</span> </span>
+<span id="cb104-2"><a href="textmining.html#cb104-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(patent_id, ipc_subclass) <span class="sc">%&gt;%</span> </span>
+<span id="cb104-3"><a href="textmining.html#cb104-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(., ipc_subclass <span class="sc">==</span> <span class="st">&quot;A01H&quot;</span> <span class="sc">|</span> ipc_subclass <span class="sc">==</span> <span class="st">&quot;A61K&quot;</span> <span class="sc">|</span> </span>
+<span id="cb104-4"><a href="textmining.html#cb104-4" aria-hidden="true" tabindex="-1"></a>           ipc_subclass <span class="sc">==</span> <span class="st">&quot;C12N&quot;</span> <span class="sc">|</span> ipc_subclass <span class="sc">==</span> <span class="st">&quot;G06F&quot;</span>)</span></code></pre></div>
+<table>
+<caption>
+<span id="tab:ipcsubhead">Table 7.8: </span>IPC Subclasses for TF_IDF
+</caption>
+<thead>
+<tr>
+<th style="text-align:left;">
+patent_id
+</th>
+<th style="text-align:left;">
+ipc_subclass
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left;">
+10048897
+</td>
+<td style="text-align:left;">
+G06F
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+PP10471
+</td>
+<td style="text-align:left;">
+A01H
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+9600201
+</td>
+<td style="text-align:left;">
+G06F
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+9138474
+</td>
+<td style="text-align:left;">
+A61K
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+9898174
+</td>
+<td style="text-align:left;">
+G06F
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+9836588
+</td>
+<td style="text-align:left;">
+G06F
+</td>
+</tr>
+</tbody>
+</table>
+<p>This gives us a total of just over 2.4 million patent_ids that have one or more of these classifiers.</p>
+<p>We now join the two tables by the patent_id using <code>inner_join</code>. In SQL (here written with <code>dplyr</code> in R) an inner join is a filtering join that will keep only shared elements in the two tables (the patent_ids). We then count the words and sort them as we see in Table <a href="textmining.html#tab:lemmaipc">7.9</a>.</p>
+<div class="sourceCode" id="cb105"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb105-1"><a href="textmining.html#cb105-1" aria-hidden="true" tabindex="-1"></a>ipc_words <span class="ot">&lt;-</span> ipc_set <span class="sc">%&gt;%</span> </span>
+<span id="cb105-2"><a href="textmining.html#cb105-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">inner_join</span>(grant_lemma, <span class="at">by =</span> <span class="st">&quot;patent_id&quot;</span>) <span class="sc">%&gt;%</span> </span>
+<span id="cb105-3"><a href="textmining.html#cb105-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">count</span>(ipc_subclass, lemma, <span class="at">sort =</span> <span class="cn">TRUE</span>)</span></code></pre></div>
+<table>
+<caption>
+<span id="tab:lemmaipc">Table 7.9: </span>Examples of Lemmatized Words by IPC
+</caption>
+<thead>
+<tr>
+<th style="text-align:left;">
+ipc_subclass
+</th>
+<th style="text-align:left;">
+lemma
+</th>
+<th style="text-align:right;">
+n
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left;">
+G06F
+</td>
+<td style="text-align:left;">
+method
+</td>
+<td style="text-align:right;">
+597874
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+G06F
+</td>
+<td style="text-align:left;">
+system
+</td>
+<td style="text-align:right;">
+507874
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+G06F
+</td>
+<td style="text-align:left;">
+device
+</td>
+<td style="text-align:right;">
+252371
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+G06F
+</td>
+<td style="text-align:left;">
+datum
+</td>
+<td style="text-align:right;">
+210127
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+G06F
+</td>
+<td style="text-align:left;">
+apparatus
+</td>
+<td style="text-align:right;">
+205122
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+A61K
+</td>
+<td style="text-align:left;">
+method
+</td>
+<td style="text-align:right;">
+190228
+</td>
+</tr>
+</tbody>
+</table>
+<p>For the calculation that we are about to make using the code provided by Silge and Robinson we first need to generate a count of the total number of words for each of our technology areas (subclasses). To do that we group the table by ‘ipc_subclass’ so that we can count up the words in each subclass (rather than the whole table). It is important to <code>ungroup()</code> the data at the end. The reason for this is that without ungrouping any future operations such as counts will be performed on the grouped table leading to unexpected results and considerable confusion.</p>
+<div class="sourceCode" id="cb106"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb106-1"><a href="textmining.html#cb106-1" aria-hidden="true" tabindex="-1"></a>ipc_total_words <span class="ot">&lt;-</span> ipc_words <span class="sc">%&gt;%</span> </span>
+<span id="cb106-2"><a href="textmining.html#cb106-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(ipc_subclass) <span class="sc">%&gt;%</span> </span>
+<span id="cb106-3"><a href="textmining.html#cb106-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarise</span>(<span class="at">total =</span> <span class="fu">sum</span>(n)) <span class="sc">%&gt;%</span> </span>
+<span id="cb106-4"><a href="textmining.html#cb106-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ungroup</span>()</span></code></pre></div>
+<p>Next we join the two tables together using <code>left_join()</code>. Unlike <code>inner_join()</code>, <code>left_join()</code> will keep everything in our original ipc_words table <code>on the left hand side</code> (that we will be applying the TFIDF to).</p>
+<div class="sourceCode" id="cb107"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb107-1"><a href="textmining.html#cb107-1" aria-hidden="true" tabindex="-1"></a>ipc_words <span class="ot">&lt;-</span> ipc_words <span class="sc">%&gt;%</span> </span>
+<span id="cb107-2"><a href="textmining.html#cb107-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">left_join</span>(ipc_total_words, <span class="at">by =</span> <span class="st">&quot;ipc_subclass&quot;</span>)</span></code></pre></div>
+<p>We are now in a position to apply the term frequency inverse document frequency calculations (using bind_tf_idf) as we see in Table <a href="textmining.html#tab:tfidfig">7.10</a>.</p>
+<div class="sourceCode" id="cb108"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb108-1"><a href="textmining.html#cb108-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tidytext)</span>
+<span id="cb108-2"><a href="textmining.html#cb108-2" aria-hidden="true" tabindex="-1"></a>ipc_words_tfid <span class="ot">&lt;-</span> ipc_words <span class="sc">%&gt;%</span> </span>
+<span id="cb108-3"><a href="textmining.html#cb108-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">bind_tf_idf</span>(word, ipc_subclass, n) <span class="sc">%&gt;%</span> </span>
+<span id="cb108-4"><a href="textmining.html#cb108-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">arrange</span>(<span class="fu">desc</span>(tf_idf))</span>
+<span id="cb108-5"><a href="textmining.html#cb108-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb108-6"><a href="textmining.html#cb108-6" aria-hidden="true" tabindex="-1"></a>ipc_words_tfid</span></code></pre></div>
+<table>
+<caption>
+<span id="tab:tfidfig">Table 7.10: </span>Term Frequency, Inverse Frequency and TFIDF Scores
+</caption>
+<thead>
+<tr>
+<th style="text-align:left;">
+ipc_subclass
+</th>
+<th style="text-align:left;">
+word
+</th>
+<th style="text-align:right;">
+n
+</th>
+<th style="text-align:right;">
+tf
+</th>
+<th style="text-align:right;">
+idf
+</th>
+<th style="text-align:right;">
+tf_idf
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left;">
+A01H
+</td>
+<td style="text-align:left;">
+inbred
+</td>
+<td style="text-align:right;">
+5275
+</td>
+<td style="text-align:right;">
+0.0149659
+</td>
+<td style="text-align:right;">
+0.6931472
+</td>
+<td style="text-align:right;">
+0.0103735
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+A01H
+</td>
+<td style="text-align:left;">
+cultivar
+</td>
+<td style="text-align:right;">
+7995
+</td>
+<td style="text-align:right;">
+0.0226828
+</td>
+<td style="text-align:right;">
+0.2876821
+</td>
+<td style="text-align:right;">
+0.0065254
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+A01H
+</td>
+<td style="text-align:left;">
+rose
+</td>
+<td style="text-align:right;">
+3421
+</td>
+<td style="text-align:right;">
+0.0097058
+</td>
+<td style="text-align:right;">
+0.2876821
+</td>
+<td style="text-align:right;">
+0.0027922
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+A01H
+</td>
+<td style="text-align:left;">
+calibrachoa
+</td>
+<td style="text-align:right;">
+641
+</td>
+<td style="text-align:right;">
+0.0018186
+</td>
+<td style="text-align:right;">
+1.3862944
+</td>
+<td style="text-align:right;">
+0.0025211
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+A01H
+</td>
+<td style="text-align:left;">
+hydrangea
+</td>
+<td style="text-align:right;">
+584
+</td>
+<td style="text-align:right;">
+0.0016569
+</td>
+<td style="text-align:right;">
+1.3862944
+</td>
+<td style="text-align:right;">
+0.0022969
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+G06F
+</td>
+<td style="text-align:left;">
+server
+</td>
+<td style="text-align:right;">
+22500
+</td>
+<td style="text-align:right;">
+0.0016522
+</td>
+<td style="text-align:right;">
+1.3862944
+</td>
+<td style="text-align:right;">
+0.0022905
+</td>
+</tr>
+</tbody>
+</table>
+<p>The application of the bind_tf_idf function gives us a term frequency score (tf) an inverse document frequency score (idf) and a term frequency inverse document frequency score as a product of term frequency and inverse document frequency. In straightforward terms, this gives us a calculation of how distinctive a particular term is in the set of words within a document or group of documents.</p>
+<p>We can visualise the distinctive terms from the titles of publications for the four distinctive subclasses in Figure <a href="textmining.html#fig:tfidplot">7.1</a>.</p>
+<div class="sourceCode" id="cb109"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb109-1"><a href="textmining.html#cb109-1" aria-hidden="true" tabindex="-1"></a>ipc_names <span class="ot">&lt;-</span> <span class="fu">c</span>(</span>
+<span id="cb109-2"><a href="textmining.html#cb109-2" aria-hidden="true" tabindex="-1"></a>  <span class="st">&#39;A01H&#39;</span><span class="ot">=</span><span class="st">&quot;Plant Agriculture (A01H)&quot;</span>,</span>
+<span id="cb109-3"><a href="textmining.html#cb109-3" aria-hidden="true" tabindex="-1"></a>  <span class="st">&#39;C12N&#39;</span><span class="ot">=</span><span class="st">&quot;Biotechnology (C12N)&quot;</span>,</span>
+<span id="cb109-4"><a href="textmining.html#cb109-4" aria-hidden="true" tabindex="-1"></a>  <span class="st">&#39;A61K&#39;</span><span class="ot">=</span><span class="st">&quot;Pharmaceuticals (A61K)&quot;</span>,</span>
+<span id="cb109-5"><a href="textmining.html#cb109-5" aria-hidden="true" tabindex="-1"></a>  <span class="st">&#39;G06F&#39;</span><span class="ot">=</span><span class="st">&quot;Computing (G06F)&quot;</span></span>
+<span id="cb109-6"><a href="textmining.html#cb109-6" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb109-7"><a href="textmining.html#cb109-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb109-8"><a href="textmining.html#cb109-8" aria-hidden="true" tabindex="-1"></a>ipc_words_tfid <span class="sc">%&gt;%</span> </span>
+<span id="cb109-9"><a href="textmining.html#cb109-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">arrange</span>(<span class="fu">desc</span>(tf_idf)) <span class="sc">%&gt;%</span> </span>
+<span id="cb109-10"><a href="textmining.html#cb109-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">word =</span> <span class="fu">factor</span>(word, <span class="at">levels =</span> <span class="fu">rev</span>(<span class="fu">unique</span>(word)))) <span class="sc">%&gt;%</span> </span>
+<span id="cb109-11"><a href="textmining.html#cb109-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(ipc_subclass) <span class="sc">%&gt;%</span> </span>
+<span id="cb109-12"><a href="textmining.html#cb109-12" aria-hidden="true" tabindex="-1"></a>  <span class="fu">top_n</span>(<span class="dv">15</span>) <span class="sc">%&gt;%</span> </span>
+<span id="cb109-13"><a href="textmining.html#cb109-13" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ungroup</span>() <span class="sc">%&gt;%</span> </span>
+<span id="cb109-14"><a href="textmining.html#cb109-14" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(word, tf_idf, <span class="at">fill =</span> ipc_subclass)) <span class="sc">+</span></span>
+<span id="cb109-15"><a href="textmining.html#cb109-15" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_col</span>(<span class="at">show.legend =</span> <span class="cn">FALSE</span>) <span class="sc">+</span></span>
+<span id="cb109-16"><a href="textmining.html#cb109-16" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">x =</span> <span class="cn">NULL</span>, <span class="at">y =</span> <span class="st">&quot;tf_idf&quot;</span>) <span class="sc">+</span></span>
+<span id="cb109-17"><a href="textmining.html#cb109-17" aria-hidden="true" tabindex="-1"></a>  <span class="fu">facet_wrap</span>(ipc_subclass <span class="sc">~</span>., <span class="at">labeller =</span> <span class="fu">as_labeller</span>(ipc_names), <span class="at">ncol =</span> <span class="dv">2</span>, </span>
+<span id="cb109-18"><a href="textmining.html#cb109-18" aria-hidden="true" tabindex="-1"></a>             <span class="at">scales =</span> <span class="st">&quot;free&quot;</span>) <span class="sc">+</span></span>
+<span id="cb109-19"><a href="textmining.html#cb109-19" aria-hidden="true" tabindex="-1"></a>  <span class="fu">coord_flip</span>()</span></code></pre></div>
+<div class="figure" style="text-align: center"><span style="display:block;" id="fig:tfidplot"></span>
+<img src="images/textmining/tfidf.png" alt="TFIDF scores for distinctive terms in patent titles by IPC subclass" width="100%" />
+<p class="caption">
+Figure 7.1: TFIDF scores for distinctive terms in patent titles by IPC subclass
+</p>
+</div>
+<!---[What is going on with C12N as it axis is scientific and it is not ranking scores quite right]--->
+<p>In the original example that we are copying here from Silge and Robinson, the different novels written by Jane Austen were mainly distinguished not by the language used but by the names (proper nouns) of the individual characters in each novel, such as Darcy in <em>Pride and Prejudice</em> and Emma and Knightley in <em>Emma</em>. In contrast, when ranked by tfidf our patent data displays very distinctive terms associated with each subclass, with some overlap between A01H and C12N. In the case of plant agriculture and biotechnology this will arise from genetically modified plants (which fall into both categories of the system), Note that in the case of A61K we appear to have some partial words (e.g. yl) arising from the process of splitting the text into tokens. A solution here would be to filter out words with 2 or 3 characters or less unless there is a good reason not to.
+This example quite vividly illustrates the point that term frequency inverse document frequency, and its multiple variants in use by search engines, is a very powerful means of picking out distinctive terms in groups of documents and for modelling the topics that these documents are about. However, these examples also illustrate the importance of the patent classification.</p>
+</div>
+<div id="combining-text-mining-with-patent-classification" class="section level2 hasAnchor" number="7.6">
+<h2><span class="header-section-number">7.6</span> Combining Text Mining with Patent Classification<a href="textmining.html#combining-text-mining-with-patent-classification" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p>In reality, the distinctive terms that we observe in Figure <a href="textmining.html#fig:tfidplot">7.1</a> reinforce the point made in the last chapter: the patent classification is our friend. In contrast with many other forms of document systems the patent system uses a sophisticated human and machine curated international classification system to describe the content of patent documents. The importance of engaging with the classification to assist with text mining is revealed by the terms in the different subclasses: the classification does a lot of work for us. Once we understand the classification we are able to target our attention to areas of the system that we are interested in. Put another way, rather than starting by text mining the titles or other text elements of all patent documents we will save ourselves a lot of time and effort by targeting our efforts to specific areas of the system using the international patent classification as our guide.</p>
+<p>We can briefly illustrate this point using the topic of drones using the patent titles.</p>
+<div class="sourceCode" id="cb110"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb110-1"><a href="textmining.html#cb110-1" aria-hidden="true" tabindex="-1"></a>grant_lemma <span class="sc">%&gt;%</span> </span>
+<span id="cb110-2"><a href="textmining.html#cb110-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(lemma <span class="sc">==</span> <span class="st">&quot;drone&quot;</span>) <span class="sc">%&gt;%</span> </span>
+<span id="cb110-3"><a href="textmining.html#cb110-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">inner_join</span>(ipcr, <span class="at">by =</span> <span class="st">&quot;patent_id&quot;</span>) <span class="sc">%&gt;%</span> </span>
+<span id="cb110-4"><a href="textmining.html#cb110-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">count</span>(ipc_subclass, <span class="at">sort =</span> <span class="cn">TRUE</span>)</span></code></pre></div>
+<table>
+<thead>
+<tr>
+<th style="text-align:left;">
+ipc_subclass
+</th>
+<th style="text-align:right;">
+n
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left;">
+B64C
+</td>
+<td style="text-align:right;">
+816
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+G05D
+</td>
+<td style="text-align:right;">
+567
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+B64D
+</td>
+<td style="text-align:right;">
+368
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+H04W
+</td>
+<td style="text-align:right;">
+368
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+G08G
+</td>
+<td style="text-align:right;">
+319
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+G01S
+</td>
+<td style="text-align:right;">
+267
+</td>
+</tr>
+</tbody>
+</table>
+<p>In practice, we would want to use larger text segments such as titles and abstracts rather than simply the titles (see below). However, this example illustrates that if we wanted to start exploring the topic of drone technology we would probably want to include B64C (Aeroplanes and Helicopters), G05D (control systems) and B64D (aircraft equipment) as part of our search strategy for the straightforward reason that these are areas of the patent library where documents containing these words are to be found.</p>
+<p>We can scale up this example to focus on a broader topic area of wider policy interest: biodiversity. In previous work, Oldham, Hall and Forero text mined the full text of 11 million patent documents for millions of taxonomic species names using regular expressions <span class="citation">(<a href="#ref-lens.org/029-457-486-798-609" role="doc-biblioref">P. Oldham, Hall, and Forero 2013</a>)</span>. This research also revealed that it is possible to capture the majority of biodiversity related terms by focusing on specific areas of the patent classification. Use of a set of English terms within those areas of the system would then capture the universe of documents that need to be captured. The two elements of that search strategy involved a set of terms that commonly appear in biodiversity related documents and a set of IPC classes.</p>
+<p>The search terms are presented below. As these are search terms that are designed to be used in a search engine they include plurals and are not stemmed to avoid capturing many irrelevant terms.</p>
+<div class="sourceCode" id="cb111"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb111-1"><a href="textmining.html#cb111-1" aria-hidden="true" tabindex="-1"></a>biodiversity_ipc_words <span class="ot">&lt;-</span> <span class="fu">tibble</span>(<span class="at">word =</span> <span class="fu">c</span>(<span class="st">&quot;species&quot;</span>,<span class="st">&quot;genus&quot;</span>,<span class="st">&quot;family&quot;</span>,<span class="st">&quot;order&quot;</span>,<span class="st">&quot;phylum&quot;</span>,<span class="st">&quot;class&quot;</span>,<span class="st">&quot;kingdom&quot;</span>,<span class="st">&quot;tribe&quot;</span>,<span class="st">&quot;dna&quot;</span>,</span>
+<span id="cb111-2"><a href="textmining.html#cb111-2" aria-hidden="true" tabindex="-1"></a>  <span class="st">&quot;nucleic&quot;</span>,<span class="st">&quot;nucleotide&quot;</span>,<span class="st">&quot;amino&quot;</span>,<span class="st">&quot;polypeptide&quot;</span>,<span class="st">&quot;sequence&quot;</span>,<span class="st">&quot;seq&quot;</span>,<span class="st">&quot;seqid&quot;</span>, <span class="st">&quot;protein&quot;</span>,</span>
+<span id="cb111-3"><a href="textmining.html#cb111-3" aria-hidden="true" tabindex="-1"></a>  <span class="st">&quot;proteins&quot;</span>,<span class="st">&quot;peptides&quot;</span>,<span class="st">&quot;peptide&quot;</span>,<span class="st">&quot;enzyme&quot;</span>,<span class="st">&quot;enzymes&quot;</span>,<span class="st">&quot;plant&quot;</span>,<span class="st">&quot;plants&quot;</span>,<span class="st">&quot;animal&quot;</span>,<span class="st">&quot;animals&quot;</span>,<span class="st">&quot;mammal&quot;</span>,</span>
+<span id="cb111-4"><a href="textmining.html#cb111-4" aria-hidden="true" tabindex="-1"></a>  <span class="st">&quot;mammals&quot;</span>,<span class="st">&quot;mammalian&quot;</span>,<span class="st">&quot;bacteria&quot;</span>,<span class="st">&quot;bacterium&quot;</span>,<span class="st">&quot;protozoa&quot;</span>,<span class="st">&quot;virus&quot;</span>,<span class="st">&quot;viruses&quot;</span>,<span class="st">&quot;fungi&quot;</span>,<span class="st">&quot;animalia&quot;</span>,<span class="st">&quot;archaea&quot;</span>,</span>
+<span id="cb111-5"><a href="textmining.html#cb111-5" aria-hidden="true" tabindex="-1"></a>  <span class="st">&quot;chromista&quot;</span>,<span class="st">&quot;chromist&quot;</span>,<span class="st">&quot;chromists&quot;</span>,<span class="st">&quot;protista&quot;</span>,<span class="st">&quot;protist&quot;</span>,<span class="st">&quot;protists&quot;</span>,<span class="st">&quot;plantae&quot;</span>,<span class="st">&quot;eukarya&quot;</span>,<span class="st">&quot;eukaryotes&quot;</span>,</span>
+<span id="cb111-6"><a href="textmining.html#cb111-6" aria-hidden="true" tabindex="-1"></a>  <span class="st">&quot;eukaryote&quot;</span>,<span class="st">&quot;prokarya&quot;</span>,<span class="st">&quot;prokaryote&quot;</span>,<span class="st">&quot;prokaryotes&quot;</span>,<span class="st">&quot;microorganism&quot;</span>,<span class="st">&quot;microorganisms&quot;</span>,<span class="st">&quot;organism&quot;</span>,<span class="st">&quot;organisms&quot;</span>,</span>
+<span id="cb111-7"><a href="textmining.html#cb111-7" aria-hidden="true" tabindex="-1"></a>  <span class="st">&quot;cell&quot;</span>,<span class="st">&quot;cells&quot;</span>,<span class="st">&quot;gene&quot;</span>,<span class="st">&quot;genes&quot;</span>,<span class="st">&quot;genetic&quot;</span>,<span class="st">&quot;viral&quot;</span>,<span class="st">&quot;biological&quot;</span>,<span class="st">&quot;biology&quot;</span>,<span class="st">&quot;strain&quot;</span>,<span class="st">&quot;strains&quot;</span>,<span class="st">&quot;variety&quot;</span>,<span class="st">&quot;varieties&quot;</span>,</span>
+<span id="cb111-8"><a href="textmining.html#cb111-8" aria-hidden="true" tabindex="-1"></a>  <span class="st">&quot;accession&quot;</span>)) </span></code></pre></div>
+<p>For this example we will scale up to include words from both the titles and abstracts of US granted patents. We will do this by uniting the titles and the abstracts into one string and then breaking that into words. Note that this is RAM intensive and if working on a machine with limited RAM you may wish to filter the grants data to a specific year to try this out. As an alternative, it is now very cost effective to create a powerful virtual machine with a cloud computing service (Amazon Web Services, Google Cloud, Microsoft Azure etc.) that can be destroyed when a task is completed. The use of cloud computing is beyond the scope of this Handbook but is extremely useful for working with data at scale using either VantagePoint (on Windows Server) or with programming languages such as R, Python, Spark or Google Big Query. Many guides to getting started with creating virtual machines are available online and packages exist in R and Python that allow you to create and manage virtual machines from your desktop. Other options include Remote Desktop (for accessing remote virtual Windows machines as if they are your local desktop).
+We start by restricting the data to the identifier and title and abstract which we combine together before splitting into words. We then remove stop words. For this illustration we will not perform additional clean up steps.</p>
+<div class="sourceCode" id="cb112"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb112-1"><a href="textmining.html#cb112-1" aria-hidden="true" tabindex="-1"></a>words_ta <span class="ot">&lt;-</span> grants <span class="sc">%&gt;%</span> </span>
+<span id="cb112-2"><a href="textmining.html#cb112-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(patent_id, title, abstract) <span class="sc">%&gt;%</span> </span>
+<span id="cb112-3"><a href="textmining.html#cb112-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">unite</span>(text, <span class="fu">c</span>(title, abstract), <span class="at">sep =</span> <span class="st">&quot;. &quot;</span>) <span class="sc">%&gt;%</span> </span>
+<span id="cb112-4"><a href="textmining.html#cb112-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">unnest_tokens</span>(word, text)  <span class="sc">%&gt;%</span> </span>
+<span id="cb112-5"><a href="textmining.html#cb112-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">stop =</span> word <span class="sc">%in%</span> tidytext<span class="sc">::</span>stop_words<span class="sc">$</span>word) <span class="sc">%&gt;%</span> </span>
+<span id="cb112-6"><a href="textmining.html#cb112-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(stop <span class="sc">==</span> <span class="cn">FALSE</span>) <span class="sc">%&gt;%</span> </span>
+<span id="cb112-7"><a href="textmining.html#cb112-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(<span class="sc">-</span>stop)</span></code></pre></div>
+<table>
+<thead>
+<tr>
+<th style="text-align:left;">
+patent_id
+</th>
+<th style="text-align:left;">
+word
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left;">
+10000000
+</td>
+<td style="text-align:left;">
+coherent
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+10000000
+</td>
+<td style="text-align:left;">
+ladar
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+10000000
+</td>
+<td style="text-align:left;">
+intra
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+10000000
+</td>
+<td style="text-align:left;">
+pixel
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+10000000
+</td>
+<td style="text-align:left;">
+quadrature
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+10000000
+</td>
+<td style="text-align:left;">
+detection
+</td>
+</tr>
+</tbody>
+</table>
+<p>This gives us a raw dataset with 893,067,757 rows that reduces to 475,833,395 when stop words are removed. We now match our cleaned up terms to our biodiversity dictionary.</p>
+<p>We now want to reduce the set to those documents that contain our biodiversity dictionary. With this version of the US grants table we obtain a ‘raw hits’ dataset with 2,692,948 rows and 805,675 raw patent grant documents. In the second step we want to join to the IPC to see what the top subclasses are. We combine these steps in the code below. We use inner_join to filter the documents to those containing the biodiversity terms and left_join for the IPC.</p>
+<!---# where is words clean (renamed as words_ta)--->
+<div class="sourceCode" id="cb113"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb113-1"><a href="textmining.html#cb113-1" aria-hidden="true" tabindex="-1"></a>biodiversity_words <span class="ot">&lt;-</span> words_ta <span class="sc">%&gt;%</span> </span>
+<span id="cb113-2"><a href="textmining.html#cb113-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">inner_join</span>(biodiversity_ipc_words, <span class="at">by =</span> <span class="st">&quot;word&quot;</span>) <span class="sc">%&gt;%</span> </span>
+<span id="cb113-3"><a href="textmining.html#cb113-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">left_join</span>(ipcr, <span class="at">by =</span> <span class="st">&quot;patent_id&quot;</span>)</span></code></pre></div>
+<p>This will produce a dataset with our biodiversity terms and 2084 IPC subclasses. Table <a href="textmining.html#tab:ipcrank">7.11</a> shows the top 20 subclasses.</p>
+<table>
+<caption>
+<span id="tab:ipcrank">Table 7.11: </span>Top 20 IPC Subclasses for Biodiversity Terms
+</caption>
+<thead>
+<tr>
+<th style="text-align:left;">
+ipc_subclass
+</th>
+<th style="text-align:right;">
+n
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left;">
+C12N
+</td>
+<td style="text-align:right;">
+1151393
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+A61K
+</td>
+<td style="text-align:right;">
+1034746
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+A01H
+</td>
+<td style="text-align:right;">
+590274
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+C07K
+</td>
+<td style="text-align:right;">
+514985
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+H01M
+</td>
+<td style="text-align:right;">
+348670
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+G01N
+</td>
+<td style="text-align:right;">
+344056
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+H01L
+</td>
+<td style="text-align:right;">
+323959
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+G11C
+</td>
+<td style="text-align:right;">
+309924
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+C12Q
+</td>
+<td style="text-align:right;">
+288365
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+H04W
+</td>
+<td style="text-align:right;">
+259230
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+G06F
+</td>
+<td style="text-align:right;">
+247670
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+C12P
+</td>
+<td style="text-align:right;">
+245579
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+C07H
+</td>
+<td style="text-align:right;">
+220449
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+C07D
+</td>
+<td style="text-align:right;">
+175588
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+H04L
+</td>
+<td style="text-align:right;">
+136105
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+A01N
+</td>
+<td style="text-align:right;">
+134383
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+H04N
+</td>
+<td style="text-align:right;">
+80492
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+A61B
+</td>
+<td style="text-align:right;">
+76849
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+C07C
+</td>
+<td style="text-align:right;">
+64242
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+H04B
+</td>
+<td style="text-align:right;">
+55282
+</td>
+</tr>
+</tbody>
+</table>
+<p>A total of 1,773 IPC subclasses include our biodiversity terms. In considering Table <a href="textmining.html#tab:ipcrank">7.11</a> we can make three key observations. The first of these is that we have a clear concentration of the biodiversity related terms in certain areas of the patent system. The second observation is that this data includes subclasses in section G and H of the classification that are very unlikely to have anything to do with biodiversity as such. For example, words in our set such as ‘order’ for the taxonomic rank are likely to create a lot of noise from systems that involve ordering in all its various forms (and should perhaps be removed). The third observation is that we can safely exclude areas that are likely to constitute noise by classification.</p>
+<p>One feature of the patent system is that documents receive multiple classification codes to describe the contents of a document. Excluding subclasses such as G01N will only have the effect of excluding documents that don’t contain one of the other ‘keep’ classifiers. That is, documents classified as both C12N and GO1N will be retained because of the presence of C12N. Drawing on this logic we can arrive at a set of subclasses that can be used as a filter for the biodiversity terms and constitute <code>core</code> classifiers for biodiversity. Note that in one case (subclass C02F) we would confine a search engine based search to C02F3 (for biological treatments of waste water and sewage) as the only relevant group in the subclass.</p>
+<div class="sourceCode" id="cb114"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb114-1"><a href="textmining.html#cb114-1" aria-hidden="true" tabindex="-1"></a>biodiversity_ipc_subclass <span class="ot">&lt;-</span> <span class="fu">tibble</span>(</span>
+<span id="cb114-2"><a href="textmining.html#cb114-2" aria-hidden="true" tabindex="-1"></a>  <span class="at">ipc_subclass =</span> <span class="fu">c</span>(<span class="st">&quot;A01H&quot;</span>,<span class="st">&quot;A01K&quot;</span>,<span class="st">&quot;A01N&quot;</span>,<span class="st">&quot;A23L&quot;</span>,<span class="st">&quot;A23K&quot;</span>,<span class="st">&quot;A23G&quot;</span>,<span class="st">&quot;A23C&quot;</span>,<span class="st">&quot;A61K&quot;</span>,<span class="st">&quot;A61Q&quot;</span>,</span>
+<span id="cb114-3"><a href="textmining.html#cb114-3" aria-hidden="true" tabindex="-1"></a>                   <span class="st">&quot;C02F&quot;</span>,<span class="st">&quot;C07C&quot;</span>,<span class="st">&quot;C07D&quot;</span>,<span class="st">&quot;C07H&quot;</span>,<span class="st">&quot;C07K&quot;</span>,<span class="st">&quot;C08H&quot;</span>,<span class="st">&quot;C08L&quot;</span>,<span class="st">&quot;C09B&quot;</span>,<span class="st">&quot;C09D&quot;</span>,</span>
+<span id="cb114-4"><a href="textmining.html#cb114-4" aria-hidden="true" tabindex="-1"></a>                   <span class="st">&quot;C09G&quot;</span>,<span class="st">&quot;C09J&quot;</span>,<span class="st">&quot;CO9K&quot;</span>,<span class="st">&quot;C11B&quot;</span>,<span class="st">&quot;C11C&quot;</span>,<span class="st">&quot;C11D&quot;</span>,<span class="st">&quot;C12M&quot;</span>,<span class="st">&quot;C12N&quot;</span>,<span class="st">&quot;C12P&quot;</span>,</span>
+<span id="cb114-5"><a href="textmining.html#cb114-5" aria-hidden="true" tabindex="-1"></a>                   <span class="st">&quot;C12Q&quot;</span>,<span class="st">&quot;C12R&quot;</span>,<span class="st">&quot;C12S&quot;</span>,<span class="st">&quot;C40B&quot;</span>))</span></code></pre></div>
+<p>At present we have a set of biodiversity words. What we want to do next is to filter the documents to the records that contain a biodiversity word AND appear in one of the subclasses above. We then want to count up the patent_ids and obtain the grants (containing the titles, abstracts and other information) for further analysis. We achieve this by first filtering the data to those containing the subclasses, then we count the patent identifiers to create a distinct set and join on to the main patent grants table using the patent ids. Table <a href="textmining.html#tab:loadbiopatids">7.12</a> shows the outcome of joining the data back together again.</p>
+<table>
+<caption>
+<span id="tab:loadbiopatids">Table 7.12: </span>Joining biodiversity words filtered by IPC subclasses to identify the original texts
+</caption>
+<thead>
+<tr>
+<th style="text-align:left;">
+patent_id
+</th>
+<th style="text-align:left;">
+publication_number
+</th>
+<th style="text-align:left;">
+title
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left;">
+10000393
+</td>
+<td style="text-align:left;">
+US10000393B2
+</td>
+<td style="text-align:left;">
+Enhancement of dewatering using soy flour or soy protein
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+10000397
+</td>
+<td style="text-align:left;">
+US10000397B2
+</td>
+<td style="text-align:left;">
+Multiple attached growth reactor system
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+10000427
+</td>
+<td style="text-align:left;">
+US10000427B2
+</td>
+<td style="text-align:left;">
+Phosphate solubilizing rhizobacteria bacillus firmus as biofertilizer to increase canola yield
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+10000443
+</td>
+<td style="text-align:left;">
+US10000443B2
+</td>
+<td style="text-align:left;">
+Compositions and methods for glucose transport inhibition
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+10000444
+</td>
+<td style="text-align:left;">
+US10000444B2
+</td>
+<td style="text-align:left;">
+Fluorine-containing ether monocarboxylic acid aminoalkyl ester and a method for producing the same
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+10000446
+</td>
+<td style="text-align:left;">
+US10000446B2
+</td>
+<td style="text-align:left;">
+Amino photo-reactive binder
+</td>
+</tr>
+</tbody>
+</table>
+<p>At the end of this process we have 345,975 patent grants that can used for further analysis using text mining techniques. Our purpose here has been to illustrate how the use of text mining can be combined with the use of the patent classification to create a dataset that is much more targeted and a lot easier to work with. Put another way, it is a mistake to see the patent system as a giant set of texts that all need to be processed. It is better to approach the patent system as as a collection of texts that have already been subject to multi-label classification. That classification can be used to filter to collections of texts for further analysis.</p>
+<p>More advanced approaches to those suggested here for refining the texts to be searched, such as the use of matrices and network analysis were discussed in the previous chapter and we return to this topic below. Other options include selecting texts on the IPC group or subgroup level (bearing in mind that for international research not all patent offices will consistently use these levels). The key point here however is that we have moved from a starting set of 7.9 million patent documents and reduced the set to 338,837 documents that are closer to a target subject area. In the process we have reduced the amount of compute effort required for analysis and also the intellectual effort required to handle such large volumes of text.</p>
+</div>
+<div id="from-words-to-phrases-ngrams" class="section level2 hasAnchor" number="7.7">
+<h2><span class="header-section-number">7.7</span> From words to phrases (ngrams)<a href="textmining.html#from-words-to-phrases-ngrams" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p>We have focused so far on text mining using individual word tokens (unigrams). However, in many cases what we are looking for will be expressed in a phrase consisting of two (bigram) or three (trigram) strings of words that articulate concepts or are the names of entities (e.g. species names).</p>
+<p>The <code>tidytext</code> package makes it easy to tokenize texts into bigrams or trigrams by specifying an argument to the <code>unnest_tokens()</code> function or using the <code>unnest_ngrams()</code> function. We will focus here on bigrams. Note that for chemical compounds which often consist of strings of terms linked by hyphens, attention would need to be paid to adjusting the tokenisation to avoid splitting on hyphens.</p>
+<div class="sourceCode" id="cb115"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb115-1"><a href="textmining.html#cb115-1" aria-hidden="true" tabindex="-1"></a>biodiversity_texts <span class="ot">&lt;-</span> biodiversity_patent_ids <span class="sc">%&gt;%</span> </span>
+<span id="cb115-2"><a href="textmining.html#cb115-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">unite</span>(text, <span class="fu">c</span>(title, abstract), <span class="at">sep =</span> <span class="st">&quot;. &quot;</span>)</span></code></pre></div>
+<p>Table <a href="textmining.html#tab:headbigrams">7.13</a> shows a selection of the bigrams appearing in the biodiversity related texts.</p>
+<table>
+<caption>
+<span id="tab:headbigrams">Table 7.13: </span>Biodiversity Related Bigrams
+</caption>
+<thead>
+<tr>
+<th style="text-align:left;">
+patent_id
+</th>
+<th style="text-align:right;">
+n
+</th>
+<th style="text-align:left;">
+publication_number
+</th>
+<th style="text-align:left;">
+bigram
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left;">
+10000393
+</td>
+<td style="text-align:right;">
+12
+</td>
+<td style="text-align:left;">
+US10000393B2
+</td>
+<td style="text-align:left;">
+enhancement of
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+10000393
+</td>
+<td style="text-align:right;">
+12
+</td>
+<td style="text-align:left;">
+US10000393B2
+</td>
+<td style="text-align:left;">
+of dewatering
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+10000393
+</td>
+<td style="text-align:right;">
+12
+</td>
+<td style="text-align:left;">
+US10000393B2
+</td>
+<td style="text-align:left;">
+dewatering using
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+10000393
+</td>
+<td style="text-align:right;">
+12
+</td>
+<td style="text-align:left;">
+US10000393B2
+</td>
+<td style="text-align:left;">
+using soy
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+10000393
+</td>
+<td style="text-align:right;">
+12
+</td>
+<td style="text-align:left;">
+US10000393B2
+</td>
+<td style="text-align:left;">
+soy flour
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+10000393
+</td>
+<td style="text-align:right;">
+12
+</td>
+<td style="text-align:left;">
+US10000393B2
+</td>
+<td style="text-align:left;">
+flour or
+</td>
+</tr>
+</tbody>
+</table>
+<p>We have created a dataset of bigrams that contains 31,612,494 rows with a few lines of code. However, if we inspect the bigrams we will see that the data contains phrases including many stop words. In reality, in patent analysis we are almost always interested in nouns, proper nouns and noun phrases.</p>
+<p>To get closer to what we want, Silge and Robinson present a straightforward approach to removing stop words that involves three steps:</p>
+<ol style="list-style-type: decimal">
+<li>splitting the bigrams into two columns containing unigrams using the space as the separator</li>
+<li>Filtering out stop words in the two columns</li>
+<li>Combining the two columns back together again.</li>
+</ol>
+<p>These steps comply with a common analysis pattern called <code>split - apply - combine</code>. In this case we split up the texts, then apply a function to transform the data and recombine. Becoming familiar with this basic formula is helpful in thinking about the steps involved in text mining and in data analysis in general. Depending on the size of the dataset this will take some time to run because it iterates over word one and word two columns identifying stop words in each row.</p>
+<div class="sourceCode" id="cb116"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb116-1"><a href="textmining.html#cb116-1" aria-hidden="true" tabindex="-1"></a>clean_biodiversity_bigrams <span class="ot">&lt;-</span> biodiversity_bigrams <span class="sc">%&gt;%</span> </span>
+<span id="cb116-2"><a href="textmining.html#cb116-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">separate</span>(bigram, <span class="at">into =</span> <span class="fu">c</span>(<span class="st">&quot;one&quot;</span>, <span class="st">&quot;two&quot;</span>), <span class="at">sep =</span> <span class="st">&quot; &quot;</span>) <span class="sc">%&gt;%</span> </span>
+<span id="cb116-3"><a href="textmining.html#cb116-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(<span class="sc">!</span>one <span class="sc">%in%</span> tidytext<span class="sc">::</span>stop_words<span class="sc">$</span>word) <span class="sc">%&gt;%</span> </span>
+<span id="cb116-4"><a href="textmining.html#cb116-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(<span class="sc">!</span>two <span class="sc">%in%</span> tidytext<span class="sc">::</span>stop_words<span class="sc">$</span>word) <span class="sc">%&gt;%</span> </span>
+<span id="cb116-5"><a href="textmining.html#cb116-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">unite</span>(bigram, <span class="fu">c</span>(one, two), <span class="at">sep =</span> <span class="st">&quot; &quot;</span>)</span></code></pre></div>
+<p>As before this will radically reduce the size of the dataset to 9,321,285 although the set may still contain many irrelevant phrases as we can see in Table <a href="textmining.html#tab:biodbigramhead">7.14</a>.</p>
+<table>
+<caption>
+<span id="tab:biodbigramhead">Table 7.14: </span>Biodiversity Bigram Terms
+</caption>
+<thead>
+<tr>
+<th style="text-align:left;">
+patent_id
+</th>
+<th style="text-align:right;">
+n
+</th>
+<th style="text-align:left;">
+publication_number
+</th>
+<th style="text-align:left;">
+bigram
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left;">
+10000393
+</td>
+<td style="text-align:right;">
+12
+</td>
+<td style="text-align:left;">
+US10000393B2
+</td>
+<td style="text-align:left;">
+soy flour
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+10000393
+</td>
+<td style="text-align:right;">
+12
+</td>
+<td style="text-align:left;">
+US10000393B2
+</td>
+<td style="text-align:left;">
+soy protein
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+10000393
+</td>
+<td style="text-align:right;">
+12
+</td>
+<td style="text-align:left;">
+US10000393B2
+</td>
+<td style="text-align:left;">
+protein dewatering
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+10000393
+</td>
+<td style="text-align:right;">
+12
+</td>
+<td style="text-align:left;">
+US10000393B2
+</td>
+<td style="text-align:left;">
+dewatering agents
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+10000393
+</td>
+<td style="text-align:right;">
+12
+</td>
+<td style="text-align:left;">
+US10000393B2
+</td>
+<td style="text-align:left;">
+dewatering wastewater
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+10000393
+</td>
+<td style="text-align:right;">
+12
+</td>
+<td style="text-align:left;">
+US10000393B2
+</td>
+<td style="text-align:left;">
+wastewater slurries
+</td>
+</tr>
+</tbody>
+</table>
+<p>We now have a set of bigrams with many irrelevant phrases. We could simply filter these phrases for terms of interest. In the chapter on patent citation analysis we focus on genome editing technology which is closely linked to genome engineering and synthetic biology. The extraction of bigrams allows us to identify patent grants containing these terms of interest in the title or abstracts as we can see in the code below and Table <a href="textmining.html#tab:showgenebigrams">7.15</a>.</p>
+<div class="sourceCode" id="cb117"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb117-1"><a href="textmining.html#cb117-1" aria-hidden="true" tabindex="-1"></a>clean_biodiversity_bigrams <span class="sc">%&gt;%</span> </span>
+<span id="cb117-2"><a href="textmining.html#cb117-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(bigram <span class="sc">==</span> <span class="st">&quot;genome editing&quot;</span> <span class="sc">|</span> bigram <span class="sc">==</span> <span class="st">&quot;gene editing&quot;</span> <span class="sc">|</span> bigram <span class="sc">==</span> <span class="st">&quot;crispr cas9&quot;</span> <span class="sc">|</span></span>
+<span id="cb117-3"><a href="textmining.html#cb117-3" aria-hidden="true" tabindex="-1"></a>           bigram <span class="sc">==</span> <span class="st">&quot;synthetic biology&quot;</span> <span class="sc">|</span> bigram <span class="sc">==</span> <span class="st">&quot;genome engineering&quot;</span>) <span class="sc">%&gt;%</span> </span>
+<span id="cb117-4"><a href="textmining.html#cb117-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">count</span>(bigram)</span></code></pre></div>
+<table>
+<caption>
+<span id="tab:showgenebigrams">Table 7.15: </span>Genome Editing Bigrams
+</caption>
+<thead>
+<tr>
+<th style="text-align:left;">
+patent_id
+</th>
+<th style="text-align:right;">
+n
+</th>
+<th style="text-align:left;">
+publication_number
+</th>
+<th style="text-align:left;">
+bigram
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left;">
+10000800
+</td>
+<td style="text-align:right;">
+4
+</td>
+<td style="text-align:left;">
+US10000800B2
+</td>
+<td style="text-align:left;">
+synthetic biology
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+10006054
+</td>
+<td style="text-align:right;">
+12
+</td>
+<td style="text-align:left;">
+US10006054B1
+</td>
+<td style="text-align:left;">
+genome editing
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+10011850
+</td>
+<td style="text-align:right;">
+12
+</td>
+<td style="text-align:left;">
+US10011850B2
+</td>
+<td style="text-align:left;">
+genome editing
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+10011850
+</td>
+<td style="text-align:right;">
+12
+</td>
+<td style="text-align:left;">
+US10011850B2
+</td>
+<td style="text-align:left;">
+genome editing
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+10017825
+</td>
+<td style="text-align:right;">
+12
+</td>
+<td style="text-align:left;">
+US10017825B2
+</td>
+<td style="text-align:left;">
+genome editing
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+10047355
+</td>
+<td style="text-align:right;">
+54
+</td>
+<td style="text-align:left;">
+US10047355B2
+</td>
+<td style="text-align:left;">
+gene editing
+</td>
+</tr>
+</tbody>
+</table>
+<p>This is a powerful technique for identifying useful documents based on dictionaries of terms (bigrams or unigrams). At an exploratory stage it also be very useful to arrange a bigrams set alphabetically so that you can see what terms are in the immediate vicinity of a target term. This can pick up variants that will improve data capture and links to correlations between terms discussed below.</p>
+<p>However, we are still dealing with 9.5 million terms. Can we make this more manageable? The answer is yes. We can apply the tf_idf calculations we used for unigrams above to the bigrams. In this case we are applying the tf_idf calculation to the 345,975 patent grants in the biodiversity set (rather than IPC subclasses) to ask the question: What bigrams are distinctive to each document? As with the previous example, the code provided by Silge and Robinson in <em>Text Mining with R</em> is straightforward <span class="citation">(<a href="#ref-tidytext" role="doc-biblioref">Silge and Robinson 2016</a>)</span>.</p>
+<div class="sourceCode" id="cb118"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb118-1"><a href="textmining.html#cb118-1" aria-hidden="true" tabindex="-1"></a>biodiversity_bigrams_tfidf <span class="ot">&lt;-</span> clean_biodiversity_bigrams <span class="sc">%&gt;%</span> </span>
+<span id="cb118-2"><a href="textmining.html#cb118-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">count</span>(patent_id, publication_number, bigram) <span class="sc">%&gt;%</span> </span>
+<span id="cb118-3"><a href="textmining.html#cb118-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">bind_tf_idf</span>(bigram, patent_id, n) <span class="sc">%&gt;%</span> </span>
+<span id="cb118-4"><a href="textmining.html#cb118-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">arrange</span>(<span class="fu">desc</span>(tf_idf))</span></code></pre></div>
+<table>
+<thead>
+<tr>
+<th style="text-align:left;">
+patent_id
+</th>
+<th style="text-align:left;">
+publication_number
+</th>
+<th style="text-align:left;">
+bigram
+</th>
+<th style="text-align:right;">
+n
+</th>
+<th style="text-align:right;">
+tf
+</th>
+<th style="text-align:right;">
+idf
+</th>
+<th style="text-align:right;">
+tf_idf
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left;">
+10081800
+</td>
+<td style="text-align:left;">
+US10081800B1
+</td>
+<td style="text-align:left;">
+lactonase enzymes
+</td>
+<td style="text-align:right;">
+1
+</td>
+<td style="text-align:right;">
+1
+</td>
+<td style="text-align:right;">
+12.75405
+</td>
+<td style="text-align:right;">
+12.75405
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+10721913
+</td>
+<td style="text-align:left;">
+US10721913B2
+</td>
+<td style="text-align:left;">
+drop feeder
+</td>
+<td style="text-align:right;">
+2
+</td>
+<td style="text-align:right;">
+1
+</td>
+<td style="text-align:right;">
+12.75405
+</td>
+<td style="text-align:right;">
+12.75405
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+10993976
+</td>
+<td style="text-align:left;">
+US10993976B2
+</td>
+<td style="text-align:left;">
+treating uremia
+</td>
+<td style="text-align:right;">
+2
+</td>
+<td style="text-align:right;">
+1
+</td>
+<td style="text-align:right;">
+12.75405
+</td>
+<td style="text-align:right;">
+12.75405
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+3960890
+</td>
+<td style="text-align:left;">
+US3960890A
+</td>
+<td style="text-align:left;">
+production fluoroalkylphenylcycloamidines
+</td>
+<td style="text-align:right;">
+1
+</td>
+<td style="text-align:right;">
+1
+</td>
+<td style="text-align:right;">
+12.75405
+</td>
+<td style="text-align:right;">
+12.75405
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+4077976
+</td>
+<td style="text-align:left;">
+US4077976A
+</td>
+<td style="text-align:left;">
+benzamides employed
+</td>
+<td style="text-align:right;">
+1
+</td>
+<td style="text-align:right;">
+1
+</td>
+<td style="text-align:right;">
+12.75405
+</td>
+<td style="text-align:right;">
+12.75405
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+4649039
+</td>
+<td style="text-align:left;">
+US4649039A
+</td>
+<td style="text-align:left;">
+radiolabeling methionine
+</td>
+<td style="text-align:right;">
+1
+</td>
+<td style="text-align:right;">
+1
+</td>
+<td style="text-align:right;">
+12.75405
+</td>
+<td style="text-align:right;">
+12.75405
+</td>
+</tr>
+</tbody>
+</table>
+<p>In the example above we focused in on genome editing and related topics by filtering the bigrams table to those documents containing those terms. This produced 212 patent documents containing the term. In the next step we calculated the tf_idf scores for the biodiversity bigrams which produced a table with 7,497,419 <em>distinctive bigrams</em> compared with the 9,538,209 cleaned bigrams that we started with.</p>
+<p>The question here is did we lose anything by applying tf_idf? The answer is no. The tf_idf results include the 212 documents relating to genome editing, the same as before. In this case tf_idf has made the important contribution of limiting the data to distinctive terms per document and in the process reducing the amount of data that we have to deal with. In short, tf_idf can be a very useful short cut in our workflow.</p>
+<div class="sourceCode" id="cb119"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb119-1"><a href="textmining.html#cb119-1" aria-hidden="true" tabindex="-1"></a>biodiversity_bigrams_tfidf  <span class="sc">%&gt;%</span> </span>
+<span id="cb119-2"><a href="textmining.html#cb119-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(bigram <span class="sc">==</span> <span class="st">&quot;genome editing&quot;</span> <span class="sc">|</span> bigram <span class="sc">==</span> <span class="st">&quot;gene editing&quot;</span> <span class="sc">|</span> bigram <span class="sc">==</span> <span class="st">&quot;crispr cas9&quot;</span> <span class="sc">|</span> bigram <span class="sc">==</span> <span class="st">&quot;synthetic biology&quot;</span> <span class="sc">|</span> bigram <span class="sc">==</span> <span class="st">&quot;genome engineering&quot;</span>) <span class="sc">%&gt;%</span> </span>
+<span id="cb119-3"><a href="textmining.html#cb119-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">count</span>(patent_id) <span class="sc">%&gt;%</span> </span>
+<span id="cb119-4"><a href="textmining.html#cb119-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">nrow</span>()</span></code></pre></div>
+<pre><code>## [1] 326</code></pre>
+<p>In the next step we want to identify the patent_ids for our genome editing set and then create a table containing all of the distinctive bigrams.</p>
+<p>This is a very powerful technique for identifying useful documents based on dictionaries of bigrams (or trigrams) for analysis because bigrams and trigrams typically convey meaningful information (such as concepts) that individual word tokens commonly do not. For the patent analyst working on a specific topic it is often straightforward to create a workflow that involves:</p>
+<ol style="list-style-type: decimal">
+<li>Initial exploration with one or more keywords as a starter set;</li>
+<li>Identify relevant ipc subclasses or groups to restrict the data;</li>
+<li>Retrieve the documents;</li>
+<li>Create bigrams for the titles, abstracts, descriptions and claims for in depth analysis.</li>
+<li>Leverage tf_idf scores per document (or other relevant grouping) to identify distinctive terms and filter again.</li>
+</ol>
+<p>The use of tf_idf scored is forms part of a process called topic modelling whereby statistical measures are applied to make predictions about the topics that a document or set of documents are about. This in turn is linked to a variety of approaches to creating indicators of technological emergence with which we will conclude this handbook.</p>
+<p>One very useful approach to topic modelling and technological emergence is to measure this emergence of particular words or phrases over time.</p>
+</div>
+<div id="terms-over-time" class="section level2 hasAnchor" number="7.8">
+<h2><span class="header-section-number">7.8</span> Terms over time<a href="textmining.html#terms-over-time" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p>Our aim in examining the use of terms over time is typically to gain visual information on the following issues:</p>
+<ul>
+<li>The first emergence of a term;</li>
+<li>Trends in the frequency of use of a term over time;</li>
+<li>The most recent use of a term or terms.</li>
+</ul>
+<p>We can graph the emergence of terms by linking our genome editing terms to the patent publication year. To do that we need to link our patent documents to the year in the grants table.</p>
+<div class="sourceCode" id="cb121"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb121-1"><a href="textmining.html#cb121-1" aria-hidden="true" tabindex="-1"></a>years <span class="ot">&lt;-</span> grants <span class="sc">%&gt;%</span> </span>
+<span id="cb121-2"><a href="textmining.html#cb121-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(patent_id, year)</span>
+<span id="cb121-3"><a href="textmining.html#cb121-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb121-4"><a href="textmining.html#cb121-4" aria-hidden="true" tabindex="-1"></a>ge_year_counts <span class="ot">&lt;-</span> gene_editing_bigrams <span class="sc">%&gt;%</span> </span>
+<span id="cb121-5"><a href="textmining.html#cb121-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">left_join</span>(years, <span class="at">by =</span> <span class="st">&quot;patent_id&quot;</span>) <span class="sc">%&gt;%</span> </span>
+<span id="cb121-6"><a href="textmining.html#cb121-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(year) <span class="sc">%&gt;%</span> </span>
+<span id="cb121-7"><a href="textmining.html#cb121-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">count</span>(bigram) <span class="sc">%&gt;%</span> </span>
+<span id="cb121-8"><a href="textmining.html#cb121-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ungroup</span>()</span></code></pre></div>
+<p>Figure <a href="textmining.html#fig:termplot">7.2</a> shows trends in the use of the genome editing terms by term.</p>
+<div class="sourceCode" id="cb122"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb122-1"><a href="textmining.html#cb122-1" aria-hidden="true" tabindex="-1"></a>ge_year_counts <span class="sc">%&gt;%</span></span>
+<span id="cb122-2"><a href="textmining.html#cb122-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(year, n)) <span class="sc">+</span></span>
+<span id="cb122-3"><a href="textmining.html#cb122-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>() <span class="sc">+</span></span>
+<span id="cb122-4"><a href="textmining.html#cb122-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_smooth</span>() <span class="sc">+</span></span>
+<span id="cb122-5"><a href="textmining.html#cb122-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">facet_wrap</span>(<span class="sc">~</span> bigram, <span class="at">scales =</span> <span class="st">&quot;free_y&quot;</span>) <span class="sc">+</span></span>
+<span id="cb122-6"><a href="textmining.html#cb122-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_y_continuous</span>() <span class="sc">+</span></span>
+<span id="cb122-7"><a href="textmining.html#cb122-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">y =</span> <span class="st">&quot;Frequency of genome editing words&quot;</span>)</span></code></pre></div>
+<div class="figure" style="text-align: center"><span style="display:block;" id="fig:termplot"></span>
+<img src="handbook_files/figure-html/termplot-1.png" alt="Frequency Trends for Genome Editing Terms" width="672" />
+<p class="caption">
+Figure 7.2: Frequency Trends for Genome Editing Terms
+</p>
+</div>
+<!---[Ask jasmine on the axis issue]--->
+<p>This example illustrates that we can readily map the emergence of terms and the frequency of their use in patent data. It is important to point out some of the limitations of this approach that will be encountered.</p>
+<p>In the case of the present data we are working with the US patent grants data. The calculation is therefore for the emergence of terms in granted patents. As such, this does not apply to patent applications unless we explicitly include that table. A second limitation, in terms of US data, is that in the United States patent documents were only published when they were granted. It was only in 2001 that the US started publishing patent applications. Third, the data is based on publication dates. The earliest use of a term will occur in a priority application (the first filing). To map trends in the emergence of concepts over time we would therefore preferably use the priority date. In the latter case, as the actual priority document, such as as US provisional application, may not be published we are making an assumption that the terms appeared in the documents filed on the earliest priority data.</p>
+<p>A more fundamental issue however is that our analysis of trends is restricted to the titles and abstracts of the US patent collection. For a more comprehensive and accurate treatment we would want to extend the analysis to the description and claims. This would considerably expand the size of the data we would need to work with and thus demand engagement with cloud computing and the use of tools such as Apache Spark (for parallel computing).</p>
+<p>As such, in reality when mapping trends in the emergence of terms and in potentially seeking to forecast likely trends based on the existing data we would want to make some adjustments to this approach for patent data. Nevertheless, mapping of the emergence of terms is relatively straightforward. A simpler example on which the example above is based is available in Silge and Robinson 2017 (at pages 76 to 77), using texts from presidential inaugural speeches.</p>
+</div>
+<div id="correlation-measures" class="section level2 hasAnchor" number="7.9">
+<h2><span class="header-section-number">7.9</span> Correlation Measures<a href="textmining.html#correlation-measures" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p>Word and phrases in a text exist in relationship to other words and phrases in the text. As we will see in the chapter on machine learning, an understanding of these relationships and methods for calculating and predicting these relationships have been fundamental to advances in Natural Language Processing in recent years.</p>
+<p>One of the most useful of these measures in text mining is co-occurrence. That is, what words or phrases occur with other words and phrases in a text or group of texts. In the discussion above we created a data frame containing the distinctive bigrams in each text associated with genome editing.</p>
+<p>We can take a look at the phrases linked to our target terms in Figure <a href="textmining.html#fig:gebigrams">7.3</a> below.</p>
+<table>
+<caption>
+<span id="tab:gebigrams1">Table 7.16: </span>Genome editing phrases
+</caption>
+<thead>
+<tr>
+<th style="text-align:left;">
+patent_id
+</th>
+<th style="text-align:left;">
+publication_number
+</th>
+<th style="text-align:left;">
+bigram
+</th>
+<th style="text-align:right;">
+n
+</th>
+<th style="text-align:right;">
+tf
+</th>
+<th style="text-align:right;">
+idf
+</th>
+<th style="text-align:right;">
+tf_idf
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left;">
+10000800
+</td>
+<td style="text-align:left;">
+US10000800B2
+</td>
+<td style="text-align:left;">
+oligonucleotide constructs
+</td>
+<td style="text-align:right;">
+3
+</td>
+<td style="text-align:right;">
+0.1578947
+</td>
+<td style="text-align:right;">
+10.114995
+</td>
+<td style="text-align:right;">
+1.5971045
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+10000800
+</td>
+<td style="text-align:left;">
+US10000800B2
+</td>
+<td style="text-align:left;">
+validated sequences
+</td>
+<td style="text-align:right;">
+2
+</td>
+<td style="text-align:right;">
+0.1052632
+</td>
+<td style="text-align:right;">
+10.808142
+</td>
+<td style="text-align:right;">
+1.1376992
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+10000800
+</td>
+<td style="text-align:left;">
+US10000800B2
+</td>
+<td style="text-align:left;">
+analysis polymorphism
+</td>
+<td style="text-align:right;">
+1
+</td>
+<td style="text-align:right;">
+0.0526316
+</td>
+<td style="text-align:right;">
+10.808142
+</td>
+<td style="text-align:right;">
+0.5688496
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+10000800
+</td>
+<td style="text-align:left;">
+US10000800B2
+</td>
+<td style="text-align:left;">
+biology quantitative
+</td>
+<td style="text-align:right;">
+1
+</td>
+<td style="text-align:right;">
+0.0526316
+</td>
+<td style="text-align:right;">
+10.808142
+</td>
+<td style="text-align:right;">
+0.5688496
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+10000800
+</td>
+<td style="text-align:left;">
+US10000800B2
+</td>
+<td style="text-align:left;">
+constructs sets
+</td>
+<td style="text-align:right;">
+1
+</td>
+<td style="text-align:right;">
+0.0526316
+</td>
+<td style="text-align:right;">
+10.808142
+</td>
+<td style="text-align:right;">
+0.5688496
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+10000800
+</td>
+<td style="text-align:left;">
+US10000800B2
+</td>
+<td style="text-align:left;">
+desired rois
+</td>
+<td style="text-align:right;">
+1
+</td>
+<td style="text-align:right;">
+0.0526316
+</td>
+<td style="text-align:right;">
+10.808142
+</td>
+<td style="text-align:right;">
+0.5688496
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+10000800
+</td>
+<td style="text-align:left;">
+US10000800B2
+</td>
+<td style="text-align:left;">
+provide validated
+</td>
+<td style="text-align:right;">
+1
+</td>
+<td style="text-align:right;">
+0.0526316
+</td>
+<td style="text-align:right;">
+10.808142
+</td>
+<td style="text-align:right;">
+0.5688496
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+10000800
+</td>
+<td style="text-align:left;">
+US10000800B2
+</td>
+<td style="text-align:left;">
+validated rois
+</td>
+<td style="text-align:right;">
+1
+</td>
+<td style="text-align:right;">
+0.0526316
+</td>
+<td style="text-align:right;">
+10.808142
+</td>
+<td style="text-align:right;">
+0.5688496
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+10000800
+</td>
+<td style="text-align:left;">
+US10000800B2
+</td>
+<td style="text-align:left;">
+mutation screening
+</td>
+<td style="text-align:right;">
+1
+</td>
+<td style="text-align:right;">
+0.0526316
+</td>
+<td style="text-align:right;">
+10.451467
+</td>
+<td style="text-align:right;">
+0.5500772
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+10000800
+</td>
+<td style="text-align:left;">
+US10000800B2
+</td>
+<td style="text-align:left;">
+quantitative nucleic
+</td>
+<td style="text-align:right;">
+1
+</td>
+<td style="text-align:right;">
+0.0526316
+</td>
+<td style="text-align:right;">
+9.981464
+</td>
+<td style="text-align:right;">
+0.5253402
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+10000800
+</td>
+<td style="text-align:left;">
+US10000800B2
+</td>
+<td style="text-align:left;">
+synthetic biology
+</td>
+<td style="text-align:right;">
+1
+</td>
+<td style="text-align:right;">
+0.0526316
+</td>
+<td style="text-align:right;">
+9.421848
+</td>
+<td style="text-align:right;">
+0.4958867
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+10000800
+</td>
+<td style="text-align:left;">
+US10000800B2
+</td>
+<td style="text-align:left;">
+acid analysis
+</td>
+<td style="text-align:right;">
+1
+</td>
+<td style="text-align:right;">
+0.0526316
+</td>
+<td style="text-align:right;">
+7.369557
+</td>
+<td style="text-align:right;">
+0.3878714
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+10000800
+</td>
+<td style="text-align:left;">
+US10000800B2
+</td>
+<td style="text-align:left;">
+acid constructs
+</td>
+<td style="text-align:right;">
+1
+</td>
+<td style="text-align:right;">
+0.0526316
+</td>
+<td style="text-align:right;">
+5.695294
+</td>
+<td style="text-align:right;">
+0.2997523
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+10000800
+</td>
+<td style="text-align:left;">
+US10000800B2
+</td>
+<td style="text-align:left;">
+wide variety
+</td>
+<td style="text-align:right;">
+1
+</td>
+<td style="text-align:right;">
+0.0526316
+</td>
+<td style="text-align:right;">
+5.106266
+</td>
+<td style="text-align:right;">
+0.2687509
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+10000800
+</td>
+<td style="text-align:left;">
+US10000800B2
+</td>
+<td style="text-align:left;">
+nucleic acid
+</td>
+<td style="text-align:right;">
+2
+</td>
+<td style="text-align:right;">
+0.1052632
+</td>
+<td style="text-align:right;">
+2.549202
+</td>
+<td style="text-align:right;">
+0.2683370
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+10006054
+</td>
+<td style="text-align:left;">
+US10006054B1
+</td>
+<td style="text-align:left;">
+encoding genome
+</td>
+<td style="text-align:right;">
+1
+</td>
+<td style="text-align:right;">
+0.0476190
+</td>
+<td style="text-align:right;">
+11.367758
+</td>
+<td style="text-align:right;">
+0.5413218
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+10006054
+</td>
+<td style="text-align:left;">
+US10006054B1
+</td>
+<td style="text-align:left;">
+include inserts
+</td>
+<td style="text-align:right;">
+1
+</td>
+<td style="text-align:right;">
+0.0476190
+</td>
+<td style="text-align:right;">
+11.367758
+</td>
+<td style="text-align:right;">
+0.5413218
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+10006054
+</td>
+<td style="text-align:left;">
+US10006054B1
+</td>
+<td style="text-align:left;">
+inserts encoded
+</td>
+<td style="text-align:right;">
+1
+</td>
+<td style="text-align:right;">
+0.0476190
+</td>
+<td style="text-align:right;">
+11.367758
+</td>
+<td style="text-align:right;">
+0.5413218
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+10006054
+</td>
+<td style="text-align:left;">
+US10006054B1
+</td>
+<td style="text-align:left;">
+ogrna targeting
+</td>
+<td style="text-align:right;">
+1
+</td>
+<td style="text-align:right;">
+0.0476190
+</td>
+<td style="text-align:right;">
+11.367758
+</td>
+<td style="text-align:right;">
+0.5413218
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+10006054
+</td>
+<td style="text-align:left;">
+US10006054B1
+</td>
+<td style="text-align:left;">
+rna ogrna
+</td>
+<td style="text-align:right;">
+1
+</td>
+<td style="text-align:right;">
+0.0476190
+</td>
+<td style="text-align:right;">
+11.367758
+</td>
+<td style="text-align:right;">
+0.5413218
+</td>
+</tr>
+</tbody>
+</table>
+<p>What we are seeking to understand using this data is what are the top co-occurring terms. To do this we will cast the data into a matrix where the bigrams are mapped against each other producing a correlation value. Using the <code>widyr</code> package we then pull the data back into columns with the recorded value.</p>
+<p>There are a variety of packages for calculating correlations and cooccurrences with texts. We will use <code>udpipe</code> package by Jan Wijffels for illustration of this approach <span class="citation">(<a href="#ref-udpipe" role="doc-biblioref">Wijffels 2022</a>)</span>. The <code>widyr</code> package offers a <code>pairwise_count()</code> function that achieves the same thing in fewer steps. However, udpipe is easy to use and it also offers additional advantages such as parts of speech tagging (POS) for nouns, verbs and adjectives <span class="citation">(<a href="#ref-widyr" role="doc-biblioref">Robinson 2021</a>)</span>.</p>
+<p>First, we calculate term frequencies for our bigrams (in practice we have these but we illustrate from scratch here) using the patent_id as the identifier and the bigram. Next, we cast the data into a matrix of the bigrams against the bigrams (dtm). This transforms our dataset containing 4,430 rows into a large and sparse matrix with 3.6 million observations (where most values are zero because there is no correlation). Then apply a correlation function (in this case Pearson’s, also known as Pearson’s R, but a range of other correlation functions are available) to obtain the correlation coefficient. Finally, the matrix is transformed back into a data.frame that drops empty (0) items in the sparse matrix. In the cooccurrence data frame term1 is the source and term2 is the target with a range of scores expressed from -0.n to 1.</p>
+<div class="sourceCode" id="cb123"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb123-1"><a href="textmining.html#cb123-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(udpipe)</span>
+<span id="cb123-2"><a href="textmining.html#cb123-2" aria-hidden="true" tabindex="-1"></a>dtf <span class="ot">&lt;-</span> <span class="fu">document_term_frequencies</span>(gene_editing_tfidf, <span class="at">document =</span> <span class="st">&quot;patent_id&quot;</span>, <span class="at">term =</span> <span class="st">&quot;bigram&quot;</span>)</span>
+<span id="cb123-3"><a href="textmining.html#cb123-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb123-4"><a href="textmining.html#cb123-4" aria-hidden="true" tabindex="-1"></a>dtm <span class="ot">&lt;-</span> <span class="fu">document_term_matrix</span>(dtf)</span>
+<span id="cb123-5"><a href="textmining.html#cb123-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb123-6"><a href="textmining.html#cb123-6" aria-hidden="true" tabindex="-1"></a>correlation <span class="ot">&lt;-</span> <span class="fu">dtm_cor</span>(dtm)</span>
+<span id="cb123-7"><a href="textmining.html#cb123-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb123-8"><a href="textmining.html#cb123-8" aria-hidden="true" tabindex="-1"></a>cooccurrence <span class="ot">&lt;-</span> <span class="fu">as_cooccurrence</span>(correlation)</span></code></pre></div>
+<p>The cooccurrence matrix contains 3.6 million rows of co-occurrences between bigrams in the dataset. We filter the dataset to “genome editing” in Figure <a href="textmining.html#fig:gebigrams">7.3</a> below in order to see the outcome for one of the terms.</p>
+<div class="figure" style="text-align: center"><span style="display:block;" id="fig:gebigrams"></span>
+<img src="images/textmining/coocc.png" alt="Cooccurrence Scores for Gene Editing" width="842" />
+<p class="caption">
+Figure 7.3: Cooccurrence Scores for Gene Editing
+</p>
+</div>
+<!--- the same can be done with 
+
+
+
+```r
+#library(widyr)
+#gene_editing_tfidf %>% 
+  #group_by(bigram) %>% 
+  #filter(n() >= 20) %>% 
+#  pairwise_count(bigram, patent_id, sort = TRUE) %>% 
+#  View()
+```
+
+--->
+<p>The cooccurrence value for the matching term (in this case “genome editing”) is always 1. Inside the actual matrix this displays on the diagonal in the centre of the matrix and gives rise to the expression “removing the diagonal” or self-reference. We can do this by filtering to keep any value that does not equal 1 as we see in Table <a href="textmining.html#tab:coocclean">7.17</a>.</p>
+<table>
+<caption>
+<span id="tab:coocclean">Table 7.17: </span>Ranked Cooccurrence Scores for Gene Editing with Diagonal Removed
+</caption>
+<thead>
+<tr>
+<th style="text-align:left;">
+term1
+</th>
+<th style="text-align:left;">
+term2
+</th>
+<th style="text-align:right;">
+cooc
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left;">
+genome engineering
+</td>
+<td style="text-align:left;">
+genome editing
+</td>
+<td style="text-align:right;">
+-0.3913164
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+genome editing
+</td>
+<td style="text-align:left;">
+genome engineering
+</td>
+<td style="text-align:right;">
+-0.3913164
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+genome editing
+</td>
+<td style="text-align:left;">
+gene editing
+</td>
+<td style="text-align:right;">
+-0.3725150
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+gene editing
+</td>
+<td style="text-align:left;">
+genome editing
+</td>
+<td style="text-align:right;">
+-0.3725150
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+genome engineering
+</td>
+<td style="text-align:left;">
+gene editing
+</td>
+<td style="text-align:right;">
+-0.2669573
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+gene editing
+</td>
+<td style="text-align:left;">
+genome engineering
+</td>
+<td style="text-align:right;">
+-0.2669573
+</td>
+</tr>
+</tbody>
+</table>
+<!---[What is going on with the value 1 in the table. there seems to be 1 and 1.n]--->
+<p>The data from the title and abstracts using tf_idf now suggests the strong correlation between gene editing and genome engineering in our example dataset.</p>
+<p>In common with the network visualisations discussed in the last chapter, this data can also be visualised in a network where term1 constitutes the source node, term2 the target node and cooc (or n) the weight of the edge between source and target nodes. For simplicity in presentation we will select only terms with a cooccurence score over .10 for genome editing. The code here is adapted directly from the <code>udpipe</code> documentation.</p>
+<div class="sourceCode" id="cb124"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb124-1"><a href="textmining.html#cb124-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(igraph)</span>
+<span id="cb124-2"><a href="textmining.html#cb124-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(ggraph)</span>
+<span id="cb124-3"><a href="textmining.html#cb124-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb124-4"><a href="textmining.html#cb124-4" aria-hidden="true" tabindex="-1"></a>cooccurrence_clean <span class="sc">%&gt;%</span> </span>
+<span id="cb124-5"><a href="textmining.html#cb124-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(term1 <span class="sc">==</span> <span class="st">&quot;genome editing&quot;</span>) <span class="sc">%&gt;%</span> </span>
+<span id="cb124-6"><a href="textmining.html#cb124-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">arrange</span>(cooc) <span class="sc">%&gt;%</span> </span>
+<span id="cb124-7"><a href="textmining.html#cb124-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(cooc  <span class="sc">&gt;</span> .<span class="dv">10</span>) <span class="sc">%&gt;%</span> </span>
+<span id="cb124-8"><a href="textmining.html#cb124-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">graph_from_data_frame</span>() <span class="sc">%&gt;%</span> </span>
+<span id="cb124-9"><a href="textmining.html#cb124-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggraph</span>(<span class="at">layout =</span> <span class="st">&quot;fr&quot;</span>) <span class="sc">+</span></span>
+<span id="cb124-10"><a href="textmining.html#cb124-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_edge_link</span>(<span class="fu">aes</span>(<span class="at">width =</span> cooc, <span class="at">edge_alpha =</span> cooc), <span class="at">edge_colour =</span> <span class="st">&quot;pink&quot;</span>) <span class="sc">+</span></span>
+<span id="cb124-11"><a href="textmining.html#cb124-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_node_text</span>(<span class="fu">aes</span>(<span class="at">label =</span> name), <span class="at">col =</span> <span class="st">&quot;darkgreen&quot;</span>, <span class="at">size =</span> <span class="dv">2</span>) <span class="sc">+</span></span>
+<span id="cb124-12"><a href="textmining.html#cb124-12" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_graph</span>(<span class="at">base_family =</span> <span class="st">&quot;Arial Narrow&quot;</span>) <span class="sc">+</span></span>
+<span id="cb124-13"><a href="textmining.html#cb124-13" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme</span>(<span class="at">legend.position =</span> <span class="st">&quot;none&quot;</span>) <span class="sc">+</span></span>
+<span id="cb124-14"><a href="textmining.html#cb124-14" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">title =</span> <span class="st">&quot;Genome Editing Cooccurrence Network&quot;</span>)</span></code></pre></div>
+<div class="figure" style="text-align: center"><span style="display:block;" id="fig:genet"></span>
+<img src="images/textmining/genomeediting.png" alt="Genome Engineering Network" width="100%" />
+<p class="caption">
+Figure 7.4: Genome Engineering Network
+</p>
+</div>
+<p>The visualisation of networks is a powerful tool for making decisions about how to proceed with analysis. In particular, visualisation of networks of terms is an extremely useful device when seeking directions for further analysis, for example on the use of genome editing in therapeutics or in agriculture and other applications.</p>
+<p>The use of these methods is not confined to patent researchers with programming skills. VantagePoint from Search Technology Inc provides many of these tools out of the box and has considerable strength of allowing greater freedom and precision in interactive exploration and refinement of the data.</p>
+<!--- Insert demonstration of parts of speech with udpipe as a precursor to ml chapter?
+
+### VantagePoint 
+
+INSERT IMAGES FOR WORKFLOW
+
+--->
+</div>
+<div id="conclusion-3" class="section level2 hasAnchor" number="7.10">
+<h2><span class="header-section-number">7.10</span> Conclusion<a href="textmining.html#conclusion-3" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p>Recent years have witnessed a dramatic transformation in the availability of patent data for text mining at scale. The creation of the USPTO PatentsView Data Download service, formatted specifically for patent analysis, represents an important landmark as does the release of the full texts of EPO patent documents through Google Cloud. Other important developments include the Lens Patent API service that provides access to the full text of patent documents under a range of different plans, including free access. It remains to be seen whether WIPO will follow these developments by making the full texts of PCT documents freely available for use in patent analytics.</p>
+<p>Growing access to data also presents challenges, such as how to download, store and update large patent datasets. A second challenge is how to transform such data from XML or JSON (from calls to APIs) into formats that can be used for analysis. Finally, analysis steps themselves require data cleaning, text mining skills, some statistical and machine learning skills. In many cases software packages in R and Python or the use of VantagePoint ease the way in creating patent analytics workflows. However, the immediate practical challenge for the patent analyst will be text mining with datasets that are either too large for memory or are unwieldy on their platforms. We close this chapter with some suggestions on ways forward.</p>
+<p>In the preceding discussion we suggested that there is a process for working with textual data at scale. This consists of the following steps.</p>
+<ol style="list-style-type: decimal">
+<li>Use text mining with a range of terms to identify other terms that define the universe of things you are interested in;</li>
+<li>Identify the relevant areas of the patent classification that the terms fit into;</li>
+<li>Filter the data down to the selected terms and patent classification codes;</li>
+<li>Use measures such as term frequency inverse document frequency to identify distinctive terms in your data either at the level of words or phrases and experiment until the set meets your needs;</li>
+<li>Section the data into groupings for analysis using either the IPC as a guide, groupings of terms arising from tfidf and/or use Latent Dirichlet Allocation (LDA) and similar techniques for topic modelling;</li>
+<li>Use experimental visualisation (such as network visualisation) along the way to test and refine your analysis.</li>
+</ol>
+<p>As analysis proceeds text mining will increasingly move into matrix operations and correlation and co-occurrence measures to identify and examine clusters of terms. These operations are directed to opening the path to producing analytical outputs on your topic of interest that are meaningful to non-patent specialists. Rather than seeing the steps outlined above as obligatory it is important to recognise when and where to use particular tools. For example, it turned out that there was not much to be gained from LDA on genome editing in terms of topic modelling because the topic had already been identified. As such, identifying the appropriate tool for the task at a particular moment in the workflow is an important skill.</p>
+<p>It is also important to recognise that analysts seeking to reproduce the steps in this Chapter will often be pushing the boundaries of their computing capacity. Here is is important to emphasise that an important principle when working with data at scale is to identify the process for reducing scale to human manageable levels as soon as is practical. It is inevitable however, that working at scale creates issues where data will not fit into memory (out of memory or oom) or processing capacity is insufficient for timely analysis. Of all the tasks involved in patent analytics, text mining and machine learning rapidly push at the boundaries of computing capacity.</p>
+<p>The solution to compute limitation is not to buy every bigger computers but to recognise that extra capacity can be acquired in the cloud through companies such as Amazon Web Services, Google Cloud or Microsoft Azure (among many others). For example, a large Windows Server can be set up to run VantagePoint on large datasets or virtual machines for work with Python and R. For large scale parallel computing of texts services such as Databricks Apache Spark clusters can be created that will cost a few dollars an hour to run. When processing is completed data can be exported and analysis and payment for the service can stop. This ability to scale up and scale down computing capacity as required is the major flexibility offered by cloud computing services and we recommend exploring these options if you intend to work with text data at scale. Many tutorials exist on setting up virtual machines and clusters with different services.</p>
+<p>The text mining techniques introduced in this chapter are part of a wider set of techniques that can be tailored for specific needs. However, rapid advances in machine learning in recent years are transforming natural language processing. The topics discussed in this chapter are a useful foundation for understanding these transformations. We now turn to the use of machine learning in patent analytics.</p>
+
+</div>
+</div>
+<h3>References</h3>
+<div id="refs" class="references csl-bib-body hanging-indent">
+<div id="ref-lens.org/029-457-486-798-609" class="csl-entry">
+Oldham, Paul, Stephen Hall, and Oscar Forero. 2013. <span>“Biological Diversity in the Patent System.”</span> <em>PloS One</em> 8 (11): 1–16. <a href="https://doi.org/10.1371/journal.pone.0078737">https://doi.org/10.1371/journal.pone.0078737</a>.
+</div>
+<div id="ref-lens.org/023-481-161-675-434" class="csl-entry">
+Porter, Alan L., and Scott W. Cunningham. 2004. <em>Tech Mining: Exploiting New Technologies for Competitive Advantage</em>. <a href="https://lens.org/023-481-161-675-434">https://lens.org/023-481-161-675-434</a>.
+</div>
+<div id="ref-textstem" class="csl-entry">
+Rinker, Tyler W. 2018. <em><span class="nocase">textstem</span>: Tools for Stemming and Lemmatizing Text</em>. Buffalo, New York. <a href="http://github.com/trinker/textstem">http://github.com/trinker/textstem</a>.
+</div>
+<div id="ref-widyr" class="csl-entry">
+Robinson, David. 2021. <em>Widyr: Widen, Process, Then Re-Tidy Data</em>. <a href="https://CRAN.R-project.org/package=widyr">https://CRAN.R-project.org/package=widyr</a>.
+</div>
+<div id="ref-tidytext" class="csl-entry">
+Silge, Julia, and David Robinson. 2016. <span>“Tidytext: Text Mining and Analysis Using Tidy Data Principles in r.”</span> <em>JOSS</em> 1 (3). <a href="https://doi.org/10.21105/joss.00037">https://doi.org/10.21105/joss.00037</a>.
+</div>
+<div id="ref-udpipe" class="csl-entry">
+Wijffels, Jan. 2022. <em>Udpipe: Tokenization, Parts of Speech Tagging, Lemmatization and Dependency Parsing with the ’UDPipe’ ’NLP’ Toolkit</em>. <a href="https://CRAN.R-project.org/package=udpipe">https://CRAN.R-project.org/package=udpipe</a>.
+</div>
+</div>
+            </section>
+
+          </div>
+        </div>
+      </div>
+<a href="citations.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
+<a href="machinelearning.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
+    </div>
+  </div>
+<script src="libs/gitbook-2.6.7/js/app.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/clipboard.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-search.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-sharing.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-fontsettings.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-bookdown.js"></script>
+<script src="libs/gitbook-2.6.7/js/jquery.highlight.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-clipboard.js"></script>
+<script>
+gitbook.require(["gitbook"], function(gitbook) {
+gitbook.start({
+"sharing": {
+"github": false,
+"facebook": true,
+"twitter": true,
+"linkedin": false,
+"weibo": false,
+"instapaper": false,
+"vk": false,
+"whatsapp": false,
+"all": ["facebook", "twitter", "linkedin", "weibo", "instapaper"]
+},
+"fontsettings": {
+"theme": "white",
+"family": "sans",
+"size": 2
+},
+"edit": {
+"link": null,
+"text": null
+},
+"history": {
+"link": null,
+"text": null
+},
+"view": {
+"link": null,
+"text": null
+},
+"download": ["handbook.pdf", "handbook.epub"],
+"search": {
+"engine": "fuse",
+"options": null
+},
+"toc": {
+"collapse": "subsection"
+},
+"show_codefolding_buttons": true
+});
+});
+</script>
+
+</body>
+
+</html>
